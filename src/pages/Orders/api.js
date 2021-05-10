@@ -4,6 +4,7 @@ import { API } from './../../configAPI'
 export const getAllOrder = (token) => {
     return fetch(`${API}/readAllOrder`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -20,12 +21,12 @@ export const getAllOrder = (token) => {
   export const getAllOrderLab = (token) => {
     return fetch(`${API}/readOrdertoCheck`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
             Authorization:`Bearer ${token}`
-          },
-        //   body : JSON.stringify({id : farmer})
+          }
     })
         .then(response => {
             return response.json();
@@ -36,6 +37,7 @@ export const getAllOrder = (token) => {
 export const getRecheckOrder = (token) => {
     return fetch(`${API}/readRecheckOrder`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -58,6 +60,7 @@ export const readOrderById = (token,idOrders) => {
     
     return fetch(`${API}/readOrderById`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -75,6 +78,7 @@ export const updateDetail = (token,index) => {
    
   return fetch(`${API}/updateOrder`, {
       method: "POST",
+      mode: 'cors',
       headers: {
           Accept: 'application/json',
           "Content-type": "application/json",
@@ -91,6 +95,7 @@ export const updateDetail = (token,index) => {
 export const reSend = (token,idOrders) => {
     return fetch(`${API}/reSend`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -108,6 +113,7 @@ export const deleteOrder = (token, idOrders) => {
     // console.log('deleteOrder id : ' , idOrders)
     return fetch(`${API}/deleteOrder`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -129,6 +135,7 @@ export const readAllSpecificChemById = (token,idPdSpecificChem) => {
 
     return fetch(`${API}/readAllSpecificChemById`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -150,6 +157,7 @@ export const readAllSpecificBioById = (token,idPdSpecificMicro) => {
 
     return fetch(`${API}/readAllSpecificBioById`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -172,6 +180,7 @@ export const readTestResultlasted = (token,idOrders) => {
   
   return fetch(`${API}/readTestReportlasted`, {
       method: "POST",
+      mode: 'cors',
       headers: {
           Accept: 'application/json',
           "Content-type": "application/json",
@@ -188,6 +197,7 @@ export const readTestResultlasted = (token,idOrders) => {
 export const readIdChemCheckbox = (token) => {
     return fetch(`${API}/readIdChemCheckbox`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -204,6 +214,7 @@ export const readIdChemCheckbox = (token) => {
 export const readIdMicroCheckbox = (token) => {
     return fetch(`${API}/readIdMicroCheckbox`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -220,6 +231,7 @@ export const readIdMicroCheckbox = (token) => {
 export const addOrder = (token, index) => {
     return fetch(`${API}/addOrder`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -237,6 +249,7 @@ export const addOrder = (token, index) => {
 export const Addtestreport = (token, index) => {
     return fetch(`${API}/Addtestreport`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -255,6 +268,7 @@ export const Recheck = (token, index) => {
     // console.log('index recheck : ', index)
     return fetch(`${API}/Recheck`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -273,6 +287,7 @@ export const WaitMicro = (token, index) => {
     // console.log('index recheck : ', index)
     return fetch(`${API}/WaitMicro`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -291,6 +306,7 @@ export const readFG = (token, index) => {
     // console.log('index recheck : ', index)
     return fetch(`${API}/readFG`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -309,6 +325,7 @@ export const updateFG = (token, index) => {
     // console.log('index recheck : ', index)
     return fetch(`${API}/updateFGadFG`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -325,6 +342,7 @@ export const updateFG = (token, index) => {
 export const addRealtimeOrder = (token, index) => {
     return fetch(`${API}/addRealTimeOrder`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -342,6 +360,7 @@ export const addRealtimeOrder = (token, index) => {
 export const exportCOA = (token) => {
     return fetch(`${API}/exportCOA`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -358,6 +377,7 @@ export const exportCOA = (token) => {
 export const UpdatexportCOA = (token,index) => {
     return fetch(`${API}/UpdatexportCOA`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
@@ -374,6 +394,7 @@ export const UpdatexportCOA = (token,index) => {
 export const UpdatexportPASS = (token,index) => {
     return fetch(`${API}/UpdatexportPASS`, {
         method: "POST",
+        mode: 'cors',
         headers: {
             Accept: 'application/json',
             "Content-type": "application/json",
