@@ -181,9 +181,9 @@ const ModalAddOrder = props => {
                       onConfirm={() => {
                         setsuccess_msg(false)
                         toggleAddorder()
-                        setInterval(() => {
-                          window.location.reload()
-                        }, 5000)
+                        // setInterval(() => {
+                        location.reload()
+                        // }, 5000)
                       }}
                     >
                       You clicked the button!

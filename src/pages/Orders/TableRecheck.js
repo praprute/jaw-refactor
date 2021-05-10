@@ -233,7 +233,7 @@ const [columnTable, setColumnTable] = useState([
         
         }
     })
-  }, [dataMerchRecheck])
+  }, [])
 
   return (
     <React.Fragment>
@@ -243,6 +243,7 @@ const [columnTable, setColumnTable] = useState([
                       title={dynamic_title}
                       onConfirm={() => {
                         setsuccess_dlg(false)
+                        location.reload()
                       }}
                     >
                       {dynamic_description}

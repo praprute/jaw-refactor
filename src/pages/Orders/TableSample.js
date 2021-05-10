@@ -26,7 +26,7 @@ import {getAllOrder,
   readOrderById,
   readTestResultlasted,
   deleteOrder,
-  getAllOrderLab } from './../Orders/api'
+   } from './../Orders/api'
 import { map } from "lodash";
 import { orders } from "common/data";
 import { isAuthenticated } from './../Authentication/api'

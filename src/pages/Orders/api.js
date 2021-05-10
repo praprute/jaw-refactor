@@ -1,5 +1,4 @@
 import { API } from './../../configAPI'
-// const API = "http://localhost:3031/api"
 
 export const getAllOrder = (token) => {
     return fetch(`${API}/readAllOrder`, {
