@@ -105,7 +105,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build ",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,json,md,html,css,less,scss}\"",
     "test": "react-scripts test",
