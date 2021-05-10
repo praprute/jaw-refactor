@@ -16,10 +16,15 @@ import "../Tables/datatables.scss"
 
 //get api
 import { isAuthenticated } from './../Authentication/api'
-import {readIdMicroCheckbox,readIdChemCheckbox,addOrder,addRealtimeOrder} from './api'
-import {updateCardDS} from './../Dashboard/api' 
+import {readIdMicroCheckbox,
+        readIdChemCheckbox,
+        addOrder,
+        updateDetail,
+        deleteOrder} from './api'
+
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
+
 //store
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
@@ -27,9 +32,9 @@ import { withRouter } from "react-router-dom"
 
 import Moment from 'moment'
 
-const ModalAddOrder = props => {
+const ModalEditSample = props => {
 
-    const { isOpenAddorder, toggleAddorder } = props 
+    const { isOpenEditSample, toggleEditSample, orders , spc, tr, bio } = props 
     const [success_msg, setsuccess_msg] = useState(false)
     const [success_error, setsuccess_error] = useState(false)
     const {user, token} = isAuthenticated()
@@ -41,19 +46,19 @@ const ModalAddOrder = props => {
     const [nameSpcMicro ,   setnameSpcMicro ] = useState([])
     const [selectMicro , setSelectMicro] = useState(1)
     const [pord, setPord] = useState(new Date())
-    const [values, setValues] = useState({
-        pord        : null,
-        bbe         : null,
-        po          : "",
-        productname : "",
-        size        : "",
-        quantity    : ""
-      })
+    const [values, setValues] = useState({})
 
-      const handleChange = name => event => {
-        setValues({ ...values, [name]: event.target.value })
-        
-      }
+    const [Tn,  setTn   ] = useState(false)
+    const [Salt,  setSalt   ] = useState(false)
+    const [PH,  setPH   ] = useState(false)
+    const [Histamine,  setHistamine   ] = useState(false)
+    const [Tss,  setTss   ] = useState(false)
+    const [SPG,  setSPG   ] = useState(false)
+    const [Aw,  setAw  ] = useState(false) 
+
+    const handleChange = name => event => {
+      setValues({ ...values, [name]: event.target.value })
+    }
 
       useEffect(() => {
         readIdMicroCheckbox(token).then(data => {
@@ -83,15 +88,10 @@ const ModalAddOrder = props => {
 
       const handleSubmit = event => {
         event.preventDefault()
-        // console.log('bbe : ',values.pord )
-        // console.log('pord : ',values.bbe )
         // var pord = Moment(values.pord).format('DD/MM/YYYY')
         // var bbe = Moment(values.bbe).format('DD/MM/YYYY')
-        if(values.productname == ""){
-          return setsuccess_error(true)
-        }
-        var pord = values.pord
-        var bbe  = values.bbe 
+        var pordEdit = values.PORD
+        var bbeEdit  = values.BBE 
         var priority = ""
         if(normal){
             priority = 0
@@ -100,76 +100,85 @@ const ModalAddOrder = props => {
         }else if(urgent){
             priority = 2
         }
-        // console.log('pord : ', pord)
-        // console.log('bbe : ', bbe)
-        // console.log('selectChem : ', selectChem)
-        // console.log('selectMicro : ', selectMicro)
-        // console.log('values : ', values)
-        // console.log('priority : ', priority)
-
         var index = {
-            PORD        : pord,
-            BBE         : bbe,
-            PO          : values.po,
-            ProductName : values.productname,
-            Size        : values.size,
-            Quantity    : values.quantity,
+            idOrders    : values.idOrders,
+            PORD        : pordEdit,
+            BBE         : bbeEdit ,
+            PO          : values.PO,
+            ProductName : values.ProductName,
+            Size        : values.Size,
+            Quantity    : values.Quantity,
             idScfChem   : selectChem,
             idScfMicro  : selectMicro,
             Priority    : priority,
-            Tn          : false,
-            Salt        : false,
-            PH          : false,
-            Histamine   : false,
-            Tss         : false,
-            Aw          : false,
-            Spg          : false
+            Tn          : Tn,
+            Salt        : Salt,
+            PH          : PH,
+            Histamine   : Histamine,
+            Tss         : Tss,
+            Aw          : Aw,
+            Spg         : SPG
         }
-
-        addOrder(token, index).then(data => {
+        // console.log(index)
+        updateDetail(token, index).then(data => {
             // console.log('response add order : ', data)
             if(data){
-              // idAddOrder
                 if(data.success == 'success'){
-                  var index ={
-                    idOrders : data.idAddOrder
-                  }
-                    // console.log('response add order SUCCCESS: ', data)
-                    addRealtimeOrder(token, index).then(data => {
-                      if(data){
-                        // console.log('addRealtimeOrder : ', data)
-                        updateCardDS(token).then(data => {
-                          if(data){
-                            setsuccess_msg(true)
-                            setInterval(() => {
-                              window.location.reload()
-                            }, 1000)
-                          }
-                        })
-                        
-                      }
-                    })
-                  
+                setsuccess_msg(true)  
                 }else{
-                    // console.log('response add order ERROR : ')
                     setsuccess_error(true)
                 }
             }else{
                 setsuccess_error(true)
             }
         })
-
-
-        // toggleAddorder()
-        // setsuccess_msg(false)
-        // setsuccess_error(false)
+        
       } 
+
+      const handleDelete = event => {
+        event.preventDefault()
+        var id = {
+          idOrders : values.idOrders
+        }
+        deleteOrder(token, id).then(response => {
+          // console.log(response)
+        })
+      }      
+      
+      const [Pord, SetPord] = useState("")
+      const [Bbe , SetBbe] = useState("")
+      //idScfChem Priority
+      useEffect(() => {
+        setValues(orders)
+        console.log(orders)
+        setTn(orders.Tn)
+        setPH(orders.PH)
+        setSalt(orders.Salt)
+        setHistamine(orders.Histamine)
+        setTss(orders.Tss)
+        setAw(orders.Aw)
+        setSPG(orders.Spg)
+      }, [orders,bio,tr])
+
+      useEffect(() => {
+        // console.log(orders)
+        setSelectChem(orders.idScfChem)
+        switch (orders.Priority){
+          case "0":
+            return setNormal(true), setRush(false) ,setUrgent(false)
+          case "1":
+            return setNormal(false), setRush(true),setUrgent(false)
+          case "2":
+            return setNormal(false), setRush(false),  setUrgent(true)
+        } 
+    },[orders,bio,tr]) 
     return(
         <Modal
-                      isOpen={isOpenAddorder}
-                      toggle={toggleAddorder}
+                      isOpen={isOpenEditSample}
+                      toggle={toggleEditSample}
                       centered={true}
                       size="lg"
+                      
                     >
                     {success_msg ? (
                     <SweetAlert
@@ -180,10 +189,8 @@ const ModalAddOrder = props => {
                     //   cancelBtnBsStyle="danger"
                       onConfirm={() => {
                         setsuccess_msg(false)
-                        toggleAddorder()
-                        setInterval(() => {
-                          window.location.reload()
-                        }, 5000)
+                        // toggleEditSample()
+                        location.reload();
                       }}
                     >
                       You clicked the button!
@@ -206,11 +213,11 @@ const ModalAddOrder = props => {
                   ) : null}
 
                       <div className="modal-header">
-                        <h3 className="modal-title mt-0">Add Order 
+                        <h3 className="modal-title mt-0">Edit Order ID {values.idOrderTested}
                         </h3>
                         <button
                           type="button"
-                          onClick={toggleAddorder}
+                          onClick={toggleEditSample}
                           className="close"
                           data-dismiss="modal"
                           aria-label="Close"
@@ -223,70 +230,6 @@ const ModalAddOrder = props => {
                             <Col>
                                 <Card>
                                     <CardBody>
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                            Lot
-                                        </label>
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-1 col-form-label"
-                                        >
-                                            PORD:
-                                        </label>
-                                        <div className="col-md-4">
-                                          <input
-                                            className="form-control"
-                                            type="date"
-                                            name="pord"
-                                            onChange={handleChange('pord')}
-                                            value={values.pord}
-                                            placeholder="PORD:00/00/0000"
-                                          />
-                                        </div>
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-1 col-form-label"
-                                        >
-                                            BBE:
-                                        </label>
-                                        <div className="col-md-4">
-                                          <input
-                                            className="form-control"
-                                            type="date"
-                                            // defaultValue="BBE:00/00/0000"
-                                            name="bbe"
-                                            onChange={handleChange('bbe')}
-                                            value={values.bbe}
-                                            placeholder="BBE:00/00/0000"
-                                          />
-                                        </div>
-                                        </Row>
-
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                            Order Number
-                                        </label>
-                                        <div className="col-md-10">
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="po"
-                                            onChange={handleChange('po')}
-                                            value={values.po}
-                                            placeholder="Order Number"
-                                          />
-                                        </div>
-                                        </Row>
 
                                         <Row  className="mb-3">
                                         <label
@@ -301,49 +244,9 @@ const ModalAddOrder = props => {
                                             className="form-control"
                                             type="text"
                                             name="productname"
-                                            onChange={handleChange('productname')}
-                                            value={values.productname}
+                                            onChange={handleChange('ProductName')}
+                                            value={values.ProductName}
                                             placeholder="Product Name"
-                                          />
-                                        </div>
-                                        </Row>
-
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                           Pack Size
-                                        </label>
-                                        <div className="col-md-10">
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="size"
-                                            onChange={handleChange('size')}
-                                            value={values.size}
-                                            placeholder="Pack Size"
-                                          />
-                                        </div>
-                                        </Row>
-
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                            Quantity
-                                        </label>
-                                        <div className="col-md-10">
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="quantity"
-                                            onChange={handleChange('quantity')}
-                                            value={values.quantity}
-                                            placeholder="Quantity"
                                           />
                                         </div>
                                         </Row>
@@ -385,6 +288,155 @@ const ModalAddOrder = props => {
                                               </select>
                                             </div>
                                           </Row>
+                                          <Row className="mb-0">
+                                          <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">Test Order</label>
+                                          <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorTn"
+                                                checked={Tn}
+                                                onChange={() => {
+                                                    setTn(!Tn)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorTn"
+                                              >
+                                                Tn
+                                              </label>
+                                            </div>
+                                            </div>
+                                            <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorSalt"
+                                                checked={Salt}
+                                                onChange={() => {
+                                                    setSalt(!Salt)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorSalt"
+                                              >
+                                                Salt
+                                              </label>
+                                            </div>
+                                            </div><div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorPH"
+                                                checked={PH}
+                                                onChange={() => {
+                                                    setPH(!PH)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorPH"
+                                              >
+                                                PH
+                                              </label>
+                                            </div>
+                                            </div>
+                                          </Row >
+
+                                          <Row className="mb-0">
+                                          <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">{" "}</label>
+                                          <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorHis"
+                                                checked={Histamine}
+                                                onChange={() => {
+                                                    setHistamine(!Histamine)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorHis"
+                                              >
+                                                Histamine
+                                              </label>
+                                            </div>
+                                            </div>
+                                            <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorTss"
+                                                checked={Tss}
+                                                onChange={() => {
+                                                    setTss(!Tss)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorTss"
+                                              >
+                                                Tss
+                                              </label>
+                                            </div>
+                                            </div><div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorSPG"
+                                                checked={SPG}
+                                                onChange={() => {
+                                                    setSPG(!SPG)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorSPG"
+                                              >
+                                                SPG
+                                              </label>
+                                            </div>
+                                            </div>
+                                          </Row >
+
+                                          <Row className="mb-3">
+                                          <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">{" "}</label>
+                                          <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorAw"
+                                                checked={Aw}
+                                                onChange={() => {
+                                                    setAw(!Aw)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorAw"
+                                              >
+                                                Aw
+                                              </label>
+                                            </div>
+                                            </div>
+                                          </Row >
                                           <Row className="mb-3">
                                             <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">priority</label>
                                             <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
@@ -482,9 +534,24 @@ const ModalAddOrder = props => {
                       </div>
                       <ModalFooter>
                           <Button color="primary" onClick={handleSubmit}>SUBMIT</Button>{' '}
-                          <Button color="secondary" onClick={toggleAddorder}>Cancel</Button>
+                          <Button color="secondary" onClick={toggleEditSample}>Cancel</Button>
                         </ModalFooter>
                     </Modal>   
     )
 }
-export default  ModalAddOrder;
+
+ModalEditSample.propTypes = {
+  orders: PropTypes.array,
+  spc: PropTypes.array,
+  tr: PropTypes.array,
+  bio: PropTypes.array
+}
+
+const mapStateToProps = state => ({
+  orders: state.DetailOrder.Detail,
+  spc: state.DetailOrder.SpecificChem,
+  tr: state.DetailOrder.TestResultLasted,
+  bio:  state.DetailOrder.SpecificBio,
+})
+
+export default connect(mapStateToProps)(withRouter(ModalEditSample))

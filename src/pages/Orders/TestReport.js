@@ -325,23 +325,13 @@ const ModalTestReport = props => {
       }, [])
 
       useEffect(() => {
-        // if(toggleTR){
-        //  window.location.reload()
-        // }
-      }, [])
-
-      useEffect(() => {
-        // setTRLasted(tr)
         setdetailById(orders)
-        // console.log('order : ', orders)
     },[orders,bio,tr]) 
     useEffect(() => {
-        console.log('test props : ',isOpenTR )
     }, [isOpenTR])
     useEffect(() => {
 
         if(tr[0] != undefined){
-          // console.log('tr[0] : ',tr[0])
             setresultChem(tr[0])
             setresultMicro(tr[1])
             setValues({
@@ -631,80 +621,84 @@ const ModalTestReport = props => {
 
                               
 
-                                {resultChem.map((index, key) => (
-                                        
-                                <Row style={{display:'flex', width:'100%', alignItems:'center'}}>
+                                {resultChem.map((index, key) => {
+                                {if(index.render > 0){
+                                  return(<Row style={{display:'flex', width:'100%', alignItems:'center'}}>
                                     <Col xs="3">
-                                <div>
-                                    <Col xs="12" style={{display:'flex', justifyContent:'flex-start', paddingLeft:'30%'}}>
-                                    <h6 style={{margin:'0'}}>{index.key}</h6>
+                                    <div>
+                                        <Col xs="12" style={{display:'flex', justifyContent:'flex-start', paddingLeft:'30%'}}>
+                                        <h6 style={{margin:'0'}}>{index.key}</h6>
+                                        </Col>
+                                    </div>
                                     </Col>
-                                </div>
-                                </Col>
-                                <Col xs="3">
-                                <Row  className="mb-1">
+                                    <Col xs="3">
+                                    <Row  className="mb-1">
+                                            <div className="col-md-10">
+                                              <input
+                                                className="form-control"
+                                                type="number"
+                                                name={index.keyInput}
+                                                onChange={handleChange(`${index.keyInput}`)}
+                                                // value={index.val}
+                                                placeholder={index.val}
+                                              />
+                                            </div>
+                                    </Row>
+                                    
+                                    </Col>
+                                    <Col xs="3">
+                                      {index.tkTemp ? (
+                                        // <div>
+                                        // <h6>{index.temp}</h6>
+                                        // </div>
+                                        <Row  className="mb-1">
                                         <div className="col-md-10">
                                           <input
                                             className="form-control"
                                             type="number"
-                                            name={index.keyInput}
-                                            onChange={handleChange(`${index.keyInput}`)}
-                                            // value={index.val}
-                                            placeholder={index.val}
+                                            name={index.keyTemp}
+                                            onChange={handleChange(`${index.keyTemp}`)}
+                                            // value={index.temp}
+                                            placeholder={index.temp}
                                           />
                                         </div>
                                 </Row>
+                                      ) : (
+                                        null
+                                      )}
+                                    
+                                    </Col>
+                                    <Col xs="3" style={{display:'flex'}}>
+                                    <Col xs="6">
+                                        {index.int ? (
+                                            <div className="badge bg-success font-size-13">
+                                                <span>PASS</span>
+                                            </div>
+                                        ) : (
+                                            <div className="badge bg-danger font-size-13">
+                                            <span>FAIL</span>
+                                            </div>
+                                        )}
+                                    </Col>
+                
+                                    <Col xs="6">
+                                    {index.coa ? (
+                                            <div className="badge bg-success font-size-13">
+                                                <span>PASS</span>
+                                            </div>
+                                        ) : (
+                                            <div className="badge bg-danger font-size-13">
+                                            <span>FAIL</span>
+                                            </div>
+                                        )}
+                                    </Col>
+                                    </Col>
+                                    </Row>)
+                                }
+                                return(null)}
                                 
-                                </Col>
-                                <Col xs="3">
-                                  {index.tkTemp ? (
-                                    // <div>
-                                    // <h6>{index.temp}</h6>
-                                    // </div>
-                                    <Row  className="mb-1">
-                                    <div className="col-md-10">
-                                      <input
-                                        className="form-control"
-                                        type="number"
-                                        name={index.keyTemp}
-                                        onChange={handleChange(`${index.keyTemp}`)}
-                                        // value={index.temp}
-                                        placeholder={index.temp}
-                                      />
-                                    </div>
-                            </Row>
-                                  ) : (
-                                    null
-                                  )}
-                                
-                                </Col>
-                                <Col xs="3" style={{display:'flex'}}>
-                                <Col xs="6">
-                                    {index.int ? (
-                                        <div className="badge bg-success font-size-13">
-                                            <span>PASS</span>
-                                        </div>
-                                    ) : (
-                                        <div className="badge bg-danger font-size-13">
-                                        <span>FAIL</span>
-                                        </div>
-                                    )}
-                                </Col>
-            
-                                <Col xs="6">
-                                {index.coa ? (
-                                        <div className="badge bg-success font-size-13">
-                                            <span>PASS</span>
-                                        </div>
-                                    ) : (
-                                        <div className="badge bg-danger font-size-13">
-                                        <span>FAIL</span>
-                                        </div>
-                                    )}
-                                </Col>
-                                </Col>
-                                </Row>
-                                    ))}
+
+                                    })}
 
                             </Col>
                         </Row>
@@ -824,7 +818,11 @@ const ModalTestReport = props => {
                         }}>Wait to microbiological</Button>&nbsp;&nbsp;
                         </Col>
                         <Col  xs="12" md="4" style={{display:'flex', alignItems: 'center', justifyContent:'flex-end'}}>
-                        <Button color="primary" className="w-lg" onClick={toggleTR}>Save</Button>&nbsp;&nbsp;
+                        <Button color="primary" className="w-lg" onClick={() => {
+                          toggleTR()
+                          setOptionTR(false)
+                          window.location.reload()
+                        }}>Save</Button>&nbsp;&nbsp;
                         <Button color="danger" className="w-lg" onClick={() => {
                           toggleTR()
                           setOptionTR(false)

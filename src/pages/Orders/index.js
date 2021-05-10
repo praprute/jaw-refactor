@@ -21,7 +21,10 @@ import classnames from "classnames"
 import { connect } from "react-redux"
 import { withRouter, Link, Redirect } from "react-router-dom"
 //Component
+import ModalEditSample from './EditSample'
+import ModaladdSample from './ModaladdSample'
 import LatestTranaction from "../Dashboard/LatestTranaction"
+import OrderTableSample from './TableSample'
 import OrderTable from './Table'
 import OrderTableRecheck from './TableRecheck'
 import ModalDetail from './ModalDetail'
@@ -55,9 +58,14 @@ const Orderpage = props => {
     const [modalEdit, setModalEdit] = useState(false)
     const [modalAddorder, setModalAddorder] = useState(false)
     const [modalCoa, setModalCOA] = useState(false)
-
+    const [sample, setSample] = useState(false)
+    const [Editsample , setEditsample] = useState(false) 
     const toggleModal = () => {
       setModal(!modal)
+    }
+
+    const toggleSample = () => {
+      setSample(!sample)
     }
 
     const toggleModalCOA = () => {
@@ -71,6 +79,9 @@ const Orderpage = props => {
       setModalAddorder(!modalAddorder)
     }
     
+    const toggleEditSample = () => {
+      setEditsample(!Editsample)
+    }
     const handleChange = date => {
         setStartDate(date)
       }
@@ -96,9 +107,11 @@ const Orderpage = props => {
     return (
         <React.Fragment>
           <div className="page-content">
+            <ModalEditSample isOpenEditSample={Editsample} toggleEditSample={toggleEditSample}/>
+            <ModaladdSample isOpenSample={sample} toggleSample={toggleSample} />
             <ModalSelectCOA isOpenCOA={modalCoa} toggleCOA={toggleModalCOA}/>
             <ModalDetail isOpen={modal} toggle={toggleModal} toggleCOA={toggleModalCOA}/>
-            <ModalAddOrder  isOpenAddorder={modalAddorder} toggleAddorder={toggleModalAddOrder}/>
+            <ModalAddOrder  isOpenAddorder={modalAddorder} toggleAddorder={toggleModalAddOrder} />
             <ModalEdit isOpenEdit={modalEdit} toggleEdit={toggleModalEdit} />
             <MetaTags>
               <title>Orders | Orders - Application</title>
@@ -126,7 +139,7 @@ const Orderpage = props => {
                           toggleTab("1")
                         }}
                       >
-                        All Orders
+                        Sample
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -136,6 +149,18 @@ const Orderpage = props => {
                         })}
                         onClick={() => {
                           toggleTab("2")
+                        }}
+                      >
+                        All Orders
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          active: activeTab === "3",
+                        })}
+                        onClick={() => {
+                          toggleTab("3")
                         }}
                       >
                         Rechecking
@@ -159,7 +184,25 @@ const Orderpage = props => {
                             </Col> */}
                 </Row>
                   <TabContent activeTab={activeTab} className="p-3">
-                    <TabPane tabId="1" id="all-order">
+                  <TabPane tabId="1" id="all-order">
+                    <div className="ms-auto">
+                      <ul className="nav nav-pills">
+                          <div style={{width:'100%', display:'flex', justifyContent:'flex-end', alignItems:'center'}}>
+                             <Button
+                                  color="primary"
+                                  onClick={toggleSample}
+                                  id="sa-basic"
+                                  size="sm"
+                              >
+                                ส่งตัวอย่าง
+                            </Button>  
+                          </div>
+                      </ul>
+                    </div>
+                    <OrderTableSample toggleEditSample={toggleEditSample} toggleCOA={toggleModalCOA} toggle={toggleModal} toggleEdit={toggleModalEdit}/>
+                    </TabPane>
+
+                    <TabPane tabId="2" id="all-order">
                     <div className="ms-auto">
                       <ul className="nav nav-pills">
                           <div style={{width:'100%', display:'flex', justifyContent:'flex-end', alignItems:'center'}}>
@@ -177,7 +220,7 @@ const Orderpage = props => {
                     <OrderTable toggleCOA={toggleModalCOA} toggle={toggleModal} toggleEdit={toggleModalEdit}/>
                     </TabPane>
                     
-                    <TabPane tabId="2" id="processing">
+                    <TabPane tabId="3" id="processing">
                       <div>
                       <OrderTableRecheck toggleCOA={toggleModalCOA} toggle={toggleModal} />
                       </div>

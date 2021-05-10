@@ -29,7 +29,6 @@ import { isAuthenticated } from './../Authentication/api'
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
-// import logo from './../../assets/images/Logo-RFS.jpg'
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
 //PDF
@@ -78,7 +77,6 @@ const ModalDetail = props => {
 
 
     useEffect(() => {
-      
         if(tr[0] != undefined){
             setresultChem(tr[0])
             setresultMicro(tr[1])
@@ -102,40 +100,46 @@ const ModalDetail = props => {
         }
     }, [tr])
 
+    const [scoreTested, setscoreTested] = useState("")
     useEffect(() => {
-        // setTRLasted(tr)
-        // console.log('tr Modal Detail : ', tr)
         setdetailById(orders)
 
         if(tr.length > 0) {
           var countChem = 0
           for(let i = 0; i < tr[0].length; i++){
-            // console.log('tr Modal Detail : ', tr[0][i])
-            if(tr[0][i].coa == true){
+            if(tr[0][i].render == true){
               countChem = countChem+1
             }else{
               countChem = countChem
             }
           }
+
           var countMicro = 0
           for(let i = 0; i < tr[1].length; i++){
-            // console.log('tr Modal Detail : ', tr[1][i])
             if(tr[1][i].coa == true){
               countMicro = countMicro+1
             }else{
               countMicro = countMicro
             }
           }
-          // console.log('countChem : ',countChem)
-          // console.log('countMicro : ',countMicro)
           setScore(countChem+countMicro)
+
+          var testedScore = 0
+          for(let i = 0; i < tr[0].length; i++){
+            if(tr[0][i].coa == true){
+                testedScore = testedScore+1
+            }else{
+                testedScore = testedScore
+            }
+          }
+          setscoreTested(testedScore+countMicro)
         }
-        
-        // console.log('toggleCOA props : ', props)
     },[orders,bio,tr]) 
 
     const handleExport = () => {
-        if(score == 12){
+        console.log('count : ', score)
+        console.log('testedScore : ', scoreTested)
+        if(scoreTested == score){
           toggleCOA()
         }else{
           setconfirm_alert(true)
@@ -622,7 +626,6 @@ const ModalDetail = props => {
                       centered={true}
                       size="lg"
                     >
-                      {/* {JSON.stringify(score)} */}
                   {confirm_alert ? (
                     <SweetAlert
                       title="Take Your Token!"
@@ -658,16 +661,6 @@ const ModalDetail = props => {
                         </button>
                       </div>
                       <div className="modal-body">
-        
-                          {/* Header TestResult */}
-
-                          {/* idOrderTested:orders.idOrders,
-          BBE:orders.BBE,
-          PORD:orders.PORD,
-          PO:orders.PO,
-          ProductName:orders.ProductName,
-          Size:orders.Size,
-          Quantity:orders.Quantity */}
                         <Row>
                           <Col md="6" xs="12" style={{display:'flex', alignItems:'center', marginBottom:'10px'}}>
                             <div style={{paddingLeft:'10%',paddingRight:'10%'  ,display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
@@ -773,14 +766,14 @@ const ModalDetail = props => {
                                 </Col>
                                 </Row>
 
-                                {resultChem.map((index, key) => (
-                                        // <div>{JSON.stringify(index)}</div>
-                                <Row style={{display:'flex', width:'100%'}}>
+                                {resultChem.map((index, key) => {
+                                        {if(index.render > 0){ 
+                                return (
+                                    <Row style={{display:'flex', width:'100%'}}>
                                     <Col xs="3">
                                 <div>
                                     <Col xs="12" style={{display:'flex', justifyContent:'flex-start', paddingLeft:'30%'}}>
                                     <h6>{index.key}</h6>
-                                    {/* <div>{JSON.stringify(index)}</div> */}
                                     </Col>
                                 </div>
                                 </Col>
@@ -820,7 +813,11 @@ const ModalDetail = props => {
                                 </Col>
                                 </Col>
                                 </Row>
-                                    ))}
+                                        )}
+                                    return (null)
+                                    }
+                                    
+                                })}
 
                             </Col>
                         </Row>
@@ -864,13 +861,11 @@ const ModalDetail = props => {
                                 </Row>
 
                                 {resultMicro.map((index, key) => (
-                                        // <div>{JSON.stringify(index)}</div>
                                 <Row style={{display:'flex', width:'100%'}}>
                                     <Col xs="3">
                                 <div>
                                     <Col xs="12" style={{display:'flex', justifyContent:'flex-start', paddingLeft:'30%'}}>
                                     <h6>{index.key}</h6>
-                                    {/* <div>{JSON.stringify(index)}</div> */}
                                     </Col>
                                 </div>
                                 </Col>

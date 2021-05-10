@@ -11,8 +11,10 @@ import { Link } from "react-router-dom"
 import {signout,isAuthenticated} from "./../../pages/Authentication/api"
 //i18n
 import { withTranslation } from "react-i18next"
+import { useHistory } from 'react-router-dom'
 
 const SidebarContent = props => {
+  const history = useHistory();
   const ref = useRef()
   const {user, token} = isAuthenticated()
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
@@ -180,6 +182,21 @@ const SidebarContent = props => {
             ) : (
               null
             )}
+             <li onClick={() => {
+                  signout().then(data => {
+                    console.log(data)
+                    if(data){
+                      if(data.success == "success"){
+                        history.push('/login')
+                      }
+                    }
+                  })
+                }}>
+              <Link to="/Labatory" className=" waves-effect">
+                <i className="bx bx-log-out"></i>
+                <span>{props.t("Log out")}</span>
+              </Link>
+            </li>
            
             {/* <li>
               <Link to="/calendar" className=" waves-effect">

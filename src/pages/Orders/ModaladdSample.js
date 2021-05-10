@@ -27,15 +27,24 @@ import { withRouter } from "react-router-dom"
 
 import Moment from 'moment'
 
-const ModalAddOrder = props => {
+const ModaladdSample = props => {
 
-    const { isOpenAddorder, toggleAddorder } = props 
+    const { isOpenSample, toggleSample } = props 
     const [success_msg, setsuccess_msg] = useState(false)
     const [success_error, setsuccess_error] = useState(false)
     const {user, token} = isAuthenticated()
     const [normal,  setNormal   ] = useState(true)
     const [rush,    setRush     ] = useState(false)
     const [urgent,  setUrgent   ] = useState(false)
+
+    const [Tn,  setTn   ] = useState(false)
+    const [Salt,  setSalt   ] = useState(false)
+    const [PH,  setPH   ] = useState(false)
+    const [Histamine,  setHistamine   ] = useState(false)
+    const [Tss,  setTss   ] = useState(false)
+    const [SPG,  setSPG   ] = useState(false)
+    const [Aw,  setAw  ] = useState(false) 
+
     const [nameSpcChem ,    setnameSpcChem  ] = useState([])
     const [selectChem , setSelectChem] = useState(1)
     const [nameSpcMicro ,   setnameSpcMicro ] = useState([])
@@ -83,13 +92,12 @@ const ModalAddOrder = props => {
 
       const handleSubmit = event => {
         event.preventDefault()
-        // console.log('bbe : ',values.pord )
-        // console.log('pord : ',values.bbe )
-        // var pord = Moment(values.pord).format('DD/MM/YYYY')
-        // var bbe = Moment(values.bbe).format('DD/MM/YYYY')
+
+        
         if(values.productname == ""){
           return setsuccess_error(true)
         }
+
         var pord = values.pord
         var bbe  = values.bbe 
         var priority = ""
@@ -100,31 +108,22 @@ const ModalAddOrder = props => {
         }else if(urgent){
             priority = 2
         }
-        // console.log('pord : ', pord)
-        // console.log('bbe : ', bbe)
-        // console.log('selectChem : ', selectChem)
-        // console.log('selectMicro : ', selectMicro)
-        // console.log('values : ', values)
-        // console.log('priority : ', priority)
 
         var index = {
-            PORD        : pord,
-            BBE         : bbe,
-            PO          : values.po,
             ProductName : values.productname,
-            Size        : values.size,
-            Quantity    : values.quantity,
             idScfChem   : selectChem,
             idScfMicro  : selectMicro,
             Priority    : priority,
-            Tn          : false,
-            Salt        : false,
-            PH          : false,
-            Histamine   : false,
-            Tss         : false,
-            Aw          : false,
-            Spg          : false
+            Tn          : Tn,
+            Salt        : Salt,
+            PH          : PH,
+            Histamine   : Histamine,
+            Tss         : Tss,
+            Aw          : Aw,
+            Spg          : SPG
         }
+
+        console.log('index sample : ' , index)
 
         addOrder(token, index).then(data => {
             // console.log('response add order : ', data)
@@ -166,8 +165,8 @@ const ModalAddOrder = props => {
       } 
     return(
         <Modal
-                      isOpen={isOpenAddorder}
-                      toggle={toggleAddorder}
+                      isOpen={isOpenSample}
+                      toggle={toggleSample}
                       centered={true}
                       size="lg"
                     >
@@ -210,7 +209,7 @@ const ModalAddOrder = props => {
                         </h3>
                         <button
                           type="button"
-                          onClick={toggleAddorder}
+                          onClick={toggleSample}
                           className="close"
                           data-dismiss="modal"
                           aria-label="Close"
@@ -223,70 +222,6 @@ const ModalAddOrder = props => {
                             <Col>
                                 <Card>
                                     <CardBody>
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                            Lot
-                                        </label>
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-1 col-form-label"
-                                        >
-                                            PORD:
-                                        </label>
-                                        <div className="col-md-4">
-                                          <input
-                                            className="form-control"
-                                            type="date"
-                                            name="pord"
-                                            onChange={handleChange('pord')}
-                                            value={values.pord}
-                                            placeholder="PORD:00/00/0000"
-                                          />
-                                        </div>
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-1 col-form-label"
-                                        >
-                                            BBE:
-                                        </label>
-                                        <div className="col-md-4">
-                                          <input
-                                            className="form-control"
-                                            type="date"
-                                            // defaultValue="BBE:00/00/0000"
-                                            name="bbe"
-                                            onChange={handleChange('bbe')}
-                                            value={values.bbe}
-                                            placeholder="BBE:00/00/0000"
-                                          />
-                                        </div>
-                                        </Row>
-
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                            Order Number
-                                        </label>
-                                        <div className="col-md-10">
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="po"
-                                            onChange={handleChange('po')}
-                                            value={values.po}
-                                            placeholder="Order Number"
-                                          />
-                                        </div>
-                                        </Row>
 
                                         <Row  className="mb-3">
                                         <label
@@ -308,47 +243,8 @@ const ModalAddOrder = props => {
                                         </div>
                                         </Row>
 
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                           Pack Size
-                                        </label>
-                                        <div className="col-md-10">
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="size"
-                                            onChange={handleChange('size')}
-                                            value={values.size}
-                                            placeholder="Pack Size"
-                                          />
-                                        </div>
-                                        </Row>
-
-                                        <Row  className="mb-3">
-                                        <label
-                                        style={{display:'flex', justifyContent:'center'}}
-                                            htmlFor="example-text-input"
-                                            className="col-md-2 col-form-label"
-                                        >
-                                            Quantity
-                                        </label>
-                                        <div className="col-md-10">
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="quantity"
-                                            onChange={handleChange('quantity')}
-                                            value={values.quantity}
-                                            placeholder="Quantity"
-                                          />
-                                        </div>
-                                        </Row>
                                         <Row className="mb-3">
-                                            <label className="col-md-2 col-form-label">Specific Chem</label>
+                                            <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">Specific Chem</label>
                                             <div className="col-md-10">
                                               <select className="form-control"
                                                 id="c1"
@@ -367,7 +263,7 @@ const ModalAddOrder = props => {
                                             </div>
                                           </Row>
                                         <Row className="mb-3">
-                                            <label className="col-md-2 col-form-label">Specific Micro</label>
+                                            <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">Specific Micro</label>
                                             <div className="col-md-10">
                                               <select className="form-control"
                                               id="c2"
@@ -385,6 +281,165 @@ const ModalAddOrder = props => {
                                               </select>
                                             </div>
                                           </Row>
+
+                                            {/* const [Tn,  setTn   ] = useState(false)
+                                            const [Salt,  setSalt   ] = useState(false)
+                                            const [PH,  setPH   ] = useState(false)
+                                            const [Histamine,  setHistamine   ] = useState(false)
+                                            const [Tss,  setTss   ] = useState(false)
+                                            const [SPG,  setSPG   ] = useState(false)
+                                            const [Aw,  setAw  ] = useState(false) */}
+
+                                          <Row className="mb-0">
+                                          <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">Test Order</label>
+                                          <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorTn"
+                                                checked={Tn}
+                                                onChange={() => {
+                                                    setTn(!Tn)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorTn"
+                                              >
+                                                Tn
+                                              </label>
+                                            </div>
+                                            </div>
+                                            <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorSalt"
+                                                checked={Salt}
+                                                onChange={() => {
+                                                    setSalt(!Salt)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorSalt"
+                                              >
+                                                Salt
+                                              </label>
+                                            </div>
+                                            </div><div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorPH"
+                                                checked={PH}
+                                                onChange={() => {
+                                                    setPH(!PH)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorPH"
+                                              >
+                                                PH
+                                              </label>
+                                            </div>
+                                            </div>
+                                          </Row >
+
+                                          <Row className="mb-0">
+                                          <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">{" "}</label>
+                                          <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorHis"
+                                                checked={Histamine}
+                                                onChange={() => {
+                                                    setHistamine(!Histamine)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorHis"
+                                              >
+                                                Histamine
+                                              </label>
+                                            </div>
+                                            </div>
+                                            <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorTss"
+                                                checked={Tss}
+                                                onChange={() => {
+                                                    setTss(!Tss)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorTss"
+                                              >
+                                                Tss
+                                              </label>
+                                            </div>
+                                            </div><div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorSPG"
+                                                checked={SPG}
+                                                onChange={() => {
+                                                    setSPG(!SPG)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorSPG"
+                                              >
+                                                SPG
+                                              </label>
+                                            </div>
+                                            </div>
+                                          </Row >
+
+                                          <Row className="mb-3">
+                                          <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">{" "}</label>
+                                          <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorAw"
+                                                checked={Aw}
+                                                onChange={() => {
+                                                    setAw(!Aw)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorAw"
+                                              >
+                                                Aw
+                                              </label>
+                                            </div>
+                                            </div>
+                                          </Row >
+
                                           <Row className="mb-3">
                                             <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">priority</label>
                                             <div className="col-md-3" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
@@ -482,9 +537,9 @@ const ModalAddOrder = props => {
                       </div>
                       <ModalFooter>
                           <Button color="primary" onClick={handleSubmit}>SUBMIT</Button>{' '}
-                          <Button color="secondary" onClick={toggleAddorder}>Cancel</Button>
+                          <Button color="secondary" onClick={toggleSample}>Cancel</Button>
                         </ModalFooter>
                     </Modal>   
     )
 }
-export default  ModalAddOrder;
+export default  ModaladdSample;
