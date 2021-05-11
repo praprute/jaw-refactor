@@ -132,7 +132,7 @@ const ModalDetail = props => {
                 testedScore = testedScore
             }
           }
-          setscoreTested(testedScore+countMicro)
+          setscoreTested(testedScore+5)
         }
     },[orders,bio,tr]) 
 
