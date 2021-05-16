@@ -48,18 +48,6 @@ const OrderTable = props => {
   const [redirect, setRedirect] = useState(false)
   const [columnTable, setColumnTable] = useState([
     {
-      label: "Lot",
-      field: "lot",
-      sort: "asc",
-      // width: 150,
-    },
-    {
-      label: "PO Number",
-      field: "ponumber",
-      sort: "asc",
-      // width: 150,
-    },
-    {
       label: "Product Name",
       field: "name",
       sort: "asc",
@@ -236,7 +224,7 @@ const OrderTable = props => {
                   }>
                       <i
                       className={
-                        "bx bx-cog font-size-24"
+                        "bx bx-file font-size-24"
                       }
                       style={{cursor:'pointer'}}
                       onClick={

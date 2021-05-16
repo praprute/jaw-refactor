@@ -57,7 +57,7 @@ const ModalTestReport = props => {
         Size:"",
         Quantity:""
       }])
-    
+    const [Microrender, setMicrorender] = useState(false)
     const [resultChem , setresultChem] = useState(
       [
         { keyInput:"Tn"        ,int:false , key: "TN(g/L)", coa: false , val:null , temp:false },
@@ -81,12 +81,11 @@ const ModalTestReport = props => {
     const [oldValues, setOldValues] = useState({})
       const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value })
-        // console.log(values)
       }
-      const [focusAfterClose, setFocusAfterClose] = useState(true);
+      const [focusAfterClose, setFocusAfterClose] = useState(true)
+
       const fetchTestResultlasted = (token, idOrders) => {
         readTestResultlasted(token, idOrders).then(data => {
-          // console.log(' readTestResultlasted :',data)
           if(data){
             if(data.success == 'success'){
               setValues({
@@ -118,18 +117,14 @@ const ModalTestReport = props => {
                 TempSPG       :null,
               })
               if(!data.message){
-                // setTRLasted({})
-                // onAddTestResult({})
                 setsuccess_error(true)
               }else{
-                // setTRLasted(data.resulted)
                 onAddTestResult(data.resulted)
                 setsuccess_msg(true) 
                 setdynamic_title("Tested Success")
                 setdynamic_description("Order has been tested")
               }
             }else{
-              // setTRLasted({})
               setsuccess_error(true)
               setdynamic_title("Server Problem")
               setdynamic_description("Server has break down!")
@@ -186,14 +181,6 @@ const ModalTestReport = props => {
         }else{
           Aw = Aw+1
         }
-
-        // console.log('Tn : ' , Tn)
-        // console.log('PH : ' , PH)
-        // console.log('Salt : ' , Salt)
-        // console.log('Tss : ' , Tss)
-        // console.log('Histamine : ' , Histamine)
-        // console.log('SPG : ' , SPG)
-        // console.log('Aw : ' , Aw)
 
         var index = {
           Tn: Tn ,
@@ -324,13 +311,14 @@ const ModalTestReport = props => {
         })
       }, [])
 
-      useEffect(() => {
-        setdetailById(orders)
+    useEffect(() => {
+      setdetailById(orders)
+      setMicrorender(orders.Micro)
     },[orders,bio,tr]) 
+
     useEffect(() => {
     }, [isOpenTR])
     useEffect(() => {
-
         if(tr[0] != undefined){
             setresultChem(tr[0])
             setresultMicro(tr[1])
@@ -705,7 +693,9 @@ const ModalTestReport = props => {
                         <br/>
 
                         {/* Microbiological analysis */}
-                        <Row>
+
+                        {Microrender ? (
+                          <Row>
                             <Col xs="12" style={{border:'solid 1px #989a9b', borderRadius:'10px',
                                 height:'100%', background:'transparent', display:'flex', flexDirection:'column',
                                 justifyContent:'center', alignItems:'center',padding:'10px'
@@ -740,66 +730,67 @@ const ModalTestReport = props => {
                                 </Col>
                                 </Col>
                                 </Row>
-
                                 {resultMicro.map((index, key) => (
                                         // <div>{JSON.stringify(index)}</div>
-                                <Row style={{display:'flex', width:'100%'}}>
-                                    <Col xs="3">
-                                <div>
-                                    <Col xs="12" style={{display:'flex', justifyContent:'flex-start', paddingLeft:'30%'}}>
-                                    <h6>{index.key}</h6>
-                                    {/* <div>{JSON.stringify(index)}</div> */}
+                                        <Row style={{display:'flex', width:'100%'}}>
+                                        <Col xs="3">
+                                    <div>
+                                        <Col xs="12" style={{display:'flex', justifyContent:'flex-start', paddingLeft:'30%'}}>
+                                        <h6>{index.key}</h6>
+                                        {/* <div>{JSON.stringify(index)}</div> */}
+                                        </Col>
+                                    </div>
                                     </Col>
-                                </div>
-                                </Col>
-                                <Col xs="3">
-                                <Row  className="mb-1">
-                                        <div className="col-md-10">
-                                          <input
-                                            className="form-control"
-                                            type="number"
-                                            name={index.keyInput}
-                                            onChange={handleChange(`${index.keyInput}`)}
-                                            // value={index.val}
-                                            placeholder={index.val}
-                                          />
-                                        </div>
-                                </Row>
-                                </Col>
-                                <Col xs="3">
-                                <div>
-                                    <h6>{" "}</h6>
-                                </div>
-                                </Col>
-                                <Col xs="3" style={{display:'flex'}}>
-                                <Col xs="6">
-                                    {index.int ? (
-                                        <div className="badge bg-success font-size-13">
-                                            <span>PASS</span>
-                                        </div>
-                                    ) : (
-                                        <div className="badge bg-danger font-size-13">
-                                        <span>FAIL</span>
-                                        </div>
-                                    )}
-                                </Col>
-            
-                                <Col xs="6">
-                                {index.coa ? (
-                                        <div className="badge bg-success font-size-13">
-                                            <span>PASS</span>
-                                        </div>
-                                    ) : (
-                                        <div className="badge bg-danger font-size-13">
-                                        <span>FAIL</span>
-                                        </div>
-                                    )}
-                                </Col>
-                                </Col>
-                                </Row>
-                                    ))}
+                                    <Col xs="3">
+                                    <Row  className="mb-1">
+                                            <div className="col-md-10">
+                                              <input
+                                                className="form-control"
+                                                type="number"
+                                                name={index.keyInput}
+                                                onChange={handleChange(`${index.keyInput}`)}
+                                                // value={index.val}
+                                                placeholder={index.val}
+                                              />
+                                            </div>
+                                    </Row>
+                                    </Col>
+                                    <Col xs="3">
+                                    <div>
+                                        <h6>{" "}</h6>
+                                    </div>
+                                    </Col>
+                                    <Col xs="3" style={{display:'flex'}}>
+                                    <Col xs="6">
+                                        {index.int ? (
+                                            <div className="badge bg-success font-size-13">
+                                                <span>PASS</span>
+                                            </div>
+                                        ) : (
+                                            <div className="badge bg-danger font-size-13">
+                                            <span>FAIL</span>
+                                            </div>
+                                        )}
+                                    </Col>
+                
+                                    <Col xs="6">
+                                    {index.coa ? (
+                                            <div className="badge bg-success font-size-13">
+                                                <span>PASS</span>
+                                            </div>
+                                        ) : (
+                                            <div className="badge bg-danger font-size-13">
+                                            <span>FAIL</span>
+                                            </div>
+                                        )}
+                                    </Col>
+                                    </Col>
+                                    </Row>
+                                ))}
                             </Col>
                         </Row>
+                        ) : (null)}
+                        
                         
                       
                       </div>

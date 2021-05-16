@@ -65,6 +65,11 @@ const OrderTableSample = props => {
         sort: "asc",
         // width: 200,
       },
+      {
+        label: "Detail",
+        field: "detail",
+        
+      },
     {
       label: "Action",
       field: "action",
@@ -150,7 +155,7 @@ const OrderTableSample = props => {
                 }>
                      <i
                      className={
-                       "bx bx-cog font-size-24"
+                       "bx bx-file font-size-24"
                      }
                      style={{cursor:'pointer'}}
                      onClick={

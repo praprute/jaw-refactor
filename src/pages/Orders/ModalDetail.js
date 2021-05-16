@@ -54,6 +54,7 @@ const ModalDetail = props => {
         Size:"",
         Quantity:""
       }])
+    const [Microrender, setMicrorender] = useState(false)
     // const toggle = () => setModal(!modal);
     
     const [resultChem , setresultChem] = useState(
@@ -103,26 +104,27 @@ const ModalDetail = props => {
     const [scoreTested, setscoreTested] = useState("")
     useEffect(() => {
         setdetailById(orders)
-
+        setMicrorender(orders.Micro)
+        // console.log('tr : ', tr)
+        // console.log('tr[1] : ', tr[1])
         if(tr.length > 0) {
-          var countChem = 0
-          for(let i = 0; i < tr[0].length; i++){
-            if(tr[0][i].render == true){
-              countChem = countChem+1
-            }else{
-              countChem = countChem
-            }
-          }
 
-          var countMicro = 0
-          for(let i = 0; i < tr[1].length; i++){
-            if(tr[1][i].coa == true){
-              countMicro = countMicro+1
-            }else{
-              countMicro = countMicro
-            }
-          }
-          setScore(countChem+countMicro)
+        var countChem = 0
+              for(let i = 0; i < tr[0].length; i++){
+                if(tr[0][i].render == true){
+                  countChem = countChem+1
+                }else{
+                  countChem = countChem
+                }
+              }
+
+        // setScore(countChem)
+        
+        if(orders.Micro == 1){
+            setScore(countChem+5)
+        }else{
+            setScore(countChem)
+        }
 
           var testedScore = 0
           for(let i = 0; i < tr[0].length; i++){
@@ -132,18 +134,32 @@ const ModalDetail = props => {
                 testedScore = testedScore
             }
           }
-          setscoreTested(testedScore+5)
+        //   setscoreTested(testedScore)
+
+          var countMicro = 0
+          for(let i = 0; i < tr[1].length; i++){
+            if(tr[1][i].coa == true){
+              countMicro = countMicro+1
+            }else{
+              countMicro = countMicro
+            }
+          }
+          setscoreTested(testedScore+countMicro)
+
         }
     },[orders,bio,tr]) 
 
     const handleExport = () => {
-        console.log('count : ', score)
-        console.log('testedScore : ', scoreTested)
+        // console.log('count : ', score)
+        // console.log('testedScore : ', scoreTested)
+        if(scoreTested != 0 && score!=0){
         if(scoreTested == score){
-          toggleCOA()
-        }else{
-          setconfirm_alert(true)
+                toggleCOA()
+            }else{
+                setconfirm_alert(true)
+            }
         }
+        
     }
 
     function printPDF(){
@@ -824,6 +840,7 @@ const ModalDetail = props => {
                         <br/>
 
                         {/* Microbiological analysis */}
+                        {Microrender ? (
                         <Row>
                             <Col xs="12" style={{border:'solid 1px #989a9b', borderRadius:'10px',
                                 height:'100%', background:'transparent', display:'flex', flexDirection:'column',
@@ -908,6 +925,8 @@ const ModalDetail = props => {
                                     ))}
                             </Col>
                         </Row>
+                        ):(null)}
+                        
                         
                       
                       </div>

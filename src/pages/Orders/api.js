@@ -74,7 +74,7 @@ export const readOrderById = (token,idOrders) => {
   };
 
 export const updateDetail = (token,index) => {
-   
+   console.log('edit : ' ,index)
   return fetch(`${API}/updateOrder`, {
       method: "POST",
       mode: 'cors',

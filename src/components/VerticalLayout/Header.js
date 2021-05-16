@@ -120,6 +120,17 @@ const Header = props => {
               <i className="fa fa-fw fa-bars"/>
             </button>
 
+            <div className="dropdown d-none d-lg-inline-block ms-1">
+              <button
+                type="button"
+                className="btn header-item waves-effect waves-light "
+                // data-toggle="fullscreen"
+              >
+                {/* <i className="bx bx-fullscreen"/> */}
+                รุ่งโรจน์
+              </button>
+            </div>
+
             {/* <form className="app-search d-none d-lg-block">
               <div className="position-relative">
                 <input

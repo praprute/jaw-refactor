@@ -26,7 +26,7 @@ import {getAllOrder,
   readOrderById,
   readTestResultlasted,
   deleteOrder,
-   } from './../Orders/api'
+  getAllOrderLab } from './../Orders/api'
 import { map } from "lodash";
 import { orders } from "common/data";
 import { isAuthenticated } from './../Authentication/api'
@@ -185,7 +185,7 @@ const OrderTable = props => {
                 }>
                      <i
                      className={
-                       "bx bx-cog font-size-24"
+                       "bx bx-file font-size-24"
                      }
                      style={{cursor:'pointer'}}
                      onClick={

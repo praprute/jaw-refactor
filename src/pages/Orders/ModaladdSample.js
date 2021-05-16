@@ -44,6 +44,7 @@ const ModaladdSample = props => {
     const [Tss,  setTss   ] = useState(false)
     const [SPG,  setSPG   ] = useState(false)
     const [Aw,  setAw  ] = useState(false) 
+    const [Micro, setMicro] = useState(false) 
 
     const [nameSpcChem ,    setnameSpcChem  ] = useState([])
     const [selectChem , setSelectChem] = useState(1)
@@ -120,7 +121,8 @@ const ModaladdSample = props => {
             Histamine   : Histamine,
             Tss         : Tss,
             Aw          : Aw,
-            Spg          : SPG
+            Spg         : SPG,
+            Micro       : Micro
         }
 
         console.log('index sample : ' , index)
@@ -262,26 +264,6 @@ const ModaladdSample = props => {
                                               </select>
                                             </div>
                                           </Row>
-                                        <Row className="mb-3">
-                                            <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">Specific Micro</label>
-                                            <div className="col-md-10">
-                                              <select className="form-control"
-                                              id="c2"
-                                                value={selectMicro}
-                                                onChange={(e) => {
-                                                    const changeMicro = e.target.value;
-                                                    setSelectMicro(changeMicro)
-                                                }} 
-                                              >
-                                                  {nameSpcMicro.map((index, key) => (
-                                                      <option value={index.idPdSpecificMicro} 
-                                                    //   onClick={selectSpcChem(index.idPdSpecificChem)}
-                                                      >{index.idPdSpecificMicro}</option>
-                                                  ))}
-                                              </select>
-                                            </div>
-                                          </Row>
-
                                             {/* const [Tn,  setTn   ] = useState(false)
                                             const [Salt,  setSalt   ] = useState(false)
                                             const [PH,  setPH   ] = useState(false)
@@ -439,6 +421,43 @@ const ModaladdSample = props => {
                                             </div>
                                             </div>
                                           </Row >
+
+                                          <Row className="mb-3">
+                                            <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">Specific Micro</label>
+                                            <div className="col-md-10" style={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <div className="form-check form-check-success">
+                                              <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="customCheckcolorMicro"
+                                                checked={Micro}
+                                                onChange={() => {
+                                                    setMicro(!Micro)
+                                                }}
+                                              />
+
+                                              <label
+                                                className="form-check-label"
+                                                htmlFor="customCheckcolorMicro"
+                                              >
+                                                Check Micro
+                                              </label>
+                                            </div>
+                                              {/* <select className="form-control"
+                                              id="c2"
+                                                value={selectMicro}
+                                                onChange={(e) => {
+                                                    const changeMicro = e.target.value;
+                                                    setSelectMicro(changeMicro)
+                                                }} 
+                                              >
+                                                  {nameSpcMicro.map((index, key) => (
+                                                      <option value={index.idPdSpecificMicro} 
+                                                      >{index.idPdSpecificMicro}</option>
+                                                  ))}
+                                              </select> */}
+                                            </div>
+                                          </Row>
 
                                           <Row className="mb-3">
                                             <label style={{display:'flex', justifyContent:'center'}} className="col-md-2 col-form-label">priority</label>

@@ -123,7 +123,8 @@ const ModalAddOrder = props => {
             Histamine   : false,
             Tss         : false,
             Aw          : false,
-            Spg          : false
+            Spg         : false,
+            Micro       : false
         }
 
         addOrder(token, index).then(data => {

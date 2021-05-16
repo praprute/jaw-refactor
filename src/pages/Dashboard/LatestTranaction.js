@@ -151,7 +151,7 @@ const fetchTestResultlasted = (token, idOrders) => {
                     }>
                          <i
                          className={
-                           "bx bx-cog font-size-24"
+                           "bx bx-note  font-size-24"
                          }
                          style={{cursor:'pointer'}}
                          onClick={

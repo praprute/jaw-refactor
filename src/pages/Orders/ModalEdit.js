@@ -48,6 +48,15 @@ const ModalEdit = props => {
     const [pord, setPord] = useState(new Date())
     const [values, setValues] = useState({})
 
+    const [Tn,  setTn   ] = useState(false)
+    const [Salt,  setSalt   ] = useState(false)
+    const [PH,  setPH   ] = useState(false)
+    const [Histamine,  setHistamine   ] = useState(false)
+    const [Tss,  setTss   ] = useState(false)
+    const [SPG,  setSPG   ] = useState(false)
+    const [Aw,  setAw  ] = useState(false) 
+    const [Micro, setMicro] = useState(false) 
+
     const handleChange = name => event => {
       setValues({ ...values, [name]: event.target.value })
     }
@@ -103,6 +112,14 @@ const ModalEdit = props => {
             idScfChem   : selectChem,
             idScfMicro  : selectMicro,
             Priority    : priority,
+            Tn          : Tn,
+            Salt        : Salt,
+            PH          : PH,
+            Histamine   : Histamine,
+            Tss         : Tss,
+            Aw          : Aw,
+            Spg         : SPG,
+            Micro       : Micro
         }
         updateDetail(token, index).then(data => {
             // console.log('response add order : ', data)
@@ -134,6 +151,14 @@ const ModalEdit = props => {
       //idScfChem Priority
       useEffect(() => {
         setValues(orders)
+        setMicro(orders.Micro)
+        setTn(orders.Tn)
+        setPH(orders.PH)
+        setSalt(orders.Salt)
+        setHistamine(orders.Histamine)
+        setTss(orders.Tss)
+        setAw(orders.Aw)
+        setSPG(orders.Spg)
       }, [orders,bio,tr])
 
       useEffect(() => {

@@ -177,7 +177,7 @@ const [columnTable, setColumnTable] = useState([
                 }>
                      <i
                      className={
-                       "bx bx-cog font-size-24"
+                       "bx bx-file font-size-24"
                      }
                      style={{cursor:'pointer'}}
                      onClick={
