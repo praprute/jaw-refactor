@@ -23,6 +23,7 @@ import { withRouter, Link, Redirect } from "react-router-dom"
 //Component
 import LatestTranaction from "../Dashboard/LatestTranaction"
 import OrderTable from './Table'
+import TableCompleteCheck from './TableCompleteCheck'
 import OrderTableRecheck from './../Orders/TableRecheck'
 import ModalDetail from './../Orders/ModalDetail'
 import ModalTestReport from './../Orders/TestReport'
@@ -184,6 +185,19 @@ const Labatorypage = props => {
                     <NavItem>
                       <NavLink
                         className={classnames({
+                          active: activeTab === "6",
+                        })}
+                        onClick={() => {
+                          toggleTab("6")
+                        }}
+                      >
+                       Complete Check
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
                           active: activeTab === "5",
                         })}
                         onClick={() => {
@@ -222,9 +236,15 @@ const Labatorypage = props => {
                       </div>
                     </TabPane>
 
+                    <TabPane tabId="6" id="CompleteCheck">
+                      <div>
+                      <TableCompleteCheck page={"lab"} tricker={"CompleteCheck"} toggleCOA={toggleModalCOA} toggle={toggleModal} toggleEdit={toggleModalEdit} toggleTR={toggleModalTestReport}/>
+                      </div>
+                    </TabPane>
+
                     <TabPane tabId="5" id="pass">
                       <div>
-                      <OrderTable page={"lab"} tricker={"pass"} toggleCOA={toggleModalCOA} toggle={toggleModal} toggleEdit={toggleModalEdit} toggleTR={toggleModalTestReport}/>
+                      <TableCompleteCheck page={"lab"} tricker={"pass"} toggleCOA={toggleModalCOA} toggle={toggleModal} toggleEdit={toggleModalEdit} toggleTR={toggleModalTestReport}/>
                       </div>
                     </TabPane>
                   </TabContent>

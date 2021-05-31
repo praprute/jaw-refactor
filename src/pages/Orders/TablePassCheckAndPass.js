@@ -26,7 +26,7 @@ import {getAllOrder,
   readOrderById,
   readTestResultlasted,
   deleteOrder,
-   } from './../Orders/api'
+  getAllOrderLab } from './../Orders/api'
 import { map } from "lodash";
 import { orders } from "common/data";
 import { isAuthenticated } from './../Authentication/api'
@@ -41,51 +41,71 @@ import { AddProductDetail, AddSpecificDetail, AddTestResultlasted, AddSpecificBi
 import SweetAlert from "react-bootstrap-sweetalert"
 // import ModalDetail from './../Orders/ModalDetail'
 
-const OrderTable = props => {
+const TablePassCheckAndPass = props => {
 
   const {user, token} = isAuthenticated()
   const { orders , spc, onAddDetail, onAddSpcChem ,onAddTestResult,onAddSpcBio} = props
-  const [redirect, setRedirect] = useState(false)
   const [columnTable, setColumnTable] = useState([
+    {
+      label: "Lot",
+      field: "lot",
+      sort: "asc",
+      // width: 150,
+    },
+    {
+      label: "PO Number",
+      field: "ponumber",
+      sort: "asc",
+      // width: 150,
+    },
     {
       label: "Product Name",
       field: "name",
       sort: "asc",
+      // width: 100,
     },
     {
         label: "Specific",
         field: "Specific",
         sort: "asc",
+        // width: 100,
       },
     {
         label: "Status",
         field: "status",
         sort: "asc",
+        // width: 100,
       },
       {
         label: "Priority",
         field: "priority",
         sort: "asc",
+        // width: 200,
       },
     {
       label: "Recheck",
       field: "Recheck",
       sort: "asc",
+      // width: 170,
     },
     {
         label: "Timestamp",
         field: "timeStamp",
         sort: "asc",
+        // width: 100,
       },
     {
       label: "Detail",
       field: "detail",
       sort: "asc",
+      // width: 100,
     },
-    {
-      label: "Test Result",
-      field: "TestResult",
-    }
+    // {
+    //   label: "Action",
+    //   field: "action",
+    //   sort: "asc",
+    //   // width: 100,
+    // }
   ],)
   const [dataMerch, setDataMerch] = useState({})
   const [detail, setdetail] = useState({})
@@ -112,7 +132,7 @@ const OrderTable = props => {
     })
   }
 
- 
+
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
       // console.log(' readTestResultlasted :',data)
@@ -135,105 +155,9 @@ const OrderTable = props => {
     })
   }
 
-  // useEffect(() => {
-  //   // console.log('props.toggleTR : ', props)
-  //   if(props.page == "lab"){
-  //     console.log('tp')
-  //     if(props.tricker == "CompleteCheck" || props.tricker == "pass"){
-  //       setColumnTable([
-  //         {
-  //           label: "Lot",
-  //           field: "lot",
-  //         },
-  //         {
-  //           label: "PO Number",
-  //           field: "ponumber",
-  //         },
-  //         {
-  //           label: "Product Name",
-  //           field: "name",
-  //         },
-  //         {
-  //             label: "Specific",
-  //             field: "Specific",
-  //           },
-  //         {
-  //             label: "Status",
-  //             field: "status",
-  //           },
-  //           {
-  //             label: "Priority",
-  //             field: "priority",
-  //           },
-  //         {
-  //           label: "Recheck",
-  //           field: "Recheck",
-  //         },
-  //         {
-  //             label: "Timestamp",
-  //             field: "timeStamp",
-  //             sort: "asc",
-  //           },
-  //         {
-  //           label: "Detail",
-  //           field: "detail",
-            
-  //         }
-  //       ])
-  //     }else{
-  //       setColumnTable([
-  //       {
-  //         label: "Lot",
-  //         field: "lot",
-  //       },
-  //       {
-  //         label: "PO Number",
-  //         field: "ponumber",
-  //       },
-  //       {
-  //         label: "Product Name",
-  //         field: "name",
-  //       },
-  //       {
-  //           label: "Specific",
-  //           field: "Specific",
-  //         },
-  //       {
-  //           label: "Status",
-  //           field: "status",
-  //         },
-  //         {
-  //           label: "Priority",
-  //           field: "priority",
-  //         },
-  //       {
-  //         label: "Recheck",
-  //         field: "Recheck",
-  //       },
-  //       {
-  //           label: "Timestamp",
-  //           field: "timeStamp",
-  //           sort: "asc",
-  //         },
-  //       {
-  //         label: "Detail",
-  //         field: "detail",
-          
-  //       },
-  //       {
-  //         label: "Test Result",
-  //         field: "TestResult",
-          
-  //       }
-  //     ])
-  //     }
-      
-  //   }
-  // },[props.tricker])
-
   useEffect(() => {
-    if(props.page == "lab"){
-        getAllOrder(token).then(data => {
+      getAllOrder(token).then(data => {
+        // console.log('getAllOrder: ' ,data) 
         if(data == undefined){
           setDataMerch({
             columns: columnTable,
@@ -245,74 +169,61 @@ const OrderTable = props => {
           if(data.success == "success"){
           var index = []
           for(let i = 0 ; i < data.message.length ; i++){
-            // if(data.message[i].Status != 1){
-                const rd = {
-                  lot: <span>PORD: {data.message[i].BBE}<br/>BBE: {data.message[i].PORD}</span>,
-                  ponumber: data.message[i].PO,
-                  name:    data.message[i].ProductName,
-                  Specific: data.message[i].name,
-                  priority: data.message[i].Priority,
-                  status: data.message[i].Status,
-                  Recheck: data.message[i].Recheck,
-                  timeStamp:data.message[i].timestamp,
-                  detail: <span style={{display:'flex', justifyContent: 'center'}} onClick={()=>{
-                    fetchDetail(token ,data.message[i].idOrders)
-                    fetchTestResultlasted(token ,data.message[i].idOrders)
+            const rd = {
+                lot: <span>PORD: {data.message[i].BBE}<br/>BBE: {data.message[i].PORD}</span>,
+                ponumber: data.message[i].PO,
+                name:    data.message[i].ProductName,
+                Specific: data.message[i].name,
+                priority: data.message[i].Priority,
+                status: data.message[i].Status,
+                Recheck: data.message[i].Recheck,
+                timeStamp:data.message[i].timestamp,
+                detail: <span style={{display:'flex', justifyContent: 'center'}} onClick={()=>{
+                  fetchDetail(token ,data.message[i].idOrders)
+                  fetchTestResultlasted(token ,data.message[i].idOrders)
+                }
+                }>
+                     <i
+                     className={
+                       "bx bx-file font-size-24"
+                     }
+                     style={{cursor:'pointer'}}
+                     onClick={
+                       props.toggle
                   }
-                  }>
-                      <i
-                      className={
-                        "bx bx-file font-size-24"
-                      }
-                      style={{cursor:'pointer'}}
+                    ></i>
+                </span> ,
+                action: <div style={{display:'flex', justifyContent: 'center'}}>
+                  <span onClick={() => {
+                    fetchDetail(token ,data.message[i].idOrders)
+                  }} >
+                    <button style={{margin:'2px'}}
+                      type="button"
+                      className="btn btn-warning waves-effect waves-light .w-xs"
                       onClick={
-                        props.toggle
-                    }
-                      ></i>
-                  </span> ,
-                  TestResult: <div style={{display:'flex', justifyContent: 'center'}}>
-                    <span onClick={() => {
-                      fetchDetail(token ,data.message[i].idOrders)
-                      fetchTestResultlasted(token ,data.message[i].idOrders)
-                    }} >
-                      <button 
-                        type="button"
-                        color="primary"
-                        className="btn btn-primary waves-effect waves-light .w-xs"
-                        onClick={
-                           props.toggleTR
-                        }
-                      >
-                        <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
-                        TEST
-                      </button>
-                    </span>
-                    
-                  </div>
-              }
-            //   index.push(rd)
-              if(props.tricker == "allOrder"){
-                if(data.message[i].Status == 0 || data.message[i].Status == 3){
-                  // console.log('rd : ', rd)
-                  index.push(rd)
-                }
-              }
-              if(props.tricker == "urgent"){
-                if(data.message[i].Priority == 2 && data.message[i].Status != 1 &&  data.message[i].Status != 2){
-                  index.push(rd)
-                }
-              }
-              if(props.tricker == "micro"){
-                if(data.message[i].Status == 3){
-                  index.push(rd)
-                }
-              }
-              if(props.tricker == "recheck"){
-                if(data.message[i].Status == 2){
-                  index.push(rd)
-                }
-              }
-              if(props.tricker == "pass"){
+                        props.toggleEdit
+                      }
+                    >
+                      <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
+                      Edit
+                    </button>
+                  </span>
+                  
+                    <button style={{margin:'2px'}}
+                      type="button"
+                      className="btn btn-danger waves-effect waves-light .w-xs"
+                      onClick={() => {
+                        setconfirm_alert(true)
+                        // idDelete, 
+                        setidDelete(data.message[i].idOrders)
+                      }}
+                    >
+                      <i className="bx bx-trash-alt align-middle me-2"></i>{" "}
+                      Delete
+                    </button>
+                </div>
+            }
+            if(props.tricker == "pass"){
                 if(data.message[i].Status == 1){
                   index.push(rd)
                 }
@@ -322,8 +233,8 @@ const OrderTable = props => {
                   index.push(rd)
                 }
               }
-// TablePassCheckAndPass
-              
+
+            //index.push(rd)
         }
             const status = {
                 1: (
@@ -340,7 +251,7 @@ const OrderTable = props => {
                 1: <span className="badge bg-warning font-size-10">rush</span>,
                 2: <span className="badge bg-danger font-size-10">urgent</span>,
                 }
-            // console.log('index ', index)
+            
         setDataMerch({
             columns: columnTable,
             rows:map(index, order=>({...order, priority:statePriority[order.priority] ,status:status[order.status]})) 
@@ -356,7 +267,7 @@ const OrderTable = props => {
         }
         
     })
-    }
+  
   }, [])
   // 
       
@@ -368,9 +279,7 @@ const OrderTable = props => {
                       title={dynamic_title}
                       onConfirm={() => {
                         setsuccess_dlg(false)
-                        // const refreshPage = ()=>{
-                        //     window.location.reload();
-                        //  }
+                        location.reload();
                       }}
                     >
                       {dynamic_description}
@@ -396,6 +305,7 @@ const OrderTable = props => {
                               setsuccess_dlg(true)
                               setdynamic_title("Deleted")
                               setdynamic_description("Your file has been deleted.")
+                              
                             }
                             setsuccess_dlg(true)
                         setdynamic_title("Deleted")
@@ -406,6 +316,7 @@ const OrderTable = props => {
                               setdynamic_description("Something has ploblem!!!")
                           }
                         })
+                        
                       }}
                       onCancel={() => setconfirm_alert(false)}
                     >
@@ -419,7 +330,7 @@ const OrderTable = props => {
   )
 }
 
-OrderTable.propTypes = {
+TablePassCheckAndPass.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   onAddDetail: PropTypes.func,
@@ -443,4 +354,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(OrderTable))
+)(withRouter(TablePassCheckAndPass))

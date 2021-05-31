@@ -41,7 +41,7 @@ import { AddProductDetail, AddSpecificDetail, AddTestResultlasted, AddSpecificBi
 import SweetAlert from "react-bootstrap-sweetalert"
 // import ModalDetail from './../Orders/ModalDetail'
 
-const OrderTable = props => {
+const TableCompleteCheck = props => {
 
   const {user, token} = isAuthenticated()
   const { orders , spc, onAddDetail, onAddSpcChem ,onAddTestResult,onAddSpcBio} = props
@@ -81,10 +81,6 @@ const OrderTable = props => {
       label: "Detail",
       field: "detail",
       sort: "asc",
-    },
-    {
-      label: "Test Result",
-      field: "TestResult",
     }
   ],)
   const [dataMerch, setDataMerch] = useState({})
@@ -135,101 +131,101 @@ const OrderTable = props => {
     })
   }
 
-  // useEffect(() => {
-  //   // console.log('props.toggleTR : ', props)
-  //   if(props.page == "lab"){
-  //     console.log('tp')
-  //     if(props.tricker == "CompleteCheck" || props.tricker == "pass"){
-  //       setColumnTable([
-  //         {
-  //           label: "Lot",
-  //           field: "lot",
-  //         },
-  //         {
-  //           label: "PO Number",
-  //           field: "ponumber",
-  //         },
-  //         {
-  //           label: "Product Name",
-  //           field: "name",
-  //         },
-  //         {
-  //             label: "Specific",
-  //             field: "Specific",
-  //           },
-  //         {
-  //             label: "Status",
-  //             field: "status",
-  //           },
-  //           {
-  //             label: "Priority",
-  //             field: "priority",
-  //           },
-  //         {
-  //           label: "Recheck",
-  //           field: "Recheck",
-  //         },
-  //         {
-  //             label: "Timestamp",
-  //             field: "timeStamp",
-  //             sort: "asc",
-  //           },
-  //         {
-  //           label: "Detail",
-  //           field: "detail",
+  useEffect(() => {
+    // console.log('props.toggleTR : ', props)
+    if(props.page == "lab"){
+      console.log('tp')
+      if(props.tricker == "CompleteCheck" || props.tricker == "pass"){
+        setColumnTable([
+          {
+            label: "Lot",
+            field: "lot",
+          },
+          {
+            label: "PO Number",
+            field: "ponumber",
+          },
+          {
+            label: "Product Name",
+            field: "name",
+          },
+          {
+              label: "Specific",
+              field: "Specific",
+            },
+          {
+              label: "Status",
+              field: "status",
+            },
+            {
+              label: "Priority",
+              field: "priority",
+            },
+          {
+            label: "Recheck",
+            field: "Recheck",
+          },
+          {
+              label: "Timestamp",
+              field: "timeStamp",
+              sort: "asc",
+            },
+          {
+            label: "Detail",
+            field: "detail",
             
-  //         }
-  //       ])
-  //     }else{
-  //       setColumnTable([
-  //       {
-  //         label: "Lot",
-  //         field: "lot",
-  //       },
-  //       {
-  //         label: "PO Number",
-  //         field: "ponumber",
-  //       },
-  //       {
-  //         label: "Product Name",
-  //         field: "name",
-  //       },
-  //       {
-  //           label: "Specific",
-  //           field: "Specific",
-  //         },
-  //       {
-  //           label: "Status",
-  //           field: "status",
-  //         },
-  //         {
-  //           label: "Priority",
-  //           field: "priority",
-  //         },
-  //       {
-  //         label: "Recheck",
-  //         field: "Recheck",
-  //       },
-  //       {
-  //           label: "Timestamp",
-  //           field: "timeStamp",
-  //           sort: "asc",
-  //         },
-  //       {
-  //         label: "Detail",
-  //         field: "detail",
+          }
+        ])
+      }else{
+        setColumnTable([
+        {
+          label: "Lot",
+          field: "lot",
+        },
+        {
+          label: "PO Number",
+          field: "ponumber",
+        },
+        {
+          label: "Product Name",
+          field: "name",
+        },
+        {
+            label: "Specific",
+            field: "Specific",
+          },
+        {
+            label: "Status",
+            field: "status",
+          },
+          {
+            label: "Priority",
+            field: "priority",
+          },
+        {
+          label: "Recheck",
+          field: "Recheck",
+        },
+        {
+            label: "Timestamp",
+            field: "timeStamp",
+            sort: "asc",
+          },
+        {
+          label: "Detail",
+          field: "detail",
           
-  //       },
-  //       {
-  //         label: "Test Result",
-  //         field: "TestResult",
+        },
+        {
+          label: "Test Result",
+          field: "TestResult",
           
-  //       }
-  //     ])
-  //     }
+        }
+      ])
+      }
       
-  //   }
-  // },[props.tricker])
+    }
+  },[props.tricker])
 
   useEffect(() => {
     if(props.page == "lab"){
@@ -419,7 +415,7 @@ const OrderTable = props => {
   )
 }
 
-OrderTable.propTypes = {
+TableCompleteCheck.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   onAddDetail: PropTypes.func,
@@ -443,4 +439,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(OrderTable))
+)(withRouter(TableCompleteCheck))

@@ -113,9 +113,12 @@ const Dashboard = props => {
     readFG(token).then(data => {
           if(data){
             // if(data.success == 'success' && data.message.length > 0){
-              // console.log('readFG message: ', data.message[0])
+              console.log('readFG message: ', data.message[0])
               // setFG([data.message[0].TN, data.message[0].PH, data.message[0].SALT, data.message[0].TSS, data.message[0].HISTAMINE, data.message[0].SPG, data.message[0].AW])
-              onAddFG([data.message[0].TN, data.message[0].PH, data.message[0].SALT, data.message[0].TSS, data.message[0].HISTAMINE, data.message[0].SPG, data.message[0].AW])
+              onAddFG([data.message[0].TN, data.message[0].PH, 
+                data.message[0].SALT, data.message[0].TSS, 
+                data.message[0].HISTAMINE, data.message[0].SPG, 
+                data.message[0].AW, data.message[0].AN, data.message[0].Acidity, data.message[0].Viscosity])
               // setTimeout(() => {
                 setRenFG(true)
               // }, 1000);

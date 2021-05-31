@@ -182,6 +182,7 @@ const fetchTestResultlasted = (token, idOrders) => {
                     0: <span className="badge bg-warning font-size-10">Waiting to check</span>,
                     3: <span className="badge bg-warning font-size-10">Waiting to Micro</span>,
                     2: <span className="badge bg-danger font-size-10">Rechecking</span>,
+                    4: <span className="badge bg-primary font-size-10">complete check</span>,
                   }
                 
                 const statePriority = {

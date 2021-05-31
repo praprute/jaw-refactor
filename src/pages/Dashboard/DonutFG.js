@@ -17,9 +17,10 @@ const dountchart = props => {
 
   const [series, setseries] = useState(FG)
   const [option, setOption] = useState( {
-    labels: ["TN", "PH", "SALT", "TSS", "HISTAMINE", "SPG", "AW"],
+    labels: ["TN", "PH", "SALT", "TSS", "HISTAMINE", "SPG", "AW", "AN", "Acidity", "Viscosity"],
     colors: ["#008FFB", "#00E396", "#FEB019", "#FF4560", "#775DD0",
-    "#3F51B5", "#546E7A"],
+    "#3F51B5", "#546E7A",  "#546EE5",
+    "#1775A7", "#2B3142"],
     legend: {
       show: true,
       position: "right",

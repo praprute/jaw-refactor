@@ -26,6 +26,7 @@ import ModaladdSample from './ModaladdSample'
 import LatestTranaction from "../Dashboard/LatestTranaction"
 import OrderTableSample from './TableSample'
 import OrderTable from './Table'
+import TablePassCheckAndPass from './TablePassCheckAndPass'
 import OrderTableRecheck from './TableRecheck'
 import ModalDetail from './ModalDetail'
 import ModalAddOrder from './ModalAddOrder'
@@ -47,7 +48,7 @@ import {getAllOrder,
     getRecheckOrder} from './api'
 import { isAuthenticated } from './../Authentication/api'
 import { useHistory } from 'react-router-dom'
-
+// TablePassCheckAndPass
 const Orderpage = props => {
     const history = useHistory();
     
@@ -60,6 +61,8 @@ const Orderpage = props => {
     const [modalCoa, setModalCOA] = useState(false)
     const [sample, setSample] = useState(false)
     const [Editsample , setEditsample] = useState(false) 
+    const [tricker, setTricker] = useState(false)
+
     const toggleModal = () => {
       setModal(!modal)
     }
@@ -166,22 +169,33 @@ const Orderpage = props => {
                         Rechecking
                       </NavLink>
                     </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          active: activeTab === "4",
+                        })}
+                        onClick={() => {
+                          toggleTab("4")
+                        }}
+                      >
+                        Complete Check
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          active: activeTab === "5",
+                        })}
+                        onClick={() => {
+                          toggleTab("5")
+                        }}
+                      >
+                        Pass Orders
+                      </NavLink>
+                    </NavItem>
                   </ul>
                             </Col>
-                            {/* <Col md="2" xs="12" style={{display:'flex', justifyContent:'flex-end', alignItems:'center'}}>
-                            <ul className="nav nav-pills">
-                        <Button
-                color="primary"
-                onClick={() => {
-                
-                }}
-                id="sa-basic"
-                size="sm"
-            >
-                Add Order
-            </Button> 
-                      </ul>
-                            </Col> */}
+                            
                 </Row>
                   <TabContent activeTab={activeTab} className="p-3">
                   <TabPane tabId="1" id="all-order">
@@ -223,6 +237,18 @@ const Orderpage = props => {
                     <TabPane tabId="3" id="processing">
                       <div>
                       <OrderTableRecheck toggleCOA={toggleModalCOA} toggle={toggleModal} />
+                      </div>
+                    </TabPane>
+
+                    <TabPane tabId="4" id="CompleteCheck">
+                      <div>
+                      <TablePassCheckAndPass tricker={"CompleteCheck"} toggleCOA={toggleModalCOA} toggle={toggleModal} />
+                      </div>
+                    </TabPane>
+
+                    <TabPane tabId="5" id="pass">
+                      <div>
+                      <TablePassCheckAndPass tricker={"pass"} toggleCOA={toggleModalCOA} toggle={toggleModal} />
                       </div>
                     </TabPane>
                   </TabContent>

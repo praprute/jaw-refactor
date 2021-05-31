@@ -184,7 +184,7 @@ const SidebarContent = props => {
             )}
              <li onClick={() => {
                   signout().then(data => {
-                    console.log(data)
+                    // console.log(data)
                     if(data){
                       if(data.success == "success"){
                         history.push('/login')

@@ -407,6 +407,23 @@ export const UpdatexportPASS = (token,index) => {
         .catch(err => console.log(err));
 }
 
+
+export const UpdateStatusPassToCheck = (token,index) => {
+    return fetch(`${API}/UpdateStatus/PassToCheck`, {
+        method: "POST",
+        mode: 'cors',
+        headers: {
+            Accept: 'application/json',
+            "Content-type": "application/json",
+            Authorization:`Bearer ${token}`
+          },
+          body : JSON.stringify(index)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+}
 // const fetchDetail = (token, idOrders) => {
   //   readTestResultlasted(token, idOrders).then(data => {
   //     console.log(' readTestResultlasted :',data)
