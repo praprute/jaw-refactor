@@ -1077,7 +1077,7 @@ export const originalFormCOA = (
             DetailOrderRow3,
             [
               {
-                text: `Test Date: ${PnAndPS.ProductName}`,
+                text: `Product Name: ${PnAndPS.ProductName}`,
                 style: "RefBoxValue",
                 alignment: "left",
                 border: [true, false, false, false],
