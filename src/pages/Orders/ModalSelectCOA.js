@@ -38,6 +38,9 @@ import { withRouter } from "react-router-dom"
 //PDF
 import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "pdfmake/build/vfs_fonts"
+// import classes from "./ModalFullScreen.module.css"
+import "./ModalFullScreen.css"
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const ModalSelectCOA = props => {
@@ -133,20 +136,20 @@ const ModalSelectCOA = props => {
     // console.log('valueCustumer : ',valueCustumer)
   }
 
-  const [test, setTest] = useState([{
-    text: `Date of Report : ${Moment(new Date()).format("DD/MM/YYYY")}`,
-    style: "HeaderDetail",
-    border: [true, true, false, false],
-  }, //ซ้าย บน ขวา ล่าง
-  {
-    text: `Lot : PROD:${Moment(values.PORD).format(
-      "DD/MM/YYYY"
-    )} \n ${
-      ".\t\tBBE:" + Moment(values.BBE).format("DD/MM/YYYY")
-    }`,
-    style: "HeaderDetail",
-    border: [false, true, true, false],
-  }]) 
+  const [test, setTest] = useState([
+    {
+      text: `Date of Report : ${Moment(new Date()).format("DD/MM/YYYY")}`,
+      style: "HeaderDetail",
+      border: [true, true, false, false],
+    }, //ซ้าย บน ขวา ล่าง
+    {
+      text: `Lot : PROD:${Moment(values.PORD).format("DD/MM/YYYY")} \n ${
+        ".\t\tBBE:" + Moment(values.BBE).format("DD/MM/YYYY")
+      }`,
+      style: "HeaderDetail",
+      border: [false, true, true, false],
+    },
+  ])
 
   const handleExport = event => {
     event.preventDefault()
@@ -157,12 +160,22 @@ const ModalSelectCOA = props => {
       if (data) {
         exportCOA(token).then(data => {
           if (data) {
+            // console.log(data)
             setimgbs64(data.message)
           }
         })
       }
     })
   }
+
+  useEffect(() => {
+    exportCOA(token).then(data => {
+      if (data) {
+        // console.log(data)
+        setimgbs64(data.message)
+      }
+    })
+  }, [])
 
   const handleupdatePass = () => {
     var index = {
@@ -262,27 +275,13 @@ const ModalSelectCOA = props => {
     setStartExport(false)
     // console.log('test :',test)
     let index = []
-    for(let i = 0; i < test.length ; i++){
-        index.push(test[i])
+    for (let i = 0; i < test.length; i++) {
+      index.push(test[i])
     }
     // console.log('test pdf :',index)
     var docDefinition = {
-      // header: {
-      //   columns: [
-      //     { text: 'HEADER LEFT', style: 'documentHeaderLeft' },
-      //     { text: 'HEADER CENTER', style: 'documentHeaderCenter' },
-      //     { text: 'HEADER RIGHT', style: 'documentHeaderRight' }
-      //   ]
-      // },
-      // footer: {
-      //   columns: [
-      //     { text: 'FOOTER LEFT', style: 'documentFooterLeft' },
-      //     { text: 'FOOTER CENTER', style: 'documentFooterCenter' },
-      //     { text: 'FOOTER RIGHT', style: 'documentFooterRight' }
-      //   ]
-      // },
+     
       content: [
-        // Header
         {
           alignment: "justify",
           columns: [
@@ -353,8 +352,8 @@ const ModalSelectCOA = props => {
           table: {
             widths: ["*", "*"],
             body: [
-                ['ddd', 'ttt'],
-                index,
+              ["ddd", "ttt"],
+              // index,
               [
                 {
                   text: `Order Number : ${"PO" + values.PO}`,
@@ -371,10 +370,10 @@ const ModalSelectCOA = props => {
               ],
               [
                 {
-                    text: `Product Name : ${values.ProductName}`,
-                    style: "HeaderDetail",
-                    border: [true, false, false, false],
-                  },
+                  text: `Product Name : ${values.ProductName}`,
+                  style: "HeaderDetail",
+                  border: [true, false, false, false],
+                },
                 {
                   text: `Pack Size : ${values.Size}`,
                   style: "HeaderDetail",
@@ -1201,7 +1200,14 @@ const ModalSelectCOA = props => {
   }
 
   return (
-    <Modal isOpen={isOpenCOA} toggle={toggleCOA} centered={true} size="sm">
+    <Modal
+      dialogClassName="custom-modal"
+      bsClass="my-modal"
+      isOpen={isOpenCOA}
+      toggle={toggleCOA}
+      centered={true}
+      size="lg"
+    >
       <div className="modal-header">
         <h3 className="modal-title mt-0">SELECR FORM COA</h3>
         <button

@@ -121,14 +121,14 @@ const Header = props => {
             </button>
 
             <div className="dropdown d-none d-lg-inline-block ms-1">
-              <button
+              {/* <button
                 type="button"
                 className="btn header-item waves-effect waves-light "
-                // data-toggle="fullscreen"
+                data-toggle="fullscreen"
               >
-                {/* <i className="bx bx-fullscreen"/> */}
+                <i className="bx bx-fullscreen"/>
                 รุ่งโรจน์
-              </button>
+              </button> */}
             </div>
 
             {/* <form className="app-search d-none d-lg-block">
@@ -414,7 +414,7 @@ const Header = props => {
                 type="button"
                 onClick={() => {
                   signout().then(data => {
-                    console.log(data)
+                    // console.log(data)
                     if(data){
                       if(data.success == "success"){
                         history.push('/login')

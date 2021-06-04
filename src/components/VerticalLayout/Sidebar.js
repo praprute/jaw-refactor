@@ -11,8 +11,9 @@ import { Link } from "react-router-dom"
 
 import logo from "../../assets/images/logo.svg"
 import logoLightPng from "../../assets/images/logo-light.png"
-import logoLightSvg from "../../assets/images/logo-light.svg"
+import logoLightSvg from "../../assets/images/logo-sm-light.svg"
 import logoDark from "../../assets/images/logo-dark.png"
+import LogoRFSedit from "../../assets/images/Logo-RFS-edit.png"
 
 const Sidebar = props => {
 
@@ -29,12 +30,12 @@ const Sidebar = props => {
             </span>
           </Link>
 
-          <Link to="/" className="logo logo-light">
-            <span className="logo-sm">
-              <img src={logoLightSvg} alt="" height="22" />
+          <Link to="/" className="logo logo-light" >
+            <span className="logo-sm" >
+              <img src={logoLightSvg} alt="" height="20" style={{marginLeft:'-10px'}}/>
             </span>
             <span className="logo-lg">
-              <img src={logoLightPng} alt="" height="19" />
+              <img src={LogoRFSedit} alt="" height="30" />
             </span>
           </Link>
         </div>

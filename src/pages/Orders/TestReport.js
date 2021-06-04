@@ -367,6 +367,7 @@ const ModalTestReport = props => {
   const handleTest = async () => {
     // event.preventDefault()
     // console.log('values test : ' , values)
+    // console.log('values tr : ' , tr)
     try {
       var index = {
         idOrders: values.idOrders,
@@ -747,15 +748,6 @@ const ModalTestReport = props => {
         <h3 className="modal-title mt-0">
           Order Test Result : {detailById.PO}
         </h3>
-        {/* <button
-                          type="button"
-                          onClick={toggleTR}
-                          className="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">&times;</span>
-                        </button> */}
       </div>
       <div className="modal-body">
         {/* Header TestResult */}

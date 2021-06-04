@@ -171,6 +171,9 @@ import ContactsGrid from "../pages/Contacts/contacts-grid"
 import ContactsList from "../pages/Contacts/ContactList/contacts-list"
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
+
+import FormBeforeExport from '../pages/Orders/FormBeforeExport'
+
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },
@@ -178,6 +181,7 @@ const userRoutes = [
   { path: "/blog", component: Blog },
   { path: "/Orders", component: Orderpage },
   { path: "/Labatory", component: Labatorypage},
+  { path: "/ExportForm", component: FormBeforeExport},
 
   //Crypto
   { path: "/crypto-wallet", component: CryptoWallet },

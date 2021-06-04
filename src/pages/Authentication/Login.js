@@ -87,7 +87,7 @@ const Login = props => {
 
   const {user, token} = isAuthenticated()
   useEffect(() => {
-    console.log(props.history)
+    // console.log(props.history)
   }, [])
   useEffect(() => {
     
