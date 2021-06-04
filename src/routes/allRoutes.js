@@ -172,7 +172,7 @@ import ContactsList from "../pages/Contacts/ContactList/contacts-list"
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
 
-import FormBeforeExport from '../pages/Orders/FormBeforeExport'
+import FormBeforeExport from '../pages/Orders/COA/FormBeforeExport'
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },

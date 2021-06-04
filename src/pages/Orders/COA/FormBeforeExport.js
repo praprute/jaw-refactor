@@ -19,14 +19,15 @@ import {
 } from "reactstrap"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
+import {UpdatexportCOA} from '../api'
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
-import { isAuthenticated } from "./../Authentication/api"
+import { isAuthenticated } from "../../Authentication/api"
 import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "pdfmake/build/vfs_fonts"
-import { originalFormCOA } from "./COA/OriginalForm"
+import { originalFormCOA } from "./OriginalForm"
 import "./ModalFullScreen.css"
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
@@ -217,6 +218,14 @@ const FormBeforeExport = props => {
       return false
     }
   }, [])
+
+  const handleUpdateStatusCoa = async () => {
+    try{
+      let update = UpdatexportCOA(token)
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   const handleExportPDF = () => {
     let dataRow2 = [
@@ -2493,6 +2502,7 @@ const FormBeforeExport = props => {
                 style={{ width: "40%" }}
                 onClick={() => {
                   handleExportPDF()
+                  handleUpdateStatusCoa()
                 }}
               >
                 Print COA

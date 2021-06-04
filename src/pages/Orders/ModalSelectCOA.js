@@ -38,8 +38,7 @@ import { withRouter } from "react-router-dom"
 //PDF
 import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "pdfmake/build/vfs_fonts"
-// import classes from "./ModalFullScreen.module.css"
-import "./ModalFullScreen.css"
+// import "./ModalFullScreen.css"
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
