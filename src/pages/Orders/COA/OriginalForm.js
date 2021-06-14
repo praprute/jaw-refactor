@@ -31,7 +31,9 @@ export const originalFormCOA = (
   valuesChem,
   MicroRender,
   valuesMicro,
-  selectedGroupNameTo
+  selectedGroupNameTo,
+  ApproveValue,
+  ReportValue ,
 ) => {
   let DetailOrderRow1 = []
   let DetailOrderRow2 = []
@@ -1182,13 +1184,13 @@ export const originalFormCOA = (
         alignment: "justify",
         columns: [
           {
-            text: "DCC",
+            text: `${ApproveValue}`,
             style: "invoiceTitleHeaderDetail",
             width: "*",
             margin: [30, 0, 0, 0],
           },
           {
-            text: "QMR",
+            text: `${ReportValue}`,
             style: "invoiceTitleHeaderDetail",
             width: "*",
             margin: [30, 0, 0, 0],

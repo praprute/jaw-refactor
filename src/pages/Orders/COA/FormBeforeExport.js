@@ -121,7 +121,7 @@ const FormBeforeExport = props => {
   const [selectedGroup3, setSelectedGroup3] = useState(null)
   const [customerNameSelect, setCustomerNameSelect] = useState(null)
   const [ApproveValue, setApproveValue] = useState(null)
-  const [ReportValue, setReportValue] = useState(null)
+  const [ReportValue , setReportValue] = useState(null)
   const [valuesExportRow1, setValuesExportRow1] = useState({
     To: customerNameSelect,
     DCL1: "BEST If Used By:",
@@ -330,7 +330,9 @@ const FormBeforeExport = props => {
       valuesChem,
       MicroPDF,
       valuesMicro,
-      customerNameSelect
+      customerNameSelect,
+      ApproveValue,
+      ReportValue ,
     )
   }
   
