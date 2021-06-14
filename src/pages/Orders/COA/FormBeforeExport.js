@@ -219,7 +219,7 @@ const FormBeforeExport = props => {
       setvaluesChem({
         TN: `${paresIndex.chem[0].val}  g/L`,
         PH: `${paresIndex.chem[3].val} / ${paresIndex.chem[3].temp} \u00B0C`,
-        Protein: `${(paresIndex.chem[0].val)*0.625}  g/L`,
+        Protein: `${((paresIndex.chem[0].val)*0.625).toFixed(2)}  g/L`,
         Salt: `${paresIndex.chem[1].val}% w/v`,
         Histamine: `${paresIndex.chem[2].val} ppm`,
         SPG: `${paresIndex.chem[6].val}/${paresIndex.chem[6].temp} \u00B0C`,
@@ -2586,7 +2586,26 @@ const FormBeforeExport = props => {
                   </Col>
                 </div>
               
-                <div
+                
+              </React.Fragment>
+            ) : null}
+          </React.Fragment>
+        ) : null}
+      </Row>
+    )
+  }
+  return (
+    <React.Fragment>
+      <div className="page-content">
+        <div style={{ width: "100%", height: "100%", background: "" }}>
+          {headerForm()}
+          <br />
+          {RefForm()}
+          {headDetail()}
+          <br />
+          {Analysis()}
+          {/* <h1>FormBeforeExport</h1> */}
+          <div
             style={{
               display: "flex",
               width: "100%",
@@ -2633,27 +2652,6 @@ const FormBeforeExport = props => {
               </Button>
             </Col>
           </div>
-              </React.Fragment>
-            ) : null}
-          </React.Fragment>
-        ) : null}
-      </Row>
-    )
-  }
-  return (
-    <React.Fragment>
-      <div className="page-content">
-        <div style={{ width: "100%", height: "100%", background: "" }}>
-          {headerForm()}
-          <br />
-          {RefForm()}
-          {headDetail()}
-          <br />
-          {Analysis()}
-          {/* <h1>FormBeforeExport</h1> */}
-          <br></br>
-          <br></br>
-          <br></br>
           <br></br>
           <br></br>
           <br></br>
