@@ -29,6 +29,7 @@
     "echarts-for-react": "^2.0.16",
     "firebase": "^8.2.3",
     "google-maps-react": "^2.0.6",
+    "gulp": "^4.0.2",
     "i": "^0.3.6",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
@@ -162,6 +163,7 @@
   "devDependencies": {
     "eslint-config-standard-react": "^9.2.0",
     "eslint-plugin-react": "^7.20.6",
+    "pdfmake-font-generator": "^1.0.1",
     "prettier": "^2.1.1"
   }
 }

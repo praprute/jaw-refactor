@@ -17,20 +17,45 @@ import {
   TabContent,
   TabPane,
 } from "reactstrap"
+import Select from "react-select"
+import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import {UpdatexportCOA} from '../api'
+import { UpdatexportCOA } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
 import { isAuthenticated } from "../../Authentication/api"
 import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
-import pdfFonts from "pdfmake/build/vfs_fonts"
+// import pdfFonts from "pdfmake/build/vfs_fonts"
+import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
 import "./ModalFullScreen.css"
-
+import { getCustomers } from "../api"
+import e from "cors"
+const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
+pdfMake.fonts = {
+  Roboto: {
+    normal:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+    bold:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    italics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
+    bolditalics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
+  },
+  // Kanit Font
+  Sarabun: {
+    // 3. set Kanit font
+    normal: "Sarabun-Regular.ttf",
+    bold: "Sarabun-Medium.ttf",
+    italics: "Sarabun-Italic.ttf",
+    bolditalics: "Sarabun-MediumItalic.ttf",
+  },
+}
 const FormBeforeExport = props => {
   const history = useHistory()
   const { user, token } = isAuthenticated()
@@ -39,12 +64,12 @@ const FormBeforeExport = props => {
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
   const [valuesMicro, setvaluesMicro] = useState({
-    TPC:"",
-    YeaseandMold:"",
-    Ecoil:"",
-    Coliform:"",
-    Saureus:"",
-    Salmonella:""
+    TPC: "",
+    YeaseandMold: "",
+    Ecoil: "",
+    Coliform: "",
+    Saureus: "",
+    Salmonella: "",
   })
 
   const [valuesProtein, setValuesProtein] = useState({
@@ -53,7 +78,7 @@ const FormBeforeExport = props => {
   const [spcChem, setSpcChem] = useState({})
   const [spcMicro, setSpcMicro] = useState({})
 
-  const [MicroRender  , setMicroRender] = useState(false)
+  const [MicroRender, setMicroRender] = useState(false)
   const [MicroAnalysis, setMicroAnalysis] = useState(true)
 
   const [DisProductDate, setDisProductDate] = useState(true)
@@ -71,15 +96,34 @@ const FormBeforeExport = props => {
   const [DisAN, setDisAN] = useState(true)
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
-
+  const [CustomersOption, setCustomers] = useState([])
+  const [ApproveSelect, setApproveSelect] = useState([
+    {
+      label:'DCC',
+      value: 'DCC'
+    },
+    {
+      label:'QMR',
+      value: 'QMR'
+    },
+    {
+      label:'QA',
+      value:'QA'
+    },
+  ])
   const [valuesExportRef, setValuesExportRef] = useState({
     refNo: "",
     date: "",
     pageNo: "",
   })
-  
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [selectedGroup2, setSelectedGroup2] = useState(null)
+  const [selectedGroup3, setSelectedGroup3] = useState(null)
+  const [customerNameSelect, setCustomerNameSelect] = useState(null)
+  const [ApproveValue, setApproveValue] = useState(null)
+  const [ReportValue, setReportValue] = useState(null)
   const [valuesExportRow1, setValuesExportRow1] = useState({
-    To: "",
+    To: customerNameSelect,
     DCL1: "BEST If Used By:",
     DCL2: "",
     DCL3: "",
@@ -103,21 +147,38 @@ const FormBeforeExport = props => {
     TestDate: "",
   })
 
+  useEffect(async () => {
+    try {
+      let customerName = await getCustomers(token)
+      // console.log("customerName : ", customerName.message)
+      let index = []
+      for (let i = 0; i < customerName.message.length; i++) {
+        // console.log("sdfsd ", customerName.message[i])
+        let detail = {
+          label: customerName.message[i].Name,
+          value: customerName.message[i].Name,
+        }
+        index.push(detail)
+      }
+      setCustomers(index)
+    } catch (err) {}
+  }, [])
+
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-    //   console.log("index : ", paresIndex)
+      //   console.log("index : ", paresIndex)
 
       setValuesExportRow2({
         ProductionDate: "",
-        DaliveryDate: Moment(new Date()).format("DD/MM/YY")
+        DaliveryDate: Moment(new Date()).format("DD/MM/YY"),
       })
 
       setValuesExportPNandPS({
         ProductName: paresIndex.Orders.ProductName,
         PackSize: paresIndex.Orders.Size,
       })
-      
+
       setValuesQuantity({
         Quantity: paresIndex.Orders.Quantity,
         TestDate: Moment(paresIndex.Orders.timestamp).format("DD/MM/YY"),
@@ -158,7 +219,7 @@ const FormBeforeExport = props => {
       setvaluesChem({
         TN: `${paresIndex.chem[0].val}  g/L`,
         PH: `${paresIndex.chem[3].val} / ${paresIndex.chem[3].temp} \u00B0C`,
-        Protein: "",
+        Protein: `${(paresIndex.chem[0].val)*0.625}  g/L`,
         Salt: `${paresIndex.chem[1].val}% w/v`,
         Histamine: `${paresIndex.chem[2].val} ppm`,
         SPG: `${paresIndex.chem[6].val}/${paresIndex.chem[6].temp} \u00B0C`,
@@ -168,50 +229,50 @@ const FormBeforeExport = props => {
         Acidity: paresIndex.chem[8].val,
         Viscosity: paresIndex.chem[9].val,
       })
-    let TPC = ""
-    let YeaseandMold = ""
-    let Ecoil = ""
-    let Coliform = ""
-    let Saureus = ""
-    let Salmonella = "NOT DETECTED"
+      let TPC = ""
+      let YeaseandMold = ""
+      let Ecoil = ""
+      let Coliform = ""
+      let Saureus = ""
+      let Salmonella = "NOT DETECTED"
 
-    if(paresIndex.micro[0].val < 250){
+      if (paresIndex.micro[0].val < 250) {
         TPC = `< 250 CFU/g`
-    }else{
+      } else {
         TPC = `${paresIndex.micro[0].val} CFU/g`
-    }
+      }
 
-    if(paresIndex.micro[1].val < 10){
+      if (paresIndex.micro[1].val < 10) {
         YeaseandMold = `< 10 CFU/g`
-    }else{
+      } else {
         YeaseandMold = `${paresIndex.micro[1].val} CFU/g`
-    }
+      }
 
-    if(paresIndex.micro[2].val < 3){
+      if (paresIndex.micro[2].val < 3) {
         Ecoil = `NOT DETECTED`
-    }else{
+      } else {
         Ecoil = `${paresIndex.micro[2].val} MPN/g`
-    }
+      }
 
-    if(paresIndex.micro[3].val < 3){
+      if (paresIndex.micro[3].val < 3) {
         Coliform = `NOT DETECTED`
-    }else{
+      } else {
         Coliform = `${paresIndex.micro[3].val} MPN/g`
-    }
+      }
 
-    if(paresIndex.micro[4].val < 3){
+      if (paresIndex.micro[4].val < 3) {
         Saureus = `NOT DETECTED`
-    }else{
+      } else {
         Saureus = `${paresIndex.micro[4].val} MPN/g`
-    }
-    
+      }
+
       setvaluesMicro({
-          TPC:TPC,
-          YeaseandMold:YeaseandMold,
-          Ecoil:Ecoil,
-          Coliform:Coliform,
-          Saureus:Saureus,
-          Salmonella:Salmonella
+        TPC: TPC,
+        YeaseandMold: YeaseandMold,
+        Ecoil: Ecoil,
+        Coliform: Coliform,
+        Saureus: Saureus,
+        Salmonella: Salmonella,
       })
       return JSON.parse(localStorage.getItem("JawIndexExport"))
     } else {
@@ -220,9 +281,9 @@ const FormBeforeExport = props => {
   }, [])
 
   const handleUpdateStatusCoa = async () => {
-    try{
+    try {
       let update = UpdatexportCOA(token)
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
@@ -235,22 +296,22 @@ const FormBeforeExport = props => {
     let dataRow3 = [{ values: valuesExportRow3.ExpirationDate }, { values: "" }]
 
     let AnalysisRender = {
-        DisTN:DisTN,
-        DisProtein:DisProtein,
-        DisPH:DisPH,
-        DisSalt:DisSalt,
-        DisHistamine:DisHistamine,
-        DisSPG:DisSPG,
-        DisAW:DisAW,
-        DisTss:DisTss,
-        DisAN:DisAN,
-        DisAcidity:DisAcidity,
-        DisViscosity:DisViscosity,
+      DisTN: DisTN,
+      DisProtein: DisProtein,
+      DisPH: DisPH,
+      DisSalt: DisSalt,
+      DisHistamine: DisHistamine,
+      DisSPG: DisSPG,
+      DisAW: DisAW,
+      DisTss: DisTss,
+      DisAN: DisAN,
+      DisAcidity: DisAcidity,
+      DisViscosity: DisViscosity,
     }
 
     let MicroPDF = {
-        MicroRender  ,
-        MicroAnalysis
+      MicroRender,
+      MicroAnalysis,
     }
 
     // console.log("AnalysisRender", AnalysisRender)
@@ -268,10 +329,11 @@ const FormBeforeExport = props => {
       spcChem,
       valuesChem,
       MicroPDF,
-      valuesMicro
+      valuesMicro,
+      customerNameSelect
     )
   }
-
+  
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
     // console.log(valuesChem)
@@ -315,9 +377,42 @@ const FormBeforeExport = props => {
 
   const handleChangeProtein = name => event => {
     // setValuesProtein({ ...valuesProtein, [name]: event.target.value })
-    setvaluesChem({...valuesChem, [name]: event.target.value})
+    setvaluesChem({ ...valuesChem, [name]: event.target.value })
   }
 
+
+  const handleSelectGroup = (selectedGroup) => {
+    setSelectedGroup(selectedGroup)
+    
+  }
+
+  const handleSelectGroup2 = (selectedGroup2) => {
+    setSelectedGroup2(selectedGroup2)
+    
+  }
+
+  const handleSelectGroup3 = (selectedGroup3) => {
+    setSelectedGroup3(selectedGroup3)
+    
+  }
+
+  const handleChangeValueCustomer = (e) => {
+   setCustomerNameSelect(e)
+    console.log(e)
+  }
+  const handleChangeApproveValue = (e) => {
+    setApproveValue(e)
+     console.log(e)
+   }
+   const handleChangeReportValue = (e) => {
+    setReportValue(e)
+     console.log(e)
+   }
+
+  // ApproveSelect, setApproveSelect
+
+  // const [ApproveValue, setApproveValue] = useState(null)
+  // const [ReportValue, setReportValue] = useState(null)
   const headerForm = () => {
     return (
       <Row
@@ -529,11 +624,32 @@ const FormBeforeExport = props => {
                 paddingRight: "10px",
               }}
             >
-              <Input
+              {/* <Input
                 name="To"
                 onChange={handleChangeDetailRow1("To")}
                 value={valuesExportRow1.To}
-              />
+              /> */}
+              {/* <select
+                name="To"
+                onChange={handleChangeDetailRow1("To")}
+                value={CustomersOption[0].Name}
+                className="form-control"
+              >
+                {CustomersOption.map((index, i) => (
+                  <option value={index.Name}>{index.Name}</option>
+                ))}
+              </select> */}
+
+              <Select
+                  value={selectedGroup}
+                  name="To"
+                  onChange={e => {
+                    handleSelectGroup()
+                    handleChangeValueCustomer(e.value)
+                  }}
+                  options={CustomersOption}
+                />
+              
             </div>
           </Col>
           <Col
@@ -2071,7 +2187,7 @@ const FormBeforeExport = props => {
                         paddingRight: "30px",
                       }}
                     >
-                      <Input value={valuesMicro.YeaseandMold}/>
+                      <Input value={valuesMicro.YeaseandMold} />
                     </div>
                   </Col>
                 </div>
@@ -2131,7 +2247,7 @@ const FormBeforeExport = props => {
                         paddingRight: "30px",
                       }}
                     >
-                      <Input value={valuesMicro.Ecoil}/>
+                      <Input value={valuesMicro.Ecoil} />
                     </div>
                   </Col>
                 </div>
@@ -2191,7 +2307,7 @@ const FormBeforeExport = props => {
                         paddingRight: "30px",
                       }}
                     >
-                      <Input value={valuesMicro.Coliform}/>
+                      <Input value={valuesMicro.Coliform} />
                     </div>
                   </Col>
                 </div>
@@ -2251,7 +2367,7 @@ const FormBeforeExport = props => {
                         paddingRight: "30px",
                       }}
                     >
-                      <Input value={valuesMicro.Saureus}/>
+                      <Input value={valuesMicro.Saureus} />
                     </div>
                   </Col>
                 </div>
@@ -2311,7 +2427,7 @@ const FormBeforeExport = props => {
                         paddingRight: "30px",
                       }}
                     >
-                      <Input  value={valuesMicro.Salmonella}/>
+                      <Input value={valuesMicro.Salmonella} />
                     </div>
                   </Col>
                 </div>
@@ -2467,6 +2583,54 @@ const FormBeforeExport = props => {
                     </div>
                   </Col>
                 </div>
+              
+                <div
+            style={{
+              display: "flex",
+              width: "100%",
+              height: "100%",
+              alignItems: "center",
+            }}
+          >
+            <Col sm="4" style={{padding:'5px'}}>
+              Report By ................................
+                <Select
+                  value={selectedGroup2}
+                  name="To"
+                  onChange={e => {
+                    handleSelectGroup2()
+                    handleChangeApproveValue(e.value)
+                  }}
+                  options={ApproveSelect}
+                />
+            </Col>
+            <Col sm="4" style={{padding:'5px'}}>
+            Approve By ................................
+              <Select
+                  value={selectedGroup3}
+                  name="To"
+                  onChange={e => {
+                    handleSelectGroup3()
+                    handleChangeReportValue(e.value)
+                  }}
+                  options={ApproveSelect}
+                />
+            
+            </Col>
+            <Col sm="4" style={{ textAlign: "right", paddingRight: "0px" }}>
+              <Button
+                color="primary"
+                size="lg"
+                style={{ width: "60%" }}
+                onClick={() => {
+                  handleExportPDF()
+                  handleUpdateStatusCoa()
+                }}
+              >
+                Print COA
+              </Button>
+            </Col>
+          </div>
               </React.Fragment>
             ) : null}
           </React.Fragment>
@@ -2486,7 +2650,14 @@ const FormBeforeExport = props => {
           {Analysis()}
           {/* <h1>FormBeforeExport</h1> */}
           <br></br>
-          <div
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          {/* <div
             style={{
               display: "flex",
               width: "100%",
@@ -2494,12 +2665,34 @@ const FormBeforeExport = props => {
               alignItems: "center",
             }}
           >
-            <Col sm="6"></Col>
-            <Col sm="6" style={{ textAlign: "right", paddingRight: "0px" }}>
+            <Col sm="4" style={{padding:'5px'}}>
+                <Select
+                  value={selectedGroup2}
+                  name="To"
+                  onChange={e => {
+                    handleSelectGroup2()
+                    handleChangeApproveValue(e.value)
+                  }}
+                  options={ApproveSelect}
+                />
+            </Col>
+            <Col sm="4" style={{padding:'5px'}}>
+              <Select
+                  value={selectedGroup3}
+                  name="To"
+                  onChange={e => {
+                    handleSelectGroup3()
+                    handleChangeReportValue(e.value)
+                  }}
+                  options={ApproveSelect}
+                />
+            
+            </Col>
+            <Col sm="4" style={{ textAlign: "right", paddingRight: "0px" }}>
               <Button
                 color="primary"
                 size="lg"
-                style={{ width: "40%" }}
+                style={{ width: "60%" }}
                 onClick={() => {
                   handleExportPDF()
                   handleUpdateStatusCoa()
@@ -2508,7 +2701,7 @@ const FormBeforeExport = props => {
                 Print COA
               </Button>
             </Col>
-          </div>
+          </div> */}
           {/* <p>{JSON.stringify(valuesMicro)}</p> */}
         </div>
       </div>

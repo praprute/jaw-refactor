@@ -424,6 +424,22 @@ export const UpdateStatusPassToCheck = (token,index) => {
         })
         .catch(err => console.log(err));
 }
+
+export const getCustomers = (token) => {
+    return fetch(`${API}/getCustomers`, {
+        method: "GET",
+        mode: 'cors',
+        headers: {
+            Accept: 'application/json',
+            "Content-type": "application/json",
+            Authorization:`Bearer ${token}`
+          }
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+}
 // const fetchDetail = (token, idOrders) => {
   //   readTestResultlasted(token, idOrders).then(data => {
   //     console.log(' readTestResultlasted :',data)
@@ -441,3 +457,5 @@ export const UpdateStatusPassToCheck = (token,index) => {
   //     }
   //   })
   // }UpdatexportCOA
+
+  

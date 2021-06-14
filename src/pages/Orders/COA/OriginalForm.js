@@ -1,3 +1,22 @@
+import pdfMake from "pdfmake/build/pdfmake"
+// import pdfFonts from "pdfmake/build/vfs_fonts"
+import pdfFonts from "../../../assets/custom-fonts"
+pdfMake.vfs = pdfFonts.pdfMake.vfs
+pdfMake.fonts = {
+  Roboto: {
+    normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
+    bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
+    italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
+    bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
+  },
+  // Kanit Font
+  Sarabun: { // 3. set Kanit font
+    normal: 'Sarabun-Regular.ttf',
+    bold: 'Sarabun-Medium.ttf',
+    italics: 'Sarabun-Italic.ttf',
+    bolditalics: 'Sarabun-MediumItalic.ttf'          
+  }
+}
 export const originalFormCOA = (
   logo,
   ref,
@@ -11,7 +30,8 @@ export const originalFormCOA = (
   spcChem,
   valuesChem,
   MicroRender,
-  valuesMicro
+  valuesMicro,
+  selectedGroupNameTo
 ) => {
   let DetailOrderRow1 = []
   let DetailOrderRow2 = []
@@ -26,7 +46,7 @@ export const originalFormCOA = (
         text: ``,
         style: "RefBoxValue",
         alignment: "left",
-        margin: [0, 0, 0, 15],
+        margin: [0, 0, 0, 5],
         border: [true, true, false, false],
       },
       {
@@ -34,7 +54,7 @@ export const originalFormCOA = (
         style: "RefBoxValue",
         alignment: "left",
         bold: true,
-        margin: [0, 0, 0, 15],
+        margin: [0, 0, 0, 5],
         border: [false, true, false, false],
       },
       {
@@ -42,7 +62,7 @@ export const originalFormCOA = (
         style: "RefBoxValue",
         alignment: "left",
         bold: true,
-        margin: [0, 0, 0, 10],
+        margin: [0, 0, 0, 5],
         border: [false, true, true, false],
       },
     ],
@@ -366,20 +386,20 @@ export const originalFormCOA = (
       [
         {
           text: `MICROBIOLOGICAL`,
-          style: "invoiceTitle",
+          style: "RefBoxValue",
           alignment: "left",
-          fontSize: 15,
+        //   fontSize: 8,
           decoration: "underline",
           // italics: true, ตัวเอียง
           bold: true,
-          margin: [0, 5, 0, 5],
+          margin: [0, 0, 0, 5],
           border: [true, false, false, false],
         },
         {
           text: ``,
           style: "RefBoxValue",
           alignment: "left",
-          margin: [0, 10, 0, 5],
+          margin: [0, 0, 0, 5],
           bold: true,
           border: [false, false, false, false],
         },
@@ -387,7 +407,7 @@ export const originalFormCOA = (
           text: ``,
           style: "RefBoxValue",
           alignment: "left",
-          margin: [0, 10, 0, 5],
+          margin: [0, 0, 0, 5],
           bold: true,
           border: [false, false, true, false],
         },
@@ -412,9 +432,11 @@ export const originalFormCOA = (
           columns: [
             {
               text: `${valuesMicro.TPC}`,
+              style: "RefBoxValue",
             },
             {
               text: `(Every lot)`,
+              style: "RefBoxValue",
             },
           ],
           margin: [0, 0, 0, 5],
@@ -442,9 +464,11 @@ export const originalFormCOA = (
           columns: [
             {
               text: `${valuesMicro.YeaseandMold}`,
+              style: "RefBoxValue",
             },
             {
               text: `(Every lot)`,
+              style: "RefBoxValue",
             },
           ],
           margin: [0, 0, 0, 5],
@@ -475,11 +499,14 @@ export const originalFormCOA = (
               text: `${valuesMicro.Ecoil}`,
               width: "auto",
               alignment: "left",
+              style: "RefBoxValue",
             },
             {
               text: `(Every lot)`,
               width: "auto",
-              alignment: "left",
+              alignment: "right",
+              margin:[11,0,0,0],
+              style: "RefBoxValue",
             },
           ],
           margin: [0, 0, 0, 5],
@@ -510,11 +537,14 @@ export const originalFormCOA = (
               text: `${valuesMicro.Coliform}`,
               width: "auto",
               alignment: "left",
+              style: "RefBoxValue",
             },
             {
               text: `(Every lot)`,
               width: "auto",
-              alignment: "left",
+              alignment: "right",
+              style: "RefBoxValue",
+              margin:[11,0,0,0],
             },
           ],
           margin: [0, 0, 0, 5],
@@ -545,11 +575,14 @@ export const originalFormCOA = (
               text: `${valuesMicro.Saureus}`,
               width: "auto",
               alignment: "left",
+              style: "RefBoxValue",
             },
             {
               text: `(Every lot)`,
               width: "auto",
-              alignment: "left",
+              alignment: "right",
+              style: "RefBoxValue",
+              margin:[11,0,0,0],
             },
           ],
           margin: [0, 0, 0, 5],
@@ -580,11 +613,14 @@ export const originalFormCOA = (
               text: `${valuesMicro.Salmonella}`,
               width: "auto",
               alignment: "left",
+              style: "RefBoxValue",
             },
             {
               text: `(Every lot)`,
               width: "auto",
-              alignment: "left",
+              alignment: "right",
+              style: "RefBoxValue",
+              margin:[11,0,0,0],
             },
           ],
           margin: [0, 0, 0, 5],
@@ -597,23 +633,25 @@ export const originalFormCOA = (
         {
           text: `Characteristics`,
           bold: true,
-          margin: [0, 10, 0, 0],
+          fontSize: "10",
+          margin: [0, 5, 0, 0],
           border: [true, false, false, true],
         },
         {
           text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
           fontSize: "10",
           bold: false,
-          margin: [0, 10, 0, 0],
+          margin: [0, 5, 0, 0],
           border: [false, false, false, true],
         },
         {
             
           columns: [
             {
+              fontSize: "10",
               stack: [
                 {
-                  margin: [0, 0, 0, 10],
+                  margin: [0, 0, 0, 5],
                   columns: [
                     {
                       text: `Appearance`,
@@ -630,7 +668,7 @@ export const originalFormCOA = (
                   ],
                 },
                 {
-                  margin: [0, 0, 0, 10],
+                  margin: [0, 0, 0, 5],
                   columns: [
                     {
                       text: `Order`,
@@ -647,7 +685,7 @@ export const originalFormCOA = (
                   ],
                 },
                 {
-                  margin: [0, 0, 0, 10],
+                  margin: [0, 0, 0, 5],
                   columns: [
                     {
                       text: `Taste`,
@@ -664,7 +702,7 @@ export const originalFormCOA = (
                   ],
                 },
                 {
-                  margin: [0, 0, 0, 10],
+                  margin: [0, 0, 0, 5],
                   columns: [
                     {
                       text: `Color`,
@@ -683,7 +721,7 @@ export const originalFormCOA = (
               ],
             },
           ],
-          margin: [-50, 10, 0, 0],
+          margin: [-50, 5, 0, 0],
           border: [false, false, true, true],
         },
       ]
@@ -695,6 +733,7 @@ export const originalFormCOA = (
               text: `Characteristics`,
               bold: true,
               margin: [0, 10, 0, 0],
+              fontSize: "10",
               border: [true, false, false, true],
             },
             {
@@ -702,6 +741,7 @@ export const originalFormCOA = (
               fontSize: "10",
               bold: false,
               margin: [0, 10, 0, 0],
+              fontSize: "10",
               border: [false, false, false, true],
             },
             {
@@ -896,14 +936,14 @@ export const originalFormCOA = (
 //   console.log("DetailOrderRow2 :", DetailOrderRow2)
 //   console.log("dataAnalysis :", dataAnaly)
   var docDefinition = {
-    pageMargins: [30, 25, 15, 25],
+    pageMargins: [35, 20, 15, 20],
     content: [
       {
         alignment: "justify",
         columns: [
           {
             image: `data:image/png;base64,${logo}`,
-            width: 80,
+            width: 60,
           },
           {
             stack: [
@@ -958,12 +998,12 @@ export const originalFormCOA = (
           {
             text: " ",
             style: "codeDoc",
-            width: 80,
+            width: 60,
           },
         ],
       },
       {
-        margin: [0, 20, 0, 0],
+        margin: [0, 5, 0, 0],
         columns: [
           {},
           {},
@@ -1020,6 +1060,7 @@ export const originalFormCOA = (
           },
         ],
       },
+
       {
         margin: [0, 0, 0, 0],
         table: {
@@ -1028,9 +1069,10 @@ export const originalFormCOA = (
           body: [
             [
               {
-                text: `TO. ${row1.To}`,
+                text: `TO. ${selectedGroupNameTo}`,
                 style: "RefBoxValue",
                 alignment: "left",
+                font: 'Sarabun',
                 border: [true, true, false, false],
               },
               {
@@ -1096,6 +1138,7 @@ export const originalFormCOA = (
                 text: `Quantity: ${QuantityAndTestDate.Quantity}`,
                 style: "RefBoxValue",
                 alignment: "left",
+                margin: [0, 0, 0, 0],
                 border: [true, false, false, true],
               },
               {
@@ -1119,7 +1162,7 @@ export const originalFormCOA = (
       },
 
       {
-        margin: [0, 35, 0, 0],
+        margin: [0, 25, 0, 0],
         alignment: "justify",
         columns: [
           {
@@ -1142,19 +1185,33 @@ export const originalFormCOA = (
             text: "DCC",
             style: "invoiceTitleHeaderDetail",
             width: "*",
-            margin: [40, 0, 0, 0],
+            margin: [30, 0, 0, 0],
           },
           {
             text: "QMR",
             style: "invoiceTitleHeaderDetail",
             width: "*",
-            margin: [40, 0, 0, 0],
+            margin: [30, 0, 0, 0],
           },
         ],
+        // pageBreak: 'after'
       },
       // TOTAL
     ],
+    // defaultStyle: { // 4. default style 'KANIT' font to test
+    //   font: 'Sarabun'
+    // },
     styles: {
+        RefBoxValue:{
+            fontSize:10,
+            font: 'Sarabun',
+        },
+        invoiceTitleHeaderDetail: {
+            fontSize: 8,
+            bold: true,
+            alignment: "center",
+            margin: [0, 0, 0, 0],
+          },
       rightRef: {
         alignment: "right",
       },
@@ -1192,17 +1249,12 @@ export const originalFormCOA = (
       },
       // Invoice Title
       invoiceTitle: {
-        fontSize: 15,
+        fontSize: 13,
         bold: true,
         alignment: "center",
         margin: [0, 0, 0, 0],
       },
-      invoiceTitleHeaderDetail: {
-        fontSize: 10,
-        bold: true,
-        alignment: "center",
-        margin: [0, 0, 0, 0],
-      },
+      
       HeaderDetail: {
         fontSize: 11,
         bold: true,
