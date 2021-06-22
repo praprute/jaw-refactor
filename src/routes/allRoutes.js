@@ -173,6 +173,7 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
 
 import FormBeforeExport from '../pages/Orders/COA/FormBeforeExport'
+import FormBeforeExport2 from '../pages/Orders/COA2/FormBeforeExport2'
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -182,6 +183,7 @@ const userRoutes = [
   { path: "/Orders", component: Orderpage },
   { path: "/Labatory", component: Labatorypage},
   { path: "/ExportForm", component: FormBeforeExport},
+  // { path: "/ExportForm2", component: FormBeforeExport2},
 
   //Crypto
   { path: "/crypto-wallet", component: CryptoWallet },

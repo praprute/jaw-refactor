@@ -208,7 +208,7 @@ const ModalTestReport = props => {
     
     if (SumMeanScore == SumScore) {
       try {
-        let updatePassToCheck =  UpdateStatusPassToCheck(token,uid)
+        let updatePassToCheck =  UpdateStatusPassToCheck(token,uid, detailById.ProductName)
       } catch (err) {
         console.log(err)
       }

@@ -19,7 +19,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "../Tables/datatables.scss"
 import Moment from "moment"
 //get api
-import { getAllOrder, readOrderById, exportCOA } from "./api"
+import { getAllOrder, readOrderById, exportCOA,loadHalalLogo } from "./api"
 import { map, result } from "lodash"
 import { orders } from "common/data"
 import { isAuthenticated } from "./../Authentication/api"
@@ -146,48 +146,84 @@ const ModalDetail = props => {
     }
   }, [orders, bio, tr])
 
-  const handleExport = () => {
+  const handleExport = async () => {
     // console.log('count : ', score)
     // console.log('testedScore : ', scoreTested)
     let image = { }
-    exportCOA(token).then(data => {
-        if (data) {
-        //   console.log(data)
-        //   setimgbs64(data.message)
+    let halalLogo = {}
+    try{
+      let data = await exportCOA(token)
+      let halal = await loadHalalLogo(token)
+      if (data) {
         image = {
             img:data.message
         }
-        }
-        // console.log(image)
-    if (scoreTested != 0 && score != 0) {
-      if (scoreTested == score) {
-        // console.log("orders : ", orders)
-        // console.log("tr : ", tr)
-        let index = {
-          ProductName: orders.ProductName,
-          PO: orders.PO,
-          BBE: orders.BBE,
-          PORD: orders.PORD,
-          Quantity: orders.Quantity,
-          Size: orders.Size,
-
-          chem: tr[0],
-          micro: tr[1],
-
-          logo:image.img,
-
-          Orders:orders
-        }
-        if (typeof window !== "undefined") {
-            localStorage.setItem("JawIndexExport", JSON.stringify(index));
-        }
-        console.log("index : ", index)
-        // toggleCOA()
-      } else {
-        setconfirm_alert(true)
       }
+      if(halal){
+        halalLogo = {
+          img:halal.message
+        }
+      }
+      if (scoreTested != 0 && score != 0) {
+        if (scoreTested == score) {
+          let index = {
+            ProductName: orders.ProductName,
+            PO: orders.PO,
+            BBE: orders.BBE,
+            PORD: orders.PORD,
+            Quantity: orders.Quantity,
+            Size: orders.Size,
+  
+            chem: tr[0],
+            micro: tr[1],
+  
+            logo:image.img,
+            halal:halalLogo.img,
+            Orders:orders
+          }
+          if (typeof window !== "undefined") {
+              localStorage.setItem("JawIndexExport", JSON.stringify(index));
+          }
+          console.log("index : ", index)
+        } else {
+          setconfirm_alert(true)
+        }
+      }
+    }catch(err){
+      console.log(err)
     }
-})
+//     exportCOA(token).then(data => {
+//         if (data) {
+//         image = {
+//             img:data.message
+//         }
+//         }
+//     if (scoreTested != 0 && score != 0) {
+//       if (scoreTested == score) {
+//         let index = {
+//           ProductName: orders.ProductName,
+//           PO: orders.PO,
+//           BBE: orders.BBE,
+//           PORD: orders.PORD,
+//           Quantity: orders.Quantity,
+//           Size: orders.Size,
+
+//           chem: tr[0],
+//           micro: tr[1],
+
+//           logo:image.img,
+
+//           Orders:orders
+//         }
+//         if (typeof window !== "undefined") {
+//             localStorage.setItem("JawIndexExport", JSON.stringify(index));
+//         }
+//         console.log("index : ", index)
+//       } else {
+//         setconfirm_alert(true)
+//       }
+//     }
+// })
   }
 
   function printPDF() {

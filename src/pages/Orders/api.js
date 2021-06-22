@@ -373,6 +373,25 @@ export const exportCOA = (token) => {
         .catch(err => console.log(err));
 }
 
+export const loadHalalLogo = (token) => {
+    return fetch(`${API}/loadHalalLogo`, {
+        method: "POST",
+        mode: 'cors',
+        headers: {
+            Accept: 'application/json',
+            "Content-type": "application/json",
+            Authorization:`Bearer ${token}`
+          },
+        //   body : JSON.stringify(index)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+}
+
+
+
 export const UpdatexportCOA = (token,index) => {
     return fetch(`${API}/UpdatexportCOA`, {
         method: "POST",
@@ -408,7 +427,11 @@ export const UpdatexportPASS = (token,index) => {
 }
 
 
-export const UpdateStatusPassToCheck = (token,index) => {
+export const UpdateStatusPassToCheck = (token,index,ProductName) => {
+    let data = {
+        idOrders : index,
+        ProductName : ProductName
+    }
     return fetch(`${API}/UpdateStatus/PassToCheck`, {
         method: "POST",
         mode: 'cors',
@@ -417,7 +440,7 @@ export const UpdateStatusPassToCheck = (token,index) => {
             "Content-type": "application/json",
             Authorization:`Bearer ${token}`
           },
-          body : JSON.stringify(index)
+          body : JSON.stringify(data)
     })
         .then(response => {
             return response.json();
