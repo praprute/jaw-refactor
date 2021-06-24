@@ -2464,9 +2464,11 @@ const FormBeforeExport2 = props => {
                 
               </React.Fragment>
             ) : null}
-            {Sinsory()}
+            {/* {Sinsory()} */}
           </React.Fragment>
         ) : null}
+{Sinsory()}
+
       </Row>
     )
   }
