@@ -265,6 +265,10 @@ export const Addtestreport = (token, index) => {
 //Recheck
 export const Recheck = (token, index) => {
     // console.log('index recheck : ', index)
+    // let data = {
+    //     idOrders : index,
+    //     ProductName : ProductName
+    // }
     return fetch(`${API}/Recheck`, {
         method: "POST",
         mode: 'cors',

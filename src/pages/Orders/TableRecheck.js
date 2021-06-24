@@ -131,11 +131,27 @@ const [columnTable, setColumnTable] = useState([
 
   const ModalDe = <ModalDetail />
 
-  const handleReSent = (token, idOrders) => {
-    // console.log('idOrders : ' ,idOrders)
+  const handleReSent = (token, idOrders, data) => {
+    // console.log('data : ' ,data)
     var id = {
-      idOrders : idOrders
+      idOrders : idOrders,
+      ProductName: data.ProductName,
+      Spc : data.name
     }
+//      BBE: null
+//      PO: null
+//      PORD: null
+//      Priority: "0"
+//      ProductName: "test 1 "
+//      Quantity: null
+//      Recheck: 5
+//      Size: null
+//      Status: "2"
+//      idOrders: 702
+//      idScfChem: 1
+//      idScfMicro: 1
+//      name: "CN"
+//      timestamp: "2021-06-24 21:24:25"
     reSend(token, id).then(data => {
       // console.log('resend : ',data)
       if(data){
@@ -187,7 +203,7 @@ const [columnTable, setColumnTable] = useState([
                 </span> ,
                 Resend: <span
                 onClick={() => {
-                  handleReSent(token ,data.message[i].idOrders)}
+                  handleReSent(token ,data.message[i].idOrders, data.message[i])}
                 }
                 ><button 
                     type="button"

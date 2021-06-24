@@ -417,10 +417,19 @@ const ModalTestReport = props => {
 
   const handleRecheck = event => {
     event.preventDefault()
-    // console.log('values.Recheck : ',values.Recheck)
+    let indexRecheck = [];
+    resultChem.forEach(data => {
+      if((data.render > 0) && (data.coa == false)){
+        // console.log('data  : ', data.key)
+        indexRecheck.push(data.key)
+      }
+    })
+    console.log('resultChem.Recheck : ',resultChem)
     var index = {
       idOrders: values.idOrders,
       Recheck: values.Recheck,
+      ProductName: values.ProductName,
+      listRecheck: indexRecheck
     }
     Recheck(token, index).then(data => {
       if (data) {
