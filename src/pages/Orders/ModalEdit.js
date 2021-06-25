@@ -61,6 +61,10 @@ const ModalEdit = props => {
   const [Acidity, setAcidity] = useState(false)
   const [Viscosity, setViscosity] = useState(false)
 
+  const [SaltMeter, setSaltMeter] = useState(false)
+  const [Color, setColor] = useState(false)
+
+
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
   }
@@ -127,6 +131,8 @@ const ModalEdit = props => {
       AN: AN,
       Acidity: Acidity,
       Viscosity: Viscosity,
+      SaltMeter:SaltMeter,
+      Color:Color,
     }
     updateDetail(token, index).then(data => {
       // console.log('response add order : ', data)
@@ -169,6 +175,8 @@ const ModalEdit = props => {
     setAN(orders.AN)
     setAcidity(orders.Acidity)
     setViscosity(orders.Viscosity)
+    setSaltMeter(orders.SaltMeter)
+    setColor(orders.Color)
   }, [orders, bio, tr])
 
   useEffect(() => {

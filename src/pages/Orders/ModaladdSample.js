@@ -10,7 +10,7 @@ import {
   Modal,
   ModalFooter,
 } from "reactstrap"
-
+import Select from "react-select"
 //Import Breadcrumb
 import "../Tables/datatables.scss"
 
@@ -49,6 +49,8 @@ const ModaladdSample = props => {
   const [SPG, setSPG] = useState(false)
   const [Aw, setAw] = useState(false)
   const [Micro, setMicro] = useState(false)
+  const [SaltMeter, setSaltMeter] = useState(false)
+  const [Color, setColor] = useState(false)
 
   const [AN, setAN] = useState(false)
   const [Acidity, setAcidity] = useState(false)
@@ -59,6 +61,7 @@ const ModaladdSample = props => {
   const [nameSpcMicro, setnameSpcMicro] = useState([])
   const [selectMicro, setSelectMicro] = useState(1)
   const [pord, setPord] = useState(new Date())
+  const [selectedGroup3, setSelectedGroup3] = useState(null)
   const [values, setValues] = useState({
     pord: null,
     bbe: null,
@@ -91,8 +94,17 @@ const ModaladdSample = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdChemCheckbox : ' ,data.message)
-          setnameSpcChem(data.message)
+          console.log('readIdChemCheckbox : ' ,data.message)
+          let spcc = []
+          data.message.forEach(data => {
+            let index = {
+                label: data.name,
+                value: data.idPdSpecificChem,
+            }
+            spcc.push(index)
+          })
+          // setnameSpcChem(data.message)
+          setnameSpcChem(spcc)
         }
       }
     })
@@ -131,7 +143,9 @@ const ModaladdSample = props => {
       Micro: Micro,
       AN:AN,
       Acidity:Acidity,
-      Viscosity:Viscosity
+      Viscosity:Viscosity,
+      SaltMeter:SaltMeter,
+      Color:Color
     }
 
     // console.log("index sample : ", index)
@@ -161,6 +175,15 @@ const ModaladdSample = props => {
         setsuccess_error(true)
       }    
     })
+
+    const handleChangeSelectChem = e => {
+      setSelectChem(e)
+      console.log(e)
+    }
+
+    const handleSelectGroup = selectedGroup3 => {
+      setSelectedGroup3(selectedGroup3)
+    }
 
     // toggleAddorder()
     // setsuccess_msg(false)
@@ -244,6 +267,19 @@ const ModaladdSample = props => {
                   </div>
                 </Row>
 
+                {/* <Col sm="4" style={{ padding: "5px" }}>
+                        Approve By ................................
+                        <Select
+                          value={selectedGroup3}
+                          name="To"
+                          onChange={e => {
+                            handleSelectGroup3()
+                            handleChangeSelectChem(e.value)
+                          }}
+                          options={ApproveSelect}
+                        />
+                      </Col> */}
+
                 <Row className="mb-3">
                   <label
                     style={{ display: "flex", justifyContent: "center" }}
@@ -252,7 +288,16 @@ const ModaladdSample = props => {
                     Specific Chem
                   </label>
                   <div className="col-md-10">
-                    <select
+                  <Select
+                          value={selectChem}
+                          name="c1"
+                          onChange={e => {
+                            handleSelectGroup()
+                            handleChangeReportValue(e.value)
+                          }}
+                          options={nameSpcChem}
+                  />
+                    {/* <select
                       className="form-control"
                       id="c1"
                       value={selectChem}
@@ -270,7 +315,7 @@ const ModaladdSample = props => {
                           {index.name}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
                   </div>
                 </Row>
                 {/* const [Tn,  setTn   ] = useState(false)
@@ -581,6 +626,60 @@ const ModaladdSample = props => {
                         htmlFor="customCheckcolorViscosity"
                       >
                         Viscosity
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    className="col-md-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-success">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckSaltMeter"
+                        checked={SaltMeter}
+                        onChange={() => {
+                          setSaltMeter(!SaltMeter)
+                        }}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="customCheckSaltMeter"
+                      >
+                        Salt Meter
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    className="col-md-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-success">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckColor"
+                        checked={Color}
+                        onChange={() => {
+                          setColor(!Color)
+                        }}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="customCheckColor"
+                      >
+                        Color
                       </label>
                     </div>
                   </div>

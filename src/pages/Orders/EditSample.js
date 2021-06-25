@@ -56,6 +56,8 @@ const ModalEditSample = props => {
   const [Tss, setTss] = useState(false)
   const [SPG, setSPG] = useState(false)
   const [Aw, setAw] = useState(false)
+  const [SaltMeter, setSaltMeter] = useState(false)
+  const [Color, setColor] = useState(false)
 
   const [AN, setAN] = useState(false)
   const [Acidity, setAcidity] = useState(false)
@@ -129,6 +131,8 @@ const ModalEditSample = props => {
       AN: AN,
       Acidity: Acidity,
       Viscosity: Viscosity,
+      SaltMeter:SaltMeter,
+      Color:Color
     }
     // console.log(index)
     updateDetail(token, index).then(data => {
@@ -172,6 +176,8 @@ const ModalEditSample = props => {
     setAN(orders.AN)
     setAcidity(orders.Acidity)
     setViscosity(orders.Viscosity)
+    setSaltMeter(orders.SaltMeter)
+    setColor(orders.Color)
   }, [orders, bio, tr])
 
   useEffect(() => {
@@ -588,6 +594,60 @@ const ModalEditSample = props => {
                         htmlFor="customCheckcolorViscosity"
                       >
                         Viscosity
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    className="col-md-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-success">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckSaltMeter"
+                        checked={SaltMeter}
+                        onChange={() => {
+                          setSaltMeter(!SaltMeter)
+                        }}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="customCheckSaltMeter"
+                      >
+                        Salt Meter
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    className="col-md-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-success">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckColor"
+                        checked={Color}
+                        onChange={() => {
+                          setColor(!Color)
+                        }}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="customCheckColor"
+                      >
+                        Color
                       </label>
                     </div>
                   </div>

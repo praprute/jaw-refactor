@@ -322,7 +322,7 @@ const FormBeforeExport2 = props => {
   }
 
   const handleExportPDF = () => {
-    console.log("valScoreLevel : ", valScoreLevel)
+    // console.log("valScoreLevel : ", valScoreLevel)
 
     let dataRow2 = [
       { values: valuesExportRow2.CollectedDate },
@@ -442,15 +442,15 @@ const FormBeforeExport2 = props => {
 
   const handleChangeValueCustomer = e => {
     setCustomerNameSelect(e)
-    console.log(e)
+    // console.log(e)
   }
   const handleChangeApproveValue = e => {
     setApproveValue(e)
-    console.log(e)
+    // console.log(e)
   }
   const handleChangeReportValue = e => {
     setReportValue(e)
-    console.log(e)
+    // console.log(e)
   }
 
   // ApproveSelect, setApproveSelect

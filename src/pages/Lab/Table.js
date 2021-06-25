@@ -102,7 +102,7 @@ const OrderTable = props => {
       readOrderById(token, idOrders).then(data => {
       if(data){
         if(data.success == 'success'){
-          // console.log('onAddDetail : ',data.message[0])
+          console.log('onAddDetail : ',data.message[0])
           setdetail(data.message[0])
           onAddDetail(data.message[0])
         }
@@ -135,101 +135,6 @@ const OrderTable = props => {
     })
   }
 
-  // useEffect(() => {
-  //   // console.log('props.toggleTR : ', props)
-  //   if(props.page == "lab"){
-  //     console.log('tp')
-  //     if(props.tricker == "CompleteCheck" || props.tricker == "pass"){
-  //       setColumnTable([
-  //         {
-  //           label: "Lot",
-  //           field: "lot",
-  //         },
-  //         {
-  //           label: "PO Number",
-  //           field: "ponumber",
-  //         },
-  //         {
-  //           label: "Product Name",
-  //           field: "name",
-  //         },
-  //         {
-  //             label: "Specific",
-  //             field: "Specific",
-  //           },
-  //         {
-  //             label: "Status",
-  //             field: "status",
-  //           },
-  //           {
-  //             label: "Priority",
-  //             field: "priority",
-  //           },
-  //         {
-  //           label: "Recheck",
-  //           field: "Recheck",
-  //         },
-  //         {
-  //             label: "Timestamp",
-  //             field: "timeStamp",
-  //             sort: "asc",
-  //           },
-  //         {
-  //           label: "Detail",
-  //           field: "detail",
-            
-  //         }
-  //       ])
-  //     }else{
-  //       setColumnTable([
-  //       {
-  //         label: "Lot",
-  //         field: "lot",
-  //       },
-  //       {
-  //         label: "PO Number",
-  //         field: "ponumber",
-  //       },
-  //       {
-  //         label: "Product Name",
-  //         field: "name",
-  //       },
-  //       {
-  //           label: "Specific",
-  //           field: "Specific",
-  //         },
-  //       {
-  //           label: "Status",
-  //           field: "status",
-  //         },
-  //         {
-  //           label: "Priority",
-  //           field: "priority",
-  //         },
-  //       {
-  //         label: "Recheck",
-  //         field: "Recheck",
-  //       },
-  //       {
-  //           label: "Timestamp",
-  //           field: "timeStamp",
-  //           sort: "asc",
-  //         },
-  //       {
-  //         label: "Detail",
-  //         field: "detail",
-          
-  //       },
-  //       {
-  //         label: "Test Result",
-  //         field: "TestResult",
-          
-  //       }
-  //     ])
-  //     }
-      
-  //   }
-  // },[props.tricker])
 
   useEffect(() => {
     if(props.page == "lab"){

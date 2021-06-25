@@ -218,17 +218,17 @@ const FormBeforeExport = props => {
         scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
       })
       setvaluesChem({
-        TN: `${paresIndex.chem[0].val}  g/L`,
-        PH: `${paresIndex.chem[3].val} / ${paresIndex.chem[3].temp} \u00B0C`,
+        TN: `${(paresIndex.chem[0].val) ? (paresIndex.chem[0].val.toFixed(3)) : (paresIndex.chem[0].val)}  g/L`,
+        PH: `${(paresIndex.chem[3].val) ? (paresIndex.chem[3].val.toFixed(3)) : (paresIndex.chem[3].val)} / ${paresIndex.chem[3].temp} \u00B0C`,
         Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  g/L`,
-        Salt: `${paresIndex.chem[1].val}% w/v`,
-        Histamine: `${paresIndex.chem[2].val} ppm`,
-        SPG: `${paresIndex.chem[6].val}/${paresIndex.chem[6].temp} \u00B0C`,
-        AW: `${paresIndex.chem[4].val}/${paresIndex.chem[4].temp} \u00B0C`,
-        TSS: paresIndex.chem[5].val,
-        AN: paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[8].val,
-        Viscosity: paresIndex.chem[9].val,
+        Salt: `${(paresIndex.chem[1].val) ? (paresIndex.chem[1].val.toFixed(3)) : (paresIndex.chem[1].val)}% w/v`,
+        Histamine: `${(paresIndex.chem[2].val) ? (paresIndex.chem[2].val.toFixed(3)) : (paresIndex.chem[2].val)} ppm`,
+        SPG: `${(paresIndex.chem[6].val) ? (paresIndex.chem[6].val.toFixed(3)) : (paresIndex.chem[6].val)}/${paresIndex.chem[6].temp} \u00B0C`,
+        AW: `${(paresIndex.chem[4].val) ? (paresIndex.chem[4].val.toFixed(3)) : (paresIndex.chem[4].val)}/${paresIndex.chem[4].temp} \u00B0C`,
+        TSS: paresIndex.chem[5].val ? (paresIndex.chem[5].val.toFixed(3)) : (paresIndex.chem[5].val),
+        AN: paresIndex.chem[7].val ? (paresIndex.chem[7].val.toFixed(3)) : (paresIndex.chem[7].val),
+        Acidity: paresIndex.chem[8].val ? (paresIndex.chem[8].val.toFixed(3)) : (paresIndex.chem[8].val),
+        Viscosity: paresIndex.chem[9].val ? (paresIndex.chem[9].val.toFixed(3)) : (paresIndex.chem[9].val),
       })
       let TPC = ""
       let YeaseandMold = ""

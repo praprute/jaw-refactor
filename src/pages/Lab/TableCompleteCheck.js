@@ -111,7 +111,13 @@ const TableCompleteCheck = props => {
  
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
-      // console.log(' readTestResultlasted :',data)
+      console.log(' readTestResultlasted :',data.resulted)
+      // let resulted = []
+      // data.resulted.forEach(data => {
+      //   data.forEach(children => {
+
+      //   })
+      // })
       if(data){
         if(data.success == 'success'){
           if(!data.message){

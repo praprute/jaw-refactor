@@ -135,7 +135,7 @@ const OrderTable = props => {
 
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
-      // console.log(' readTestResultlasted :',data)
+      console.log(' readTestResultlasted :',data.resulted)
       if(data){
         if(data.success == 'success'){
           if(!data.message){

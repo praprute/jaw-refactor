@@ -245,6 +245,8 @@ const ModalTestReport = props => {
             AN: null,
             Acidity: null,
             Viscosity: null,
+            SaltMeter:null,
+        Color:null ,
             idSpfMicro: 1,
             APC: null,
             Yeasts: null,
@@ -383,6 +385,8 @@ const ModalTestReport = props => {
         AN: values.AN,
         Acidity: values.Acidity,
         Viscosity: values.Viscosity,
+        SaltMeter:values.SaltMeter,
+        Color:values.Color,
         idSpfMicro: parseInt(values.idSpfMicro),
         APC: parseInt(values.APC),
         Yeasts: parseInt(values.Yeasts),
@@ -424,7 +428,7 @@ const ModalTestReport = props => {
         indexRecheck.push(data.key)
       }
     })
-    console.log('resultChem.Recheck : ',resultChem)
+    // console.log('resultChem.Recheck : ',resultChem)
     var index = {
       idOrders: values.idOrders,
       Recheck: values.Recheck,
@@ -514,7 +518,7 @@ const ModalTestReport = props => {
 
   useEffect(() => {
     if (tr[0] != undefined) {
-      // console.log("test report tr[0]", tr[0])
+      console.log("test report tr[0]", tr[0])
       setresultChem(tr[0])
       setresultMicro(tr[1])
       setValues({
@@ -537,6 +541,7 @@ const ModalTestReport = props => {
         AN: tr[0][7].val,
         Acidity: tr[0][8].val,
         Viscosity: tr[0][9].val,
+        SaltMeter: tr[0][10].val,
         idSpfMicro: 1,
         APC: tr[1][0].val,
         Yeasts: tr[1][1].val,
@@ -559,6 +564,7 @@ const ModalTestReport = props => {
         AN: tr[0][7].val,
         Acidity: tr[0][8].val,
         Viscosity: tr[0][9].val,
+        SaltMeter: tr[0][10].val,
       })
     } else {
       setresultChem([
@@ -642,6 +648,23 @@ const ModalTestReport = props => {
           val: "",
           temp: true,
         },
+        {
+          keyInput: "SaltMeter",
+          int: false,
+          key: "Salt Meter",
+          coa: false,
+          val: "",
+          temp: true,
+        },
+        ,
+        {
+          keyInput: "Color",
+          int: false,
+          key: "Color",
+          coa: false,
+          val: "",
+          temp: true,
+        },
       ])
       setresultMicro([
         { int: false, coa: false, val: "", key: "APC" },
@@ -670,6 +693,8 @@ const ModalTestReport = props => {
         AN: null,
         Acidity: null,
         Viscosity: null,
+        SaltMeter:null,
+        Color:null ,
         idSpfMicro: 1,
         APC: null,
         Yeasts: null,
