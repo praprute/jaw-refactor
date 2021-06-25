@@ -11,6 +11,8 @@ import {
   ModalFooter,
 } from "reactstrap"
 
+import Select from "react-select"
+
 //Import Breadcrumb
 import "../Tables/datatables.scss"
 
@@ -48,6 +50,7 @@ const ModalEditSample = props => {
   const [selectMicro, setSelectMicro] = useState(1)
   const [pord, setPord] = useState(new Date())
   const [values, setValues] = useState({})
+  const [selectedGroup3, setSelectedGroup3] = useState(null)
 
   const [Tn, setTn] = useState(false)
   const [Salt, setSalt] = useState(false)
@@ -88,8 +91,17 @@ const ModalEditSample = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdChemCheckbox : ' ,data.message)
           setnameSpcChem(data.message)
+          // let spcc = []
+          // data.message.forEach(data => {
+          //   let index = {
+          //       label: data.name,
+          //       value: data.idPdSpecificChem,
+          //   }
+          //   spcc.push(index)
+          // })
+          // // setnameSpcChem(data.message)
+          // setnameSpcChem(spcc)
         }
       }
     })
@@ -180,9 +192,19 @@ const ModalEditSample = props => {
     setColor(orders.Color)
   }, [orders, bio, tr])
 
+  const handleChangeSelectChem = e => {
+    setSelectChem(e)
+    console.log(e)
+  }
+
+  const handleSelectGroup3 = selectedGroup3 => {
+    setSelectedGroup3(selectedGroup3)
+  }
+
   useEffect(() => {
     // console.log(orders)
     setSelectChem(orders.idScfChem)
+    // setSelectedGroup3(orders.idScfChem)
     switch (orders.Priority) {
       case "0":
         return setNormal(true), setRush(false), setUrgent(false)
@@ -274,6 +296,15 @@ const ModalEditSample = props => {
                     Specific Chem
                   </label>
                   <div className="col-md-10">
+                  {/* <Select
+                          value={selectedGroup3}
+                          name="ChemSpc"
+                          onChange={e => {
+                            handleSelectGroup3()
+                            handleChangeSelectChem(e.value)
+                          }}
+                          options={nameSpcChem}
+                  /> */}
                     <select
                       className="form-control"
                       id="c1"

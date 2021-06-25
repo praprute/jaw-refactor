@@ -94,7 +94,7 @@ const ModaladdSample = props => {
         return null
       } else {
         if (data.success == "success") {
-          console.log('readIdChemCheckbox : ' ,data.message)
+          // console.log('readIdChemCheckbox : ' ,data.message)
           let spcc = []
           data.message.forEach(data => {
             let index = {
@@ -176,18 +176,19 @@ const ModaladdSample = props => {
       }    
     })
 
-    const handleChangeSelectChem = e => {
-      setSelectChem(e)
-      console.log(e)
-    }
-
-    const handleSelectGroup = selectedGroup3 => {
-      setSelectedGroup3(selectedGroup3)
-    }
-
     // toggleAddorder()
     // setsuccess_msg(false)
     // setsuccess_error(false)
+  }
+
+  const handleChangeSelectChem = e => {
+    setSelectChem(e)
+    console.log(e)
+  }
+
+  const handleSelectGroup3 = selectedGroup3 => {
+    setSelectedGroup3(selectedGroup3)
+    // console.log(selectedGroup3)
   }
   return (
     <Modal
@@ -289,11 +290,11 @@ const ModaladdSample = props => {
                   </label>
                   <div className="col-md-10">
                   <Select
-                          value={selectChem}
-                          name="c1"
+                          value={selectedGroup3}
+                          name="ChemSpc"
                           onChange={e => {
-                            handleSelectGroup()
-                            handleChangeReportValue(e.value)
+                            handleSelectGroup3()
+                            handleChangeSelectChem(e.value)
                           }}
                           options={nameSpcChem}
                   />
