@@ -144,14 +144,14 @@ const fetchTestResultlasted = (token, idOrders) => {
                     Status:       response.message[i].Status,
                     Priority:     response.message[i].Priority,
                     name:         response.message[i].name,
-                    detail: <span style={{display:'flex', justifyContent: 'center'}} onClick={()=>{
+                    detail: <span style={{display:'flex', }} onClick={()=>{
                       fetchDetail(token ,response.message[i].idOrders)
                       fetchTestResultlasted(token ,response.message[i].idOrders)
                     }
                     }>
                          <i
                          className={
-                           "bx bx-note  font-size-24"
+                          "bx bx-file font-size-24"
                          }
                          style={{cursor:'pointer'}}
                          onClick={
@@ -260,8 +260,8 @@ const fetchTestResultlasted = (token, idOrders) => {
                       </label>
                     </div>
                   </th> */}
-                  <th className="align-middle">LOT</th>
-                  <th className="align-middle">PO Number</th>
+                  {/* <th className="align-middle">LOT</th>
+                  <th className="align-middle">PO Number</th> */}
                   <th className="align-middle">Product Name</th>
                   <th className="align-middle">Specific</th>
                   <th className="align-middle">Status</th>
@@ -289,25 +289,31 @@ const fetchTestResultlasted = (token, idOrders) => {
                         </label>
                       </div>
                     </td> */}
-                    <td>
+
+
+                    {/* <td>
                       <Link to="#" className="text-body fw-bold">
                         {" "}
                         BBE: {transaction.BBE},<br/>
                         PORD: {transaction.PORD}
                       </Link>{" "}
                     </td>
-                    <td>{transaction.PO}</td>
+                    <td>{transaction.PO}</td> */}
+
                     <td>{transaction.ProductName}</td>
                     <td>{transaction.name}</td>
                     <td>{transaction.Status}</td>
+
                     {/* <td>{() => {
                       if(transaction.Status == 'Waitingtocheck'){
                         return(<span className="badge bg-warning font-size-10">Waiting to check</span>)
                       }
                     }}</td> */}
+
                     <td>{transaction.Priority}</td>
                     
                     <td>{transaction.detail}</td>
+
                     {/* <td>
                       <Badge
                         className={
@@ -319,6 +325,7 @@ const fetchTestResultlasted = (token, idOrders) => {
                         {transaction.Priority}
                       </Badge>
                     </td> */}
+
                     {/* <td>
                       <i
                         className={"fab " + transaction.methodIcon + " me-1"}
@@ -336,6 +343,7 @@ const fetchTestResultlasted = (token, idOrders) => {
                         View Details
                       </Button>
                     </td> */}
+                    
                   </tr>
                 ))}
               </tbody>
