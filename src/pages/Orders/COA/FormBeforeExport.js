@@ -33,6 +33,8 @@ import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
 import "./ModalFullScreen.css"
 import FormBeforeExport2 from "../COA2/FormBeforeExport2"
+//SweetAlert
+import SweetAlert from "react-bootstrap-sweetalert"
 import { getCustomers } from "../api"
 import e from "cors"
 const animatedComponents = makeAnimated()
@@ -101,8 +103,16 @@ const FormBeforeExport = props => {
   const [salmon, setSalmon] = useState(false)
   const [ApproveSelect, setApproveSelect] = useState([
     {
+      label: "DCC",
+      value: "DCC",
+    },
+    {
       label: "QMR",
       value: "QMR",
+    },
+    {
+      label: "QA",
+      value: "QA",
     },
     {
       label: "Production mixing",
@@ -113,6 +123,14 @@ const FormBeforeExport = props => {
     {
       label: "DCC",
       value: "DCC",
+    },
+    {
+      label: "QMR",
+      value: "QMR",
+    },
+    {
+      label: "QA",
+      value: "QA",
     },
     {
       label: "Qc Lab",
@@ -130,6 +148,8 @@ const FormBeforeExport = props => {
   const [customerNameSelect, setCustomerNameSelect] = useState(null)
   const [ApproveValue, setApproveValue] = useState(null)
   const [ReportValue, setReportValue] = useState(null)
+  const [success_msg, setsuccess_msg] = useState(false)
+  const [success_error, setsuccess_error] = useState(false)
   const [valuesExportRow1, setValuesExportRow1] = useState({
     To: customerNameSelect,
     DCL1: "BEST If Used By:",
@@ -176,7 +196,7 @@ const FormBeforeExport = props => {
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      console.log("index : ", paresIndex)
+      // console.log("index : ", paresIndex)
 
       setValuesExportRow2({
         ProductionDate: paresIndex.Orders.PD,
@@ -189,12 +209,21 @@ const FormBeforeExport = props => {
 
       setUid(paresIndex.Orders.idOrders)
 
-      setValuesExportRow1({
-        To: customerNameSelect,
-        DCL1: "BEST If Used By:",
-        DCL2: "",
-        DCL3: "",
-      })
+      if (!paresIndex.Orders.DCL1) {
+        setValuesExportRow1({
+          To: customerNameSelect,
+          DCL1: "BEST If Used By:",
+          DCL2: "",
+          DCL3: "",
+        })
+      } else {
+        setValuesExportRow1({
+          To: customerNameSelect,
+          DCL1: paresIndex.Orders.DCL1,
+          DCL2: paresIndex.Orders.DCL2,
+          DCL3: paresIndex.Orders.DCL3,
+        })
+      }
 
       setValuesExportPNandPS({
         ProductName: `${paresIndex.Orders.ProductName}`,
@@ -397,29 +426,41 @@ const FormBeforeExport = props => {
       customerNameSelect,
       ApproveValue,
       ReportValue,
-      salmon
+      salmon,
+      DisProductDate,
+      DisExpiration,
+      DisTank
     )
   }
 
-  const handleSaveIndex = () => {
-    let index = {
-      idOrders: uid,
-      RefNo: valuesExportRef.refNo,
-      DCL1: valuesExportRow1.DCL1,
-      DCL2: valuesExportRow1.DCL2,
-      DCL3: valuesExportRow1.DCL3,
-      PD: valuesExportRow2.ProductionDate,
-      DD: valuesExportRow2.DaliveryDate,
-      ED: valuesExportRow3.ExpirationDate,
-      Size: valuesExportPNandPS.PackSize,
-      Tank: TankNumber.Tank,
-      Quantity: valuesQuantity.Quantity,
-      testDate: valuesQuantity.TestDate,
+  const handleSaveIndex = async () => {
+    try {
+      let index = {
+        idOrders: uid,
+        RefNo: valuesExportRef.refNo,
+        DCL1: valuesExportRow1.DCL1,
+        DCL2: valuesExportRow1.DCL2,
+        DCL3: valuesExportRow1.DCL3,
+        PD: valuesExportRow2.ProductionDate,
+        DD: valuesExportRow2.DaliveryDate,
+        ED: valuesExportRow3.ExpirationDate,
+        Size: valuesExportPNandPS.PackSize,
+        Tank: TankNumber.Tank,
+        Quantity: valuesQuantity.Quantity,
+        testDate: valuesQuantity.TestDate,
+      }
+
+      let Udo = await UpdateDatailOrder(token, index)
+      if (Udo.success == "success") {
+        setsuccess_msg(true)
+      } else {
+        setsuccess_error(true)
+      }
+      // console.log("index save : ", index)
+    } catch (err) {
+      setsuccess_error(true)
+      console.error
     }
-
-    let Udo = UpdateDatailOrder(token, index)
-
-    console.log("index save : ", index)
   }
 
   const handleChangeValueAnalysis = name => event => {
@@ -2693,6 +2734,38 @@ const FormBeforeExport = props => {
   return (
     <React.Fragment>
       <div className="page-content">
+        {success_msg ? (
+          <SweetAlert
+            title="Add Order Success"
+            success
+            //   showCancel
+            confirmBtnBsStyle="success"
+            //   cancelBtnBsStyle="danger"
+            onConfirm={async () => {
+              setsuccess_msg(false)
+              // setInterval(() => {
+              //   window.location.reload()
+              // }, 5000)
+            }}
+          >
+            You clicked the button!
+          </SweetAlert>
+        ) : null}
+
+        {success_error ? (
+          <SweetAlert
+            title="error"
+            danger
+            //   showCancel
+            confirmBtnBsStyle="danger"
+            //   cancelBtnBsStyle="danger"
+            onConfirm={() => {
+              setsuccess_error(false)
+            }}
+          >
+            You clicked the button!
+          </SweetAlert>
+        ) : null}
         <Row>
           <Col className="col-12">
             <Card>

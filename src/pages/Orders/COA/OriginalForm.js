@@ -39,7 +39,10 @@ export const originalFormCOA = (
   selectedGroupNameTo,
   ApproveValue,
   ReportValue,
-  salmon
+  salmon,
+  DisProductDate,
+  DisExpiration,
+  DisTank
 ) => {
   let DetailOrderRow1 = []
   let DetailOrderRow2 = []
@@ -1138,7 +1141,7 @@ export const originalFormCOA = (
     ])
   }
 
-  if (tankNo.Tank !== "") {
+  if (tankNo.Tank !== "" && DisTank == false) {
     tankNumber.push(
       {
         text: `Tank No: ${tankNo.Tank}`,
@@ -1180,7 +1183,7 @@ export const originalFormCOA = (
       alignment: "left",
       border: [false, false, false, false],
     }
-    if (i == 0 && row2PDandDD[i].values !== "") {
+    if (i == 0 && row2PDandDD[i].values !== "" && DisProductDate == false) {
       index = {
         text: `Production date: ${row2PDandDD[i].values}`,
         style: "RefBoxValue",
@@ -1215,12 +1218,22 @@ export const originalFormCOA = (
       border: [false, false, false, false],
     }
     if (i == 0 && row3EXP[i].values !== "") {
-      index = {
-        text: `Expiration date: ${row3EXP[i].values}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        border: [true, false, false, false],
+      if (DisExpiration == false) {
+        index = {
+          text: `Expiration date: ${row3EXP[i].values}`,
+          style: "RefBoxValue",
+          alignment: "left",
+          border: [true, false, false, false],
+        }
+      } else {
+        index = {
+          text: ``,
+          style: "RefBoxValue",
+          alignment: "left",
+          border: [true, false, false, false],
+        }
       }
+
       DetailOrderRow3.push(index)
     } else if (i == 0 && row3EXP[i].values == "") {
       index = {

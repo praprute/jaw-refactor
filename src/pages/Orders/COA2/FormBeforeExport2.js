@@ -21,7 +21,7 @@ import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA,loadHalalLogo } from "../api"
+import { UpdatexportCOA,loadHalalLogo,UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -30,6 +30,8 @@ import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
 // import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
+//SweetAlert
+import SweetAlert from "react-bootstrap-sweetalert"
 import { originalFormCOA2 } from "./Original2"
 import { getCustomers } from "../api"
 import "./StyleCOA2.css"
@@ -63,6 +65,7 @@ const FormBeforeExport2 = props => {
   const [detailById, setdetailById] = useState([])
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
+  const [salmon, setSalmon] = useState(false)
   const [valuesMicro, setvaluesMicro] = useState({
     TPC: "",
     YeaseandMold: "",
@@ -97,6 +100,8 @@ const FormBeforeExport2 = props => {
   const [DisAN, setDisAN] = useState(true)
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
+  const [success_msg, setsuccess_msg] = useState(false)
+  const [success_error, setsuccess_error] = useState(false)
   const [CustomersOption, setCustomers] = useState([])
   const [ApproveSelect, setApproveSelect] = useState([
     {
@@ -110,6 +115,28 @@ const FormBeforeExport2 = props => {
     {
       label: "QA",
       value: "QA",
+    },
+    {
+      label: "Production mixing",
+      value: "Production mixing",
+    },
+  ])
+  const [ReportSelect, setReport] = useState([
+    {
+      label: "DCC",
+      value: "DCC",
+    },
+    {
+      label: "QMR",
+      value: "QMR",
+    },
+    {
+      label: "QA",
+      value: "QA",
+    },
+    {
+      label: "Qc Lab",
+      value: "QMR",
     },
   ])
   const [valuesExportRef, setValuesExportRef] = useState({
@@ -149,7 +176,7 @@ const FormBeforeExport2 = props => {
     Quantity: "",
     TestDate: "",
   })
-
+const [uid, setUid] = useState(null)
   const [method, setMethod] = useState({
     TN: "Kjeldahl method",
     AN: "TIS 3-2526",
@@ -205,20 +232,25 @@ const FormBeforeExport2 = props => {
         CollectedDate: "",
         productName: "",
       })
-
+setUid(paresIndex.Orders.idOrders)
       setValuesExportPNandPS({
-        ExpirationDate: "",
+        ExpirationDate: paresIndex.Orders.ED,
         // ProductName: paresIndex.Orders.ProductName,
         // PackSize: paresIndex.Orders.Size,
       })
 
+      setValuesExportRow3({
+        productionDate: paresIndex.Orders.PD,
+        TankNo: paresIndex.Orders.Tank,
+      })
+
       setValuesQuantity({
         Quantity: paresIndex.Orders.Quantity,
-        TestDate: Moment(paresIndex.Orders.timestamp).format("DD/MM/YY"),
+        TestDate: Moment(paresIndex.timeStamp[0].TimeTest).format("DD/MM/YY"),
       })
 
       setValuesExportRef({
-        refNo: paresIndex.Orders.PO,
+        refNo: paresIndex.Orders.RefNo,
         date: Moment(new Date()).format("DD/MM/YY"),
         pageNo: "1",
       })
@@ -378,9 +410,41 @@ const FormBeforeExport2 = props => {
       ReportValue,
       method,
       ScoreLevel,
-      valScoreLevel
+      valScoreLevel,
+      salmon
     )
   }
+
+  const handleSaveIndex = async () => {
+    try {
+      let index = {
+        idOrders: uid,
+        RefNo: valuesExportRef.refNo,
+        DCL1: null,
+        DCL2: null,
+        DCL3: null,
+        PD: valuesExportRow3.productionDate,
+        DD: null,
+        ED: valuesExportPNandPS.ExpirationDate,
+        Size: null,
+        Tank: valuesExportRow3.TankNo,
+        Quantity: null,
+        testDate: valuesQuantity.TestDate,
+      }
+
+      let Udo = await UpdateDatailOrder(token, index)
+      if (Udo.success == "success") {
+        setsuccess_msg(true)
+      } else {
+        setsuccess_error(true)
+      }
+      // console.log("index save : ", index)
+    } catch (err) {
+      setsuccess_error(true)
+      console.error
+    }
+  }
+
 
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
@@ -2419,9 +2483,26 @@ const FormBeforeExport2 = props => {
                       alignItems: "center",
                     }}
                   >
-                    <span style={{ margin: 0, fontWeight: "bold" }}>
-                      Salmonella spp.
-                    </span>
+                    <div className="form-check form-check-warning">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckSalmon2"
+                        checked={salmon}
+                        onChange={() => {
+                          setSalmon(!salmon)
+                        }}
+                      />
+                    </div>
+                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
+                    <label
+                      className="form-check-label"
+                      htmlFor="customCheckSalmon2"
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        Salmonella spp.
+                      </span>
+                    </label>
                   </Col>
                   <Col
                     style={{
@@ -2461,20 +2542,50 @@ const FormBeforeExport2 = props => {
                     </div>
                   </Col>
                 </div>
-                
               </React.Fragment>
             ) : null}
             {/* {Sinsory()} */}
           </React.Fragment>
         ) : null}
-{Sinsory()}
-
+        {Sinsory()}
       </Row>
     )
   }
 
   return (
     <React.Fragment>
+      {success_msg ? (
+        <SweetAlert
+          title="Add Order Success"
+          success
+          //   showCancel
+          confirmBtnBsStyle="success"
+          //   cancelBtnBsStyle="danger"
+          onConfirm={async () => {
+            setsuccess_msg(false)
+            // setInterval(() => {
+            //   window.location.reload()
+            // }, 5000)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
+
+      {success_error ? (
+        <SweetAlert
+          title="error"
+          danger
+          //   showCancel
+          confirmBtnBsStyle="danger"
+          //   cancelBtnBsStyle="danger"
+          onConfirm={() => {
+            setsuccess_error(false)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
       {/* <div className="page-content"> */}
       <div style={{ width: "100%", height: "100%", background: "" }}>
         {headerForm()}
@@ -2492,7 +2603,7 @@ const FormBeforeExport2 = props => {
             alignItems: "center",
           }}
         >
-          <Col sm="4" style={{ padding: "5px" }}>
+          <Col sm="3" style={{ padding: "5px" }}>
             Report By ................................
             <Select
               value={selectedGroup2}
@@ -2501,10 +2612,10 @@ const FormBeforeExport2 = props => {
                 handleSelectGroup2()
                 handleChangeApproveValue(e.value)
               }}
-              options={ApproveSelect}
+              options={ReportSelect}
             />
           </Col>
-          <Col sm="4" style={{ padding: "5px" }}>
+          <Col sm="3" style={{ padding: "5px" }}>
             Approve By ................................
             <Select
               value={selectedGroup3}
@@ -2516,11 +2627,25 @@ const FormBeforeExport2 = props => {
               options={ApproveSelect}
             />
           </Col>
-          <Col sm="4" style={{ textAlign: "right", paddingRight: "0px" }}>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
+            <Button
+              color="warning"
+              size="lg"
+              style={{ width: "100%", marginTop: "15px" }}
+              onClick={() => {
+                handleSaveIndex()
+                // handleExportPDF()
+                // handleUpdateStatusCoa()
+              }}
+            >
+              SAVE
+            </Button>
+          </Col>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "0px" }}>
             <Button
               color="primary"
               size="lg"
-              style={{ width: "60%" }}
+              style={{ width: "100%", marginTop: "15px" }}
               onClick={() => {
                 handleExportPDF()
                 handleUpdateStatusCoa()

@@ -18,7 +18,8 @@ export const originalFormCOA2 = (
   ReportValue,
   method,
   ScoreLevel,
-  valScoreLevel
+  valScoreLevel,
+  salmon
 ) => {
   let DetailOrderRow1 = []
   let DetailOrderRow2 = []
@@ -502,7 +503,8 @@ export const originalFormCOA2 = (
   }
 
   if (MicroRender.MicroRender && MicroRender.MicroAnalysis) {
-    dataAnaly.push(
+    if(salmon){
+      dataAnaly.push(
       [
         {
           text: `MICROBIOLOGICAL`,
@@ -719,7 +721,181 @@ export const originalFormCOA2 = (
         },
       ]
     )
-  } 
+    }else{
+       dataAnaly.push(
+         [
+           {
+             text: `MICROBIOLOGICAL`,
+             style: "invoiceTitle",
+             alignment: "left",
+             fontSize: 12,
+             decoration: "underline",
+             // italics: true, ตัวเอียง
+             bold: true,
+             margin: [0, 3, 0, 2],
+             border: [true, false, false, false],
+           },
+           {
+             text: ``,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 3, 0, 2],
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             text: ``,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 3, 0, 2],
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             text: ``,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 3, 0, 2],
+             // bold: true,
+             border: [false, false, true, false],
+           },
+         ],
+         [
+           {
+             text: `APC`,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 0, 0, 2],
+             border: [true, false, false, false],
+           },
+           {
+             text: `< 1x10\u2074 CFU/g`,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 0, 0, 2],
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             columns: [
+               {
+                 text: `${valuesMicro.TPC}`,
+                 style: "RefBoxValue",
+                 margin: [0, 0, 0, 2],
+               },
+               {
+                 text: `(Every lot)`,
+                 style: "RefBoxValue",
+                 margin: [10, 0, 0, 2],
+               },
+             ],
+
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             text: ``,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 2, 0, 2],
+             // bold: true,
+             border: [false, false, true, false],
+           },
+         ],
+         [
+           {
+             text: `Yeasts and Molds`,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 0, 0, 2],
+             border: [true, false, false, false],
+           },
+           {
+             text: `\u2264 100 CFU/g`,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 0, 0, 2],
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             columns: [
+               {
+                 text: `${valuesMicro.YeaseandMold}`,
+                 style: "RefBoxValue",
+                 margin: [0, 0, 0, 2],
+               },
+               {
+                 text: `(Every lot)`,
+                 style: "RefBoxValue",
+                 margin: [10, 0, 0, 2],
+               },
+             ],
+
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             text: ``,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 2, 0, 2],
+             // bold: true,
+             border: [false, false, true, false],
+           },
+         ],
+         [
+           {
+             text: `E. coli`,
+             style: "RefBoxValue",
+             alignment: "left",
+             italics: true,
+             margin: [0, 0, 0, 2],
+             border: [true, false, false, false],
+           },
+           {
+             text: `< 3.0 (NOT DETECTED)`,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 0, 0, 2],
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             columns: [
+               {
+                 text: `${valuesMicro.Ecoil}`,
+                 // text: `${valuesMicro.Ecoil}`,
+                 width: "auto",
+                 alignment: "left",
+                 style: "RefBoxValue",
+                 margin: [0, 0, 0, 2],
+               },
+               {
+                 text: `(Every lot)`,
+                 width: "auto",
+                 alignment: "left",
+                 style: "RefBoxValue",
+                 margin: [17, 0, 0, 2],
+               },
+             ],
+             // margin: [0, 0, 0, 2],
+             // bold: true,
+             border: [false, false, false, false],
+           },
+           {
+             text: ``,
+             style: "RefBoxValue",
+             alignment: "left",
+             margin: [0, 2, 0, 2],
+             // bold: true,
+             border: [false, false, true, false],
+           },
+         ]
+       )
+    }
+    
+  }
 
   if (ScoreLevel) {
     sensory.push(
@@ -819,70 +995,69 @@ export const originalFormCOA2 = (
             {
               columns: [
                 {
-                  width: 'auto',
+                  width: "auto",
                   text: `Remark:`,
                   style: "RefBoxValue",
                   alignment: "left",
                 },
                 {
-                  width: 'auto',
+                  width: "auto",
                   text: `Score level`,
                   style: "RefBoxValue",
                   alignment: "left",
-                  margin: [-5,0,0,0]
-                }
+                  margin: [-5, 0, 0, 0],
+                },
               ],
             },
             {
               columns: [
                 {
-                  width: 'auto',
-                  margin: [30,0,0,0],
+                  width: "auto",
+                  margin: [30, 0, 0, 0],
                   text: ``,
                   style: "RefBoxValue",
                   alignment: "left",
                 },
                 {
-                  width: 'auto',
+                  width: "auto",
                   text: `5 = Very Good`,
                   style: "RefBoxValue",
                   alignment: "left",
-                }
+                },
               ],
             },
             {
               columns: [
                 {
-                  width: 'auto',
-                  margin: [30,0,0,0],
+                  width: "auto",
+                  margin: [30, 0, 0, 0],
                   text: ``,
                   style: "RefBoxValue",
                   alignment: "left",
                 },
                 {
-                  width: 'auto',
+                  width: "auto",
                   text: `4 = Good`,
                   style: "RefBoxValue",
                   alignment: "left",
-                }
+                },
               ],
             },
             {
               columns: [
-                
                 {
-                  width: 'auto',
+                  width: "auto",
                   text: `less than`,
                   style: "RefBoxValue",
                   alignment: "left",
                 },
                 {
-                  width: 'auto',
-                  margin: [-8,0,0,0],
+                  width: "auto",
+                  margin: [-8, 0, 0, 0],
                   text: `4 = Not Good`,
                   style: "RefBoxValue",
                   alignment: "left",
-                }
+                },
               ],
             },
           ],
@@ -910,7 +1085,7 @@ export const originalFormCOA2 = (
           bold: true,
           border: [false, false, true, true],
         },
-      ],
+      ]
     )
   }
 
@@ -1029,13 +1204,13 @@ export const originalFormCOA2 = (
           {
             image: `data:image/png;base64,${logo}`,
             width: 80,
-            alignment:'left',
+            alignment: "left",
             // margin: ['auto'],
           },
           {
             // margin: 'auto',
-            margin: [0,0,20,0],
-            alignment:'center',
+            margin: [0, 0, 20, 0],
+            alignment: "center",
             stack: [
               {
                 columns: [
@@ -1087,10 +1262,10 @@ export const originalFormCOA2 = (
           },
           {
             // margin: 'auto',
-            
+
             image: `data:image/png;base64,${halal}`,
             width: 60,
-            alignment:'center',
+            alignment: "center",
           },
         ],
       },
@@ -1235,26 +1410,26 @@ export const originalFormCOA2 = (
         table: {
           widths: ["*", "*"],
           // heights:40,
-          body:[
+          body: [
             [
               {
                 margin: [5, 10, 0, 10],
                 text: `${ApproveValue} ......................................`,
                 // style: "invoiceTitleHeaderDetail",
-                bold:true,
-                alignment: "left", 
+                bold: true,
+                alignment: "left",
                 border: [true, true, false, true],
               },
               {
                 margin: [0, 10, 5, 10],
-                text:  `${ReportValue} ......................................`,
+                text: `${ReportValue} ......................................`,
                 // style: "invoiceTitleHeaderDetail",
-                bold:true,
+                bold: true,
                 alignment: "right",
                 border: [false, true, true, true],
-              }
-            ]
-          ]
+              },
+            ],
+          ],
         },
         // columns: [
         //   {
