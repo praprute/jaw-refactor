@@ -47,7 +47,7 @@ import {
 import SweetAlert from "react-bootstrap-sweetalert"
 // import ModalDetail from './../Orders/ModalDetail'
 
-const OrderTableSample = props => {
+const TableReprocess = props => {
   const { user, token } = isAuthenticated()
   const {
     redirect,
@@ -72,7 +72,11 @@ const OrderTableSample = props => {
       sort: "asc",
       // width: 100,
     },
-
+    {
+      label: "Status",
+      field: "status",
+      sort: "asc",
+    },
     {
       label: "Priority",
       field: "priority",
@@ -83,12 +87,12 @@ const OrderTableSample = props => {
       label: "Detail",
       field: "detail",
     },
-    {
-      label: "Action",
-      field: "action",
-      sort: "asc",
-      // width: 100,
-    },
+    // {
+    //   label: "Action",
+    //   field: "action",
+    //   sort: "asc",
+    //   // width: 100,
+    // },
   ])
   const [dataMerch, setDataMerch] = useState({})
   const [detail, setdetail] = useState({})
@@ -216,7 +220,12 @@ const OrderTableSample = props => {
                 </div>
               ),
             }
-            index.push(rd)
+            if (props.tricker == "Reprocess") {
+              if (data.message[i].Status == 5) {
+                index.push(rd)
+              }
+            }
+            // index.push(rd)
           }
           const status = {
             1: <span className="badge bg-success font-size-10">Completed</span>,
@@ -320,7 +329,7 @@ const OrderTableSample = props => {
   )
 }
 
-OrderTableSample.propTypes = {
+TableReprocess.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   onAddDetail: PropTypes.func,
@@ -345,4 +354,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(OrderTableSample))
+)(withRouter(TableReprocess))

@@ -37,7 +37,17 @@ import { withRouter } from "react-router-dom"
 import Moment from "moment"
 
 const ModalEditSample = props => {
-  const { isOpenEditSample, toggleEditSample, orders, spc, tr, bio } = props
+  const {
+    isOpenEditSample,
+    toggleEditSample,
+    orders,
+    spc,
+    tr,
+    bio,
+    redirect,
+    handleRedirect,
+  } = props
+
   const [success_msg, setsuccess_msg] = useState(false)
   const [success_error, setsuccess_error] = useState(false)
   const { user, token } = isAuthenticated()
@@ -143,8 +153,8 @@ const ModalEditSample = props => {
       AN: AN,
       Acidity: Acidity,
       Viscosity: Viscosity,
-      SaltMeter:SaltMeter,
-      Color:Color
+      SaltMeter: SaltMeter,
+      Color: Color,
     }
     // console.log(index)
     updateDetail(token, index).then(data => {
@@ -230,8 +240,9 @@ const ModalEditSample = props => {
           //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_msg(false)
-            // toggleEditSample()
-            location.reload()
+            handleRedirect()
+            toggleEditSample()
+            // location.reload()
           }}
         >
           You clicked the button!
@@ -296,7 +307,7 @@ const ModalEditSample = props => {
                     Specific Chem
                   </label>
                   <div className="col-md-10">
-                  {/* <Select
+                    {/* <Select
                           value={selectedGroup3}
                           name="ChemSpc"
                           onChange={e => {

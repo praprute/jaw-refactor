@@ -19,7 +19,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "../Tables/datatables.scss"
 import Moment from "moment"
 //get api
-import { getAllOrder, readOrderById, exportCOA,loadHalalLogo } from "./api"
+import { getAllOrder, readOrderById, exportCOA, loadHalalLogo } from "./api"
 import { map, result } from "lodash"
 import { orders } from "common/data"
 import { isAuthenticated } from "./../Authentication/api"
@@ -38,9 +38,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 const ModalDetail = props => {
   pdfMake.vfs = pdfFonts.pdfMake.vfs
   const { orders, spc, tr, bio } = props
-  const [imgg, setimgg] = useState(
-    "https://jaw.sgp1.digitaloceanspaces.com/Logo-RFS.jpg"
-  )
   const { isOpen, toggle, toggleCOA } = props
   const { user, token } = isAuthenticated()
   const [modal, setModal] = useState(false)
@@ -79,6 +76,7 @@ const ModalDetail = props => {
 
   useEffect(() => {
     if (tr[0] != undefined) {
+      // console.log("tr :", tr)
       setresultChem(tr[0])
       setresultMicro(tr[1])
     } else {
@@ -103,7 +101,7 @@ const ModalDetail = props => {
 
   const [scoreTested, setscoreTested] = useState("")
   useEffect(() => {
-    // console.log(tr[0])
+    // console.log(tr)
     setdetailById(orders)
     setMicrorender(orders.Micro)
 
@@ -149,25 +147,24 @@ const ModalDetail = props => {
 
   const handleExport = async () => {
     // console.log('count : ', score)
-    // console.log('testedScore : ', scoreTested)
-    let image = { }
+    console.log("orders : ", orders)
+    let image = {}
     let halalLogo = {}
-    try{
+    try {
       let data = await exportCOA(token)
       let halal = await loadHalalLogo(token)
       if (data) {
         image = {
-            img:data.message
+          img: data.message,
         }
       }
-      if(halal){
+      if (halal) {
         halalLogo = {
-          img:halal.message
+          img: halal.message,
         }
       }
       if (scoreTested != 0 && score != 0) {
         if (scoreTested == score) {
-          
           let index = {
             ProductName: orders.ProductName,
             PO: orders.PO,
@@ -175,24 +172,25 @@ const ModalDetail = props => {
             PORD: orders.PORD,
             Quantity: orders.Quantity,
             Size: orders.Size,
-  
+
             chem: tr[0],
             micro: tr[1],
-  
-            logo:image.img,
-            halal:halalLogo.img,
-            Orders:orders
+
+            logo: image.img,
+            halal: halalLogo.img,
+            Orders: orders,
+            timeStamp: tr[2],
           }
-          console.log('index : ',index)
+          // console.log("tr : ", tr)
           if (typeof window !== "undefined") {
-              localStorage.setItem("JawIndexExport", JSON.stringify(index));
+            localStorage.setItem("JawIndexExport", JSON.stringify(index))
           }
           console.log("index : ", index)
         } else {
           setconfirm_alert(true)
         }
       }
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
@@ -560,7 +558,9 @@ const ModalDetail = props => {
                       </Col>
                       <Col xs="3">
                         <div>
-                          <h6>{index.val ? (index.val.toFixed(3)) : (index.val)}</h6>
+                          <h6>
+                            {index.val ? index.val.toFixed(3) : index.val}
+                          </h6>
                         </div>
                       </Col>
                       <Col xs="3">
@@ -709,6 +709,7 @@ const ModalDetail = props => {
           </Row>
         ) : null}
       </div>
+
       <ModalFooter>
         <Link target={"_blank"} to="/ExportForm">
           <Button

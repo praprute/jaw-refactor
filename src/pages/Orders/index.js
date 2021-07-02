@@ -32,7 +32,8 @@ import ModalDetail from "./ModalDetail"
 import ModalAddOrder from "./ModalAddOrder"
 import ModalEdit from "./ModalEdit"
 import ModalSelectCOA from "./ModalSelectCOA"
-
+import ModalReprocess from "./ModalReprocess"
+import TableReprocess from "./TableReprocess"
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
@@ -55,15 +56,30 @@ const Orderpage = props => {
   const [activeTab, setActiveTab] = useState("1")
   const { user, token } = isAuthenticated()
   const [modal, setModal] = useState(false)
+  const [modalReprocess, setModalReprocess] = useState(false)
   const [modalEdit, setModalEdit] = useState(false)
   const [modalAddorder, setModalAddorder] = useState(false)
   const [modalCoa, setModalCOA] = useState(false)
   const [sample, setSample] = useState(false)
   const [Editsample, setEditsample] = useState(false)
   const [tricker, setTricker] = useState(false)
+  const [redirect, setRedirect] = useState(false)
 
   const toggleModal = () => {
     setModal(!modal)
+  }
+
+  const handleRedi = () => {
+    setRedirect(!redirect)
+  }
+
+  const toggleModalReprocess = () => {
+    setModalReprocess(!modalReprocess)
+    console.log("bug modalReprocess: ", modalReprocess)
+  }
+
+  const offReprocess = () => {
+    setModalReprocess(false)
   }
 
   const toggleSample = () => {
@@ -92,37 +108,58 @@ const Orderpage = props => {
       setActiveTab(tab)
     }
   }
-  useEffect(() => {
-    // if(user){
-    //   if(user.role == "1"){
-    //   history.push('/Orders')
-    // }
-    // if(user.role == "2"){
-    //   history.push('/labatory')
-    // }
-    // }else{
-    //   history.push('/login')
-    // }
-  }, [])
+
   return (
     <React.Fragment>
       <div className="page-content">
         <ModalEditSample
           isOpenEditSample={Editsample}
           toggleEditSample={toggleEditSample}
+          redirect={redirect}
+          handleRedirect={handleRedi}
         />
-        <ModaladdSample isOpenSample={sample} toggleSample={toggleSample} />
-        <ModalSelectCOA isOpenCOA={modalCoa} toggleCOA={toggleModalCOA} />
+
+        <ModaladdSample
+          redirect={redirect}
+          handleRedirect={handleRedi}
+          isOpenSample={sample}
+          toggleSample={toggleSample}
+        />
+
+        <ModalSelectCOA
+          redirect={redirect}
+          handleRedirect={handleRedi}
+          isOpenCOA={modalCoa}
+          toggleCOA={toggleModalCOA}
+        />
+
+        <ModalReprocess
+          isOpenRro={modalReprocess}
+          toggleRepro={toggleModalReprocess}
+          redirect={redirect}
+          handleRedirect={handleRedi}
+          offModal={offReprocess}
+          // toggleCOA={toggleModalCOA}
+        />
         <ModalDetail
           isOpen={modal}
           toggle={toggleModal}
           toggleCOA={toggleModalCOA}
+          redirect={redirect}
+          handleRedirect={handleRedi}
         />
         <ModalAddOrder
           isOpenAddorder={modalAddorder}
           toggleAddorder={toggleModalAddOrder}
+          redirect={redirect}
+          handleRedirect={handleRedi}
         />
-        <ModalEdit isOpenEdit={modalEdit} toggleEdit={toggleModalEdit} />
+        <ModalEdit
+          redirect={redirect}
+          handleRedirect={handleRedi}
+          isOpenEdit={modalEdit}
+          toggleEdit={toggleModalEdit}
+        />
         <MetaTags>
           <title>Orders | Orders - Application</title>
         </MetaTags>
@@ -179,6 +216,20 @@ const Orderpage = props => {
                             Rechecking
                           </NavLink>
                         </NavItem>
+
+                        <NavItem>
+                          <NavLink
+                            className={classnames({
+                              active: activeTab === "5",
+                            })}
+                            onClick={() => {
+                              toggleTab("5")
+                            }}
+                          >
+                            Reprocess
+                          </NavLink>
+                        </NavItem>
+
                         <NavItem>
                           <NavLink
                             className={classnames({
@@ -191,7 +242,7 @@ const Orderpage = props => {
                             Complete Check
                           </NavLink>
                         </NavItem>
-                        <NavItem>
+                        {/* <NavItem>
                           <NavLink
                             className={classnames({
                               active: activeTab === "5",
@@ -202,7 +253,7 @@ const Orderpage = props => {
                           >
                             Pass Orders
                           </NavLink>
-                        </NavItem>
+                        </NavItem> */}
                       </ul>
                     </Col>
                   </Row>
@@ -230,6 +281,8 @@ const Orderpage = props => {
                         </ul>
                       </div>
                       <OrderTableSample
+                        redirect={redirect}
+                        handleRedirect={handleRedi}
                         toggleEditSample={toggleEditSample}
                         toggleCOA={toggleModalCOA}
                         toggle={toggleModal}
@@ -263,6 +316,8 @@ const Orderpage = props => {
                         toggleCOA={toggleModalCOA}
                         toggle={toggleModal}
                         toggleEdit={toggleModalEdit}
+                        redirect={redirect}
+                        handleRedirect={handleRedi}
                       />
                     </TabPane>
 
@@ -271,6 +326,8 @@ const Orderpage = props => {
                         <OrderTableRecheck
                           toggleCOA={toggleModalCOA}
                           toggle={toggleModal}
+                          redirect={redirect}
+                          handleRedirect={handleRedi}
                         />
                       </div>
                     </TabPane>
@@ -281,11 +338,28 @@ const Orderpage = props => {
                           tricker={"CompleteCheck"}
                           toggleCOA={toggleModalCOA}
                           toggle={toggleModal}
+                          toggleReprocess={toggleModalReprocess}
+                          redirect={redirect}
+                          handleRedirect={handleRedi}
                         />
                       </div>
                     </TabPane>
 
-                    <TabPane tabId="5" id="pass">
+                    <TabPane tabId="5" id="Reprocess">
+                      <div>
+                        <TableReprocess
+                          redirect={redirect}
+                          tricker={"Reprocess"}
+                          handleRedirect={handleRedi}
+                          toggleEditSample={toggleEditSample}
+                          toggleCOA={toggleModalCOA}
+                          toggle={toggleModal}
+                          toggleEdit={toggleModalEdit}
+                        />
+                      </div>
+                    </TabPane>
+
+                    {/* <TabPane tabId="5" id="pass">
                       <div>
                         <TablePassCheckAndPass
                           tricker={"pass"}
@@ -293,7 +367,7 @@ const Orderpage = props => {
                           toggle={toggleModal}
                         />
                       </div>
-                    </TabPane>
+                    </TabPane> */}
                   </TabContent>
                 </CardBody>
               </Card>

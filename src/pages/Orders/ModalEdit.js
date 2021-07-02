@@ -35,7 +35,16 @@ import { withRouter } from "react-router-dom"
 import Moment from "moment"
 
 const ModalEdit = props => {
-  const { isOpenEdit, toggleEdit, orders, spc, tr, bio } = props
+  const {
+    isOpenEdit,
+    toggleEdit,
+    orders,
+    spc,
+    tr,
+    bio,
+    redirect,
+    handleRedirect,
+  } = props
   const [success_msg, setsuccess_msg] = useState(false)
   const [success_error, setsuccess_error] = useState(false)
   const { user, token } = isAuthenticated()
@@ -63,7 +72,6 @@ const ModalEdit = props => {
 
   const [SaltMeter, setSaltMeter] = useState(false)
   const [Color, setColor] = useState(false)
-
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
@@ -131,8 +139,8 @@ const ModalEdit = props => {
       AN: AN,
       Acidity: Acidity,
       Viscosity: Viscosity,
-      SaltMeter:SaltMeter,
-      Color:Color,
+      SaltMeter: SaltMeter,
+      Color: Color,
     }
     updateDetail(token, index).then(data => {
       // console.log('response add order : ', data)
@@ -200,10 +208,11 @@ const ModalEdit = props => {
           //   showCancel
           confirmBtnBsStyle="success"
           //   cancelBtnBsStyle="danger"
-          onConfirm={() => {
+          onConfirm={async () => {
             setsuccess_msg(false)
+            handleRedirect()
             toggleEdit()
-            location.reload()
+            // location.reload()
           }}
         >
           You clicked the button!

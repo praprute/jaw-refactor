@@ -4,18 +4,23 @@ import pdfFonts from "../../../assets/custom-fonts"
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
   Roboto: {
-    normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
-    bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
-    italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
-    bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
+    normal:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+    bold:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    italics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
+    bolditalics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
   },
   // Kanit Font
-  Sarabun: { // 3. set Kanit font
-    normal: 'Sarabun-Regular.ttf',
-    bold: 'Sarabun-Medium.ttf',
-    italics: 'Sarabun-Italic.ttf',
-    bolditalics: 'Sarabun-MediumItalic.ttf'          
-  }
+  Sarabun: {
+    // 3. set Kanit font
+    normal: "Sarabun-Regular.ttf",
+    bold: "Sarabun-Medium.ttf",
+    italics: "Sarabun-Italic.ttf",
+    bolditalics: "Sarabun-MediumItalic.ttf",
+  },
 }
 export const originalFormCOA = (
   logo,
@@ -33,7 +38,8 @@ export const originalFormCOA = (
   valuesMicro,
   selectedGroupNameTo,
   ApproveValue,
-  ReportValue ,
+  ReportValue,
+  salmon
 ) => {
   let DetailOrderRow1 = []
   let DetailOrderRow2 = []
@@ -72,8 +78,8 @@ export const originalFormCOA = (
 
   let MicroComponent = []
 
-//   console.log("prop data", AnalysisRender, spcChem, valuesChem)
-//   console.log("/MicroRender ", MicroRender)
+  //   console.log("prop data", AnalysisRender, spcChem, valuesChem)
+  //   console.log("/MicroRender ", MicroRender)
 
   if (AnalysisRender.DisTN) {
     dataAnaly.push([
@@ -384,449 +390,752 @@ export const originalFormCOA = (
   }
 
   if (MicroRender.MicroRender && MicroRender.MicroAnalysis) {
-    dataAnaly.push(
-      [
-        {
-          text: `MICROBIOLOGICAL`,
-          style: "RefBoxValue",
-          alignment: "left",
-        //   fontSize: 8,
-          decoration: "underline",
-          // italics: true, ตัวเอียง
-          bold: true,
-          margin: [0, 0, 0, 5],
-          border: [true, false, false, false],
-        },
-        {
-          text: ``,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          text: ``,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `APC`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          border: [true, false, false, false],
-        },
-        {
-          text: `< 1x10\u2074 CFU/g`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          columns: [
-            {
-              text: `${valuesMicro.TPC}`,
-              style: "RefBoxValue",
-            },
-            {
-              text: `(Every lot)`,
-              style: "RefBoxValue",
-            },
-          ],
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `Yeasts and Molds`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          border: [true, false, false, false],
-        },
-        {
-          text: `\u2264 100 CFU/g`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          columns: [
-            {
-              text: `${valuesMicro.YeaseandMold}`,
-              style: "RefBoxValue",
-            },
-            {
-              text: `(Every lot)`,
-              style: "RefBoxValue",
-            },
-          ],
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `E. coli`,
-          style: "RefBoxValue",
-          alignment: "left",
-          italics: true,
-          margin: [0, 0, 0, 5],
-          border: [true, false, false, false],
-        },
-        {
-          text: `NOT DETECTED`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          columns: [
-            {
-              text: `${valuesMicro.Ecoil}`,
-              width: "auto",
-              alignment: "left",
-              style: "RefBoxValue",
-            },
-            {
-              text: `(Every lot)`,
-              width: "auto",
-              alignment: "right",
-              margin:[11,0,0,0],
-              style: "RefBoxValue",
-            },
-          ],
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `Coliform`,
-          style: "RefBoxValue",
-          alignment: "left",
-          italics: true,
-          margin: [0, 0, 0, 5],
-          border: [true, false, false, false],
-        },
-        {
-          text: `NOT DETECTED`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          columns: [
-            {
-              text: `${valuesMicro.Coliform}`,
-              width: "auto",
-              alignment: "left",
-              style: "RefBoxValue",
-            },
-            {
-              text: `(Every lot)`,
-              width: "auto",
-              alignment: "right",
-              style: "RefBoxValue",
-              margin:[11,0,0,0],
-            },
-          ],
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `S. aureus`,
-          style: "RefBoxValue",
-          alignment: "left",
-          italics: true,
-          margin: [0, 0, 0, 5],
-          border: [true, false, false, false],
-        },
-        {
-          text: `NOT DETECTED`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          columns: [
-            {
-              text: `${valuesMicro.Saureus}`,
-              width: "auto",
-              alignment: "left",
-              style: "RefBoxValue",
-            },
-            {
-              text: `(Every lot)`,
-              width: "auto",
-              alignment: "right",
-              style: "RefBoxValue",
-              margin:[11,0,0,0],
-            },
-          ],
-          margin: [0, 0, 0, 5],
-          bold: true,
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `Salmonella spp.`,
-          style: "RefBoxValue",
-          alignment: "left",
-          italics: true,
-          margin: [0, 0, 0, 5],
-          border: [true, false, false, false],
-        },
-        {
-          text: `NOT DETECTED`,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 0, 0, 5],
-            bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          columns: [
-            {
-              text: `${valuesMicro.Salmonella}`,
-              width: "auto",
-              alignment: "left",
-              style: "RefBoxValue",
-            },
-            {
-              text: `(Every lot)`,
-              width: "auto",
-              alignment: "right",
-              style: "RefBoxValue",
-              margin:[11,0,0,0],
-            },
-          ],
-          margin: [0, 0, 0, 5],
-          bold: true,
-          // fontSize:"8",
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `Characteristics`,
-          bold: true,
-          fontSize: "10",
-          margin: [0, 5, 0, 0],
-          border: [true, false, false, true],
-        },
-        {
-          text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
-          fontSize: "10",
-          bold: false,
-          margin: [0, 5, 0, 0],
-          border: [false, false, false, true],
-        },
-        {
-            
-          columns: [
-            {
-              fontSize: "10",
-              stack: [
-                {
-                  margin: [0, 0, 0, 5],
-                  columns: [
-                    {
-                      text: `Appearance`,
-                      bold: true,
-                    //   width: "auto",
-                    },
-                    {
-                      margin: [-30, 0, 0, 0],
-                      text: `No sedimentation`,
-                      fontSize: "10",
-                      bold: true,
-                      width: "*",
-                    },
-                  ],
-                },
-                {
-                  margin: [0, 0, 0, 5],
-                  columns: [
-                    {
-                      text: `Order`,
-                      bold: true,
-                    //   width: "auto",
-                    },
-                    {
-                        margin: [-30, 0, 0, 0],
-                      text: `Fresh fish sauce odor/aroma`,
-                      fontSize: "10",
-                      bold: true,
-                      width: "*",
-                    },
-                  ],
-                },
-                {
-                  margin: [0, 0, 0, 5],
-                  columns: [
-                    {
-                      text: `Taste`,
-                      bold: true,
-                    //   width: "auto",
-                    },
-                    {
-                        margin: [-30, 0, 0, 0],
-                      text: `Fresh fish sauce taste`,
-                      fontSize: "10",
-                      bold: true,
-                      width: "*",
-                    },
-                  ],
-                },
-                {
-                  margin: [0, 0, 0, 5],
-                  columns: [
-                    {
-                      text: `Color`,
-                      bold: true,
-                    //   width: "auto",
-                    },
-                    {
-                        margin: [-30, 0, 0, 0],
-                      text: `Clear rockfish brown thin liquid`,
-                      fontSize: "10",
-                      bold: true,
-                      width: "*",
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-          margin: [-50, 5, 0, 0],
-          border: [false, false, true, true],
-        },
-      ]
-    )
-  }else{
+    if (salmon) {
       dataAnaly.push(
         [
-            {
-              text: `Characteristics`,
-              bold: true,
-              margin: [0, 10, 0, 0],
-              fontSize: "10",
-              border: [true, false, false, true],
-            },
-            {
-              text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
-              fontSize: "10",
-              bold: false,
-              margin: [0, 10, 0, 0],
-              fontSize: "10",
-              border: [false, false, false, true],
-            },
-            {
-                
-              columns: [
-                {
-                  stack: [
-                    {
-                      margin: [0, 0, 0, 10],
-                      columns: [
-                        {
-                          text: `Appearance`,
-                          bold: true,
+          {
+            text: `MICROBIOLOGICAL`,
+            style: "RefBoxValue",
+            alignment: "left",
+            //   fontSize: 8,
+            decoration: "underline",
+            // italics: true, ตัวเอียง
+            bold: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `APC`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `< 1x10\u2074 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.TPC}`,
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Yeasts and Molds`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `\u2264 100 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.YeaseandMold}`,
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `E. coli`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `NOT DETECTED`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Ecoil}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "right",
+                margin: [11, 0, 0, 0],
+                style: "RefBoxValue",
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Coliform`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `NOT DETECTED`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Coliform}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "right",
+                style: "RefBoxValue",
+                margin: [11, 0, 0, 0],
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `S. aureus`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `NOT DETECTED`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Saureus}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "right",
+                style: "RefBoxValue",
+                margin: [11, 0, 0, 0],
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Salmonella spp.`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `NOT DETECTED`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Salmonella}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "right",
+                style: "RefBoxValue",
+                margin: [11, 0, 0, 0],
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            // fontSize:"8",
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Characteristics`,
+            bold: true,
+            fontSize: "10",
+            margin: [0, 5, 0, 0],
+            border: [true, false, false, true],
+          },
+          {
+            text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
+            fontSize: "10",
+            bold: false,
+            margin: [0, 5, 0, 0],
+            border: [false, false, false, true],
+          },
+          {
+            columns: [
+              {
+                fontSize: "10",
+                stack: [
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Appearance`,
+                        bold: true,
                         //   width: "auto",
-                        },
-                        {
-                          margin: [-30, 0, 0, 0],
-                          text: `No sedimentation`,
-                          fontSize: "10",
-                          bold: true,
-                          width: "*",
-                        },
-                      ],
-                    },
-                    {
-                      margin: [0, 0, 0, 10],
-                      columns: [
-                        {
-                          text: `Order`,
-                          bold: true,
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `No sedimentation`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Order`,
+                        bold: true,
                         //   width: "auto",
-                        },
-                        {
-                            margin: [-30, 0, 0, 0],
-                          text: `Fresh fish sauce odor/aroma`,
-                          fontSize: "10",
-                          bold: true,
-                          width: "*",
-                        },
-                      ],
-                    },
-                    {
-                      margin: [0, 0, 0, 10],
-                      columns: [
-                        {
-                          text: `Taste`,
-                          bold: true,
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `Fresh fish sauce odor/aroma`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Taste`,
+                        bold: true,
                         //   width: "auto",
-                        },
-                        {
-                            margin: [-30, 0, 0, 0],
-                          text: `Fresh fish sauce taste`,
-                          fontSize: "10",
-                          bold: true,
-                          width: "*",
-                        },
-                      ],
-                    },
-                    {
-                      margin: [0, 0, 0, 10],
-                      columns: [
-                        {
-                          text: `Color`,
-                          bold: true,
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `Fresh fish sauce taste`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Color`,
+                        bold: true,
                         //   width: "auto",
-                        },
-                        {
-                            margin: [-30, 0, 0, 0],
-                          text: `Clear rockfish brown thin liquid`,
-                          fontSize: "10",
-                          bold: true,
-                          width: "*",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-              margin: [-50, 10, 0, 0],
-              border: [false, false, true, true],
-            },
-          ]
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `Clear rockfish brown thin liquid`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+            margin: [-50, 5, 0, 0],
+            border: [false, false, true, true],
+          },
+        ]
       )
+    } else {
+      dataAnaly.push(
+        [
+          {
+            text: `MICROBIOLOGICAL`,
+            style: "RefBoxValue",
+            alignment: "left",
+            //   fontSize: 8,
+            decoration: "underline",
+            // italics: true, ตัวเอียง
+            bold: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `APC`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `< 1x10\u2074 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.TPC}`,
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Yeasts and Molds`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `\u2264 100 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.YeaseandMold}`,
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `E. coli`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `NOT DETECTED`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Ecoil}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "right",
+                margin: [11, 0, 0, 0],
+                style: "RefBoxValue",
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Coliform`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `NOT DETECTED`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Coliform}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "right",
+                style: "RefBoxValue",
+                margin: [11, 0, 0, 0],
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `S. aureus`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `NOT DETECTED`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Saureus}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "right",
+                style: "RefBoxValue",
+                margin: [11, 0, 0, 0],
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Characteristics`,
+            bold: true,
+            fontSize: "10",
+            margin: [0, 5, 0, 0],
+            border: [true, false, false, true],
+          },
+          {
+            text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
+            fontSize: "10",
+            bold: false,
+            margin: [0, 5, 0, 0],
+            border: [false, false, false, true],
+          },
+          {
+            columns: [
+              {
+                fontSize: "10",
+                stack: [
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Appearance`,
+                        bold: true,
+                        //   width: "auto",
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `No sedimentation`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Order`,
+                        bold: true,
+                        //   width: "auto",
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `Fresh fish sauce odor/aroma`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Taste`,
+                        bold: true,
+                        //   width: "auto",
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `Fresh fish sauce taste`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                  {
+                    margin: [0, 0, 0, 5],
+                    columns: [
+                      {
+                        text: `Color`,
+                        bold: true,
+                        //   width: "auto",
+                      },
+                      {
+                        margin: [-30, 0, 0, 0],
+                        text: `Clear rockfish brown thin liquid`,
+                        fontSize: "10",
+                        bold: true,
+                        width: "*",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+            margin: [-50, 5, 0, 0],
+            border: [false, false, true, true],
+          },
+        ]
+      )
+    }
+  } else {
+    dataAnaly.push([
+      {
+        text: `Characteristics`,
+        bold: true,
+        margin: [0, 10, 0, 0],
+        fontSize: "10",
+        border: [true, false, false, true],
+      },
+      {
+        text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
+        fontSize: "10",
+        bold: false,
+        margin: [0, 10, 0, 0],
+        fontSize: "10",
+        border: [false, false, false, true],
+      },
+      {
+        columns: [
+          {
+            stack: [
+              {
+                margin: [0, 0, 0, 10],
+                columns: [
+                  {
+                    text: `Appearance`,
+                    bold: true,
+                    //   width: "auto",
+                  },
+                  {
+                    margin: [-30, 0, 0, 0],
+                    text: `No sedimentation`,
+                    fontSize: "10",
+                    bold: true,
+                    width: "*",
+                  },
+                ],
+              },
+              {
+                margin: [0, 0, 0, 10],
+                columns: [
+                  {
+                    text: `Order`,
+                    bold: true,
+                    //   width: "auto",
+                  },
+                  {
+                    margin: [-30, 0, 0, 0],
+                    text: `Fresh fish sauce odor/aroma`,
+                    fontSize: "10",
+                    bold: true,
+                    width: "*",
+                  },
+                ],
+              },
+              {
+                margin: [0, 0, 0, 10],
+                columns: [
+                  {
+                    text: `Taste`,
+                    bold: true,
+                    //   width: "auto",
+                  },
+                  {
+                    margin: [-30, 0, 0, 0],
+                    text: `Fresh fish sauce taste`,
+                    fontSize: "10",
+                    bold: true,
+                    width: "*",
+                  },
+                ],
+              },
+              {
+                margin: [0, 0, 0, 10],
+                columns: [
+                  {
+                    text: `Color`,
+                    bold: true,
+                    //   width: "auto",
+                  },
+                  {
+                    margin: [-30, 0, 0, 0],
+                    text: `Clear rockfish brown thin liquid`,
+                    fontSize: "10",
+                    bold: true,
+                    width: "*",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        margin: [-50, 10, 0, 0],
+        border: [false, false, true, true],
+      },
+    ])
   }
 
   if (tankNo.Tank !== "") {
@@ -935,8 +1244,8 @@ export const originalFormCOA = (
       DetailOrderRow3.push(index)
     }
   }
-//   console.log("DetailOrderRow2 :", DetailOrderRow2)
-//   console.log("dataAnalysis :", dataAnaly)
+  //   console.log("DetailOrderRow2 :", DetailOrderRow2)
+  //   console.log("dataAnalysis :", dataAnaly)
   var docDefinition = {
     pageMargins: [35, 20, 15, 20],
     content: [
@@ -1074,7 +1383,7 @@ export const originalFormCOA = (
                 text: `TO. ${selectedGroupNameTo}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                font: 'Sarabun',
+                font: "Sarabun",
                 border: [true, true, false, false],
               },
               {
@@ -1121,7 +1430,7 @@ export const originalFormCOA = (
             DetailOrderRow3,
             [
               {
-                text: `Product Name: ${PnAndPS.ProductName}`,
+                text: `Product Name: ${PnAndPS.ProductName.toString()}`,
                 style: "RefBoxValue",
                 alignment: "left",
                 border: [true, false, false, false],
@@ -1154,7 +1463,7 @@ export const originalFormCOA = (
           ],
         },
       },
-      
+
       {
         margin: [0, 5, 0, 0],
         table: {
@@ -1204,16 +1513,16 @@ export const originalFormCOA = (
     //   font: 'Sarabun'
     // },
     styles: {
-        RefBoxValue:{
-            fontSize:10,
-            font: 'Sarabun',
-        },
-        invoiceTitleHeaderDetail: {
-            fontSize: 8,
-            bold: true,
-            alignment: "center",
-            margin: [0, 0, 0, 0],
-          },
+      RefBoxValue: {
+        fontSize: 10,
+        font: "Sarabun",
+      },
+      invoiceTitleHeaderDetail: {
+        fontSize: 8,
+        bold: true,
+        alignment: "center",
+        margin: [0, 0, 0, 0],
+      },
       rightRef: {
         alignment: "right",
       },
@@ -1256,7 +1565,7 @@ export const originalFormCOA = (
         alignment: "center",
         margin: [0, 0, 0, 0],
       },
-      
+
       HeaderDetail: {
         fontSize: 11,
         bold: true,

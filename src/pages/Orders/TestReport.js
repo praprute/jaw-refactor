@@ -49,7 +49,17 @@ import {
 } from "store/actions"
 
 const ModalTestReport = props => {
-  const { isOpenTR, toggleTR, orders, spc, onAddTestResult, tr, bio } = props
+  const {
+    isOpenTR,
+    toggleTR,
+    orders,
+    spc,
+    onAddTestResult,
+    tr,
+    bio,
+    redirect,
+    handleRedirect,
+  } = props
   const { user, token } = isAuthenticated()
   const [success_msg, setsuccess_msg] = useState(false)
   const [success_recheck, setsuccess_recheck] = useState(false)
@@ -70,6 +80,20 @@ const ModalTestReport = props => {
       Quantity: "",
     },
   ])
+  const [disable, setDisable] = useState({
+    TN: false,
+    Salt: false,
+    Histamine: false,
+    PH: false,
+    Aw: false,
+    Tss: false,
+    SPG: false,
+    AN: false,
+    Acidity: false,
+    Viscosity: false,
+    SaltMeter: false,
+    Color: false,
+  })
   const [Microrender, setMicrorender] = useState(false)
   const [resultChem, setresultChem] = useState([
     {
@@ -144,7 +168,7 @@ const ModalTestReport = props => {
   }
   const [focusAfterClose, setFocusAfterClose] = useState(true)
   const [meanScore, setMeanScore] = useState(0)
-
+  const [description, setDescription] = useState("")
   const countingScore = async index => {
     // console.log("counting Score", index)
     let resulted = index.resulted
@@ -197,18 +221,22 @@ const ModalTestReport = props => {
     }
 
     if (index.message.MicroC == 1) {
-      if((ScoreChem == MeanChem) && (SumMeanScore != SumScore)){
+      if (ScoreChem == MeanChem && SumMeanScore != SumScore) {
         try {
-          let updatePassToCheckWaitMicro =  WaitMicro(token,uid)
+          let updatePassToCheckWaitMicro = WaitMicro(token, uid)
         } catch (err) {
           console.log(err)
         }
       }
     }
-    
+
     if (SumMeanScore == SumScore) {
       try {
-        let updatePassToCheck =  UpdateStatusPassToCheck(token,uid, detailById.ProductName)
+        let updatePassToCheck = UpdateStatusPassToCheck(
+          token,
+          uid,
+          detailById.ProductName
+        )
       } catch (err) {
         console.log(err)
       }
@@ -245,8 +273,8 @@ const ModalTestReport = props => {
             AN: null,
             Acidity: null,
             Viscosity: null,
-            SaltMeter:null,
-        Color:null ,
+            SaltMeter: null,
+            Color: null,
             idSpfMicro: 1,
             APC: null,
             Yeasts: null,
@@ -385,8 +413,8 @@ const ModalTestReport = props => {
         AN: values.AN,
         Acidity: values.Acidity,
         Viscosity: values.Viscosity,
-        SaltMeter:values.SaltMeter,
-        Color:values.Color,
+        SaltMeter: values.SaltMeter,
+        Color: values.Color,
         idSpfMicro: parseInt(values.idSpfMicro),
         APC: parseInt(values.APC),
         Yeasts: parseInt(values.Yeasts),
@@ -397,6 +425,7 @@ const ModalTestReport = props => {
         TempAW: values.TempAW,
         TempTSS: values.TempTSS,
         TempSPG: values.TempSPG,
+        timeStamp: require("moment")().format("YYYY-MM-DD HH:mm:ss"), //new Date().toISOString().slice(0, 19).replace('T', ' ')
       }
       let data = await Addtestreport(token, index)
       //  let fetchTestresult = await readTestResultlasted(token , index.idOrders)
@@ -421,9 +450,9 @@ const ModalTestReport = props => {
 
   const handleRecheck = event => {
     event.preventDefault()
-    let indexRecheck = [];
+    let indexRecheck = []
     resultChem.forEach(data => {
-      if((data.render > 0) && (data.coa == false)){
+      if (data.render > 0 && data.coa == false) {
         // console.log('data  : ', data.key)
         indexRecheck.push(data.key)
       }
@@ -433,7 +462,7 @@ const ModalTestReport = props => {
       idOrders: values.idOrders,
       Recheck: values.Recheck,
       ProductName: values.ProductName,
-      listRecheck: indexRecheck
+      listRecheck: indexRecheck,
     }
     Recheck(token, index).then(data => {
       if (data) {
@@ -518,7 +547,34 @@ const ModalTestReport = props => {
 
   useEffect(() => {
     if (tr[0] != undefined) {
-      console.log("test report tr[0]", tr[0])
+      console.log("test report tr[0]", tr)
+      if (tr[3][0].Description) {
+        setDescription(tr[3][0].Description)
+        const usingSplit = tr[3][0].Description.split(",")
+        console.log("usingSplit : ", usingSplit)
+        usingSplit.forEach(data => {
+          if (data == "TN") {
+            setDisable({ ...disable, TN: true })
+          }
+        })
+      } else {
+        setDescription(null)
+        setDisable({
+          TN: false,
+          Salt: false,
+          Histamine: false,
+          PH: false,
+          Aw: false,
+          Tss: false,
+          SPG: false,
+          AN: false,
+          Acidity: false,
+          Viscosity: false,
+          SaltMeter: false,
+          Color: false,
+        })
+      }
+
       setresultChem(tr[0])
       setresultMicro(tr[1])
       setValues({
@@ -693,8 +749,8 @@ const ModalTestReport = props => {
         AN: null,
         Acidity: null,
         Viscosity: null,
-        SaltMeter:null,
-        Color:null ,
+        SaltMeter: null,
+        Color: null,
         idSpfMicro: 1,
         APC: null,
         Yeasts: null,
@@ -726,7 +782,9 @@ const ModalTestReport = props => {
           confirmBtnBsStyle="success"
           //   cancelBtnBsStyle="danger"
           onConfirm={() => {
-            location.reload()
+            // location.reload()
+            handleRedirect()
+            toggleTR()
           }}
         >
           {dynamic_description}
@@ -740,7 +798,8 @@ const ModalTestReport = props => {
           confirmBtnBsStyle="success"
           //   cancelBtnBsStyle="danger"
           onConfirm={() => {
-            location.reload()
+            handleRedirect()
+            toggleTR()
           }}
         >
           {dynamic_description}
@@ -1051,6 +1110,39 @@ const ModalTestReport = props => {
         </Row>
 
         <hr />
+
+        {description ? (
+          <Row style={{ marginBottom: "10px" }}>
+            <Col
+              xs="12"
+              style={{
+                border: "solid 1px #989a9b",
+                borderRadius: "10px",
+                height: "100%",
+                background: "transparent",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                padding: "10px",
+              }}
+            >
+              <div
+                style={{ width: "100%", display: "flex", alignItems: "center" }}
+              >
+                <span
+                  className="badge bg-info font-size-18"
+                  style={{ marginRight: "5px" }}
+                >
+                  Reprocess Description :
+                </span>
+                <span className="badge bg-light font-size-18">
+                  {`${description}`}
+                </span>
+              </div>
+            </Col>
+          </Row>
+        ) : null}
         {/* Chemical analysis */}
         <Row>
           <Col
@@ -1374,10 +1466,11 @@ const ModalTestReport = props => {
                 onClick={() => {
                   toggleTR()
                   setOptionTR(false)
-                  window.location.reload()
+                  handleRedirect()
+                  // window.location.reload()
                 }}
               >
-                Canel
+                Cancel
               </Button>
             </Col>
           </Row>

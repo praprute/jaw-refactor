@@ -33,7 +33,7 @@ import { withRouter } from "react-router-dom"
 import Moment from "moment"
 
 const ModaladdSample = props => {
-  const { isOpenSample, toggleSample } = props
+  const { isOpenSample, toggleSample, redirect, handleRedirect } = props
   const [success_msg, setsuccess_msg] = useState(false)
   const [success_error, setsuccess_error] = useState(false)
   const { user, token } = isAuthenticated()
@@ -98,8 +98,8 @@ const ModaladdSample = props => {
           let spcc = []
           data.message.forEach(data => {
             let index = {
-                label: data.name,
-                value: data.idPdSpecificChem,
+              label: data.name,
+              value: data.idPdSpecificChem,
             }
             spcc.push(index)
           })
@@ -141,11 +141,11 @@ const ModaladdSample = props => {
       Aw: Aw,
       Spg: SPG,
       Micro: Micro,
-      AN:AN,
-      Acidity:Acidity,
-      Viscosity:Viscosity,
-      SaltMeter:SaltMeter,
-      Color:Color
+      AN: AN,
+      Acidity: Acidity,
+      Viscosity: Viscosity,
+      SaltMeter: SaltMeter,
+      Color: Color,
     }
 
     // console.log("index sample : ", index)
@@ -161,9 +161,10 @@ const ModaladdSample = props => {
               updateCardDS(token).then(data => {
                 if (data) {
                   setsuccess_msg(true)
-                  setInterval(() => {
-                    window.location.reload()
-                  }, 1000)
+
+                  // setInterval(() => {
+                  //   window.location.reload()
+                  // }, 1000)
                 }
               })
             }
@@ -173,7 +174,7 @@ const ModaladdSample = props => {
         }
       } else {
         setsuccess_error(true)
-      }    
+      }
     })
 
     // toggleAddorder()
@@ -204,12 +205,36 @@ const ModaladdSample = props => {
           //   showCancel
           confirmBtnBsStyle="success"
           //   cancelBtnBsStyle="danger"
-          onConfirm={() => {
+          onConfirm={async () => {
             setsuccess_msg(false)
-            toggleAddorder()
-            setInterval(() => {
-              window.location.reload()
-            }, 5000)
+            // toggleAddorder()
+            handleRedirect()
+            toggleSample()
+
+            setTn(false)
+            setSalt(false)
+            setPH(false)
+            setHistamine(false)
+            setTss(false)
+            setSPG(false)
+            setAw(false)
+            setSaltMeter(false)
+            setMicro(false)
+            setColor(false)
+            setAN(false)
+            setAcidity(false)
+            setViscosity(false)
+            setValues({
+              pord: null,
+              bbe: null,
+              po: "",
+              productname: "",
+              size: "",
+              quantity: "",
+            })
+            // setInterval(() => {
+            //   window.location.reload()
+            // }, 5000)
           }}
         >
           You clicked the button!
@@ -289,15 +314,15 @@ const ModaladdSample = props => {
                     Specific Chem
                   </label>
                   <div className="col-md-10">
-                  <Select
-                          value={selectedGroup3}
-                          name="ChemSpc"
-                          onChange={e => {
-                            handleSelectGroup3()
-                            handleChangeSelectChem(e.value)
-                          }}
-                          options={nameSpcChem}
-                  />
+                    <Select
+                      value={selectedGroup3}
+                      name="ChemSpc"
+                      onChange={e => {
+                        handleSelectGroup3()
+                        handleChangeSelectChem(e.value)
+                      }}
+                      options={nameSpcChem}
+                    />
                     {/* <select
                       className="form-control"
                       id="c1"

@@ -21,7 +21,7 @@ import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA } from "../api"
+import { UpdatexportCOA, UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -32,7 +32,7 @@ import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
 import "./ModalFullScreen.css"
-import FormBeforeExport2 from '../COA2/FormBeforeExport2'
+import FormBeforeExport2 from "../COA2/FormBeforeExport2"
 import { getCustomers } from "../api"
 import e from "cors"
 const animatedComponents = makeAnimated()
@@ -98,18 +98,25 @@ const FormBeforeExport = props => {
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
   const [CustomersOption, setCustomers] = useState([])
+  const [salmon, setSalmon] = useState(false)
   const [ApproveSelect, setApproveSelect] = useState([
-    {
-      label: "DCC",
-      value: "DCC",
-    },
     {
       label: "QMR",
       value: "QMR",
     },
     {
-      label: "QA",
-      value: "QA",
+      label: "Production mixing",
+      value: "Production mixing",
+    },
+  ])
+  const [ReportSelect, setReport] = useState([
+    {
+      label: "DCC",
+      value: "DCC",
+    },
+    {
+      label: "Qc Lab",
+      value: "QMR",
     },
   ])
   const [valuesExportRef, setValuesExportRef] = useState({
@@ -147,6 +154,7 @@ const FormBeforeExport = props => {
     Quantity: "",
     TestDate: "",
   })
+  const [uid, setUid] = useState(null)
 
   useEffect(async () => {
     try {
@@ -168,25 +176,42 @@ const FormBeforeExport = props => {
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      //   console.log("index : ", paresIndex)
+      console.log("index : ", paresIndex)
 
       setValuesExportRow2({
-        ProductionDate: "",
-        DaliveryDate: Moment(new Date()).format("DD/MM/YY"),
+        ProductionDate: paresIndex.Orders.PD,
+        DaliveryDate: paresIndex.Orders.DD,
+      })
+
+      setTankNumber({
+        Tank: paresIndex.Orders.Tank,
+      })
+
+      setUid(paresIndex.Orders.idOrders)
+
+      setValuesExportRow1({
+        To: customerNameSelect,
+        DCL1: "BEST If Used By:",
+        DCL2: "",
+        DCL3: "",
       })
 
       setValuesExportPNandPS({
-        ProductName: paresIndex.Orders.ProductName,
+        ProductName: `${paresIndex.Orders.ProductName}`,
         PackSize: paresIndex.Orders.Size,
+      })
+
+      setValuesExportRow3({
+        ExpirationDate: paresIndex.Orders.ED,
       })
 
       setValuesQuantity({
         Quantity: paresIndex.Orders.Quantity,
-        TestDate: Moment(paresIndex.Orders.timestamp).format("DD/MM/YY"),
+        TestDate: Moment(paresIndex.timeStamp[0].TimeTest).format("DD/MM/YY"),
       })
 
       setValuesExportRef({
-        refNo: paresIndex.Orders.PO,
+        refNo: paresIndex.Orders.RefNo,
         date: Moment(new Date()).format("DD/MM/YY"),
         pageNo: "1",
       })
@@ -207,7 +232,7 @@ const FormBeforeExport = props => {
       setSpcChem({
         scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
         scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
-        scpProtein: "",
+        scpProtein: `2.3-3.5%`,
         scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
         scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
         scpSPG: `\u2265 1.20/20 \u00B0C`,
@@ -218,17 +243,49 @@ const FormBeforeExport = props => {
         scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
       })
       setvaluesChem({
-        TN: `${(paresIndex.chem[0].val) ? (paresIndex.chem[0].val.toFixed(3)) : (paresIndex.chem[0].val)}  g/L`,
-        PH: `${(paresIndex.chem[3].val) ? (paresIndex.chem[3].val.toFixed(3)) : (paresIndex.chem[3].val)} / ${paresIndex.chem[3].temp} \u00B0C`,
+        TN: `${
+          paresIndex.chem[0].val
+            ? paresIndex.chem[0].val.toFixed(2)
+            : paresIndex.chem[0].val
+        }  g/L`,
+        PH: `${
+          paresIndex.chem[3].val
+            ? paresIndex.chem[3].val.toFixed(2)
+            : paresIndex.chem[3].val
+        } / ${paresIndex.chem[3].temp} \u00B0C`,
         Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  g/L`,
-        Salt: `${(paresIndex.chem[1].val) ? (paresIndex.chem[1].val.toFixed(3)) : (paresIndex.chem[1].val)}% w/v`,
-        Histamine: `${(paresIndex.chem[2].val) ? (paresIndex.chem[2].val.toFixed(3)) : (paresIndex.chem[2].val)} ppm`,
-        SPG: `${(paresIndex.chem[6].val) ? (paresIndex.chem[6].val.toFixed(3)) : (paresIndex.chem[6].val)}/${paresIndex.chem[6].temp} \u00B0C`,
-        AW: `${(paresIndex.chem[4].val) ? (paresIndex.chem[4].val.toFixed(3)) : (paresIndex.chem[4].val)}/${paresIndex.chem[4].temp} \u00B0C`,
-        TSS: paresIndex.chem[5].val ? (paresIndex.chem[5].val.toFixed(3)) : (paresIndex.chem[5].val),
-        AN: paresIndex.chem[7].val ? (paresIndex.chem[7].val.toFixed(3)) : (paresIndex.chem[7].val),
-        Acidity: paresIndex.chem[8].val ? (paresIndex.chem[8].val.toFixed(3)) : (paresIndex.chem[8].val),
-        Viscosity: paresIndex.chem[9].val ? (paresIndex.chem[9].val.toFixed(3)) : (paresIndex.chem[9].val),
+        Salt: `${
+          paresIndex.chem[1].val
+            ? paresIndex.chem[1].val.toFixed(2)
+            : paresIndex.chem[1].val
+        }% w/v`,
+        Histamine: `${
+          paresIndex.chem[2].val
+            ? paresIndex.chem[2].val.toFixed(2)
+            : paresIndex.chem[2].val
+        } ppm`,
+        SPG: `${
+          paresIndex.chem[6].val
+            ? paresIndex.chem[6].val.toFixed(2)
+            : paresIndex.chem[6].val
+        }/${paresIndex.chem[6].temp} \u00B0C`,
+        AW: `${
+          paresIndex.chem[4].val
+            ? paresIndex.chem[4].val.toFixed(3)
+            : paresIndex.chem[4].val
+        }/${paresIndex.chem[4].temp} \u00B0C`,
+        TSS: paresIndex.chem[5].val
+          ? paresIndex.chem[5].val.toFixed(2)
+          : paresIndex.chem[5].val,
+        AN: paresIndex.chem[7].val
+          ? paresIndex.chem[7].val.toFixed(2)
+          : paresIndex.chem[7].val,
+        Acidity: paresIndex.chem[8].val
+          ? paresIndex.chem[8].val.toFixed(2)
+          : paresIndex.chem[8].val,
+        Viscosity: paresIndex.chem[9].val
+          ? paresIndex.chem[9].val.toFixed(2)
+          : paresIndex.chem[9].val,
       })
       let TPC = ""
       let YeaseandMold = ""
@@ -339,8 +396,30 @@ const FormBeforeExport = props => {
       valuesMicro,
       customerNameSelect,
       ApproveValue,
-      ReportValue
+      ReportValue,
+      salmon
     )
+  }
+
+  const handleSaveIndex = () => {
+    let index = {
+      idOrders: uid,
+      RefNo: valuesExportRef.refNo,
+      DCL1: valuesExportRow1.DCL1,
+      DCL2: valuesExportRow1.DCL2,
+      DCL3: valuesExportRow1.DCL3,
+      PD: valuesExportRow2.ProductionDate,
+      DD: valuesExportRow2.DaliveryDate,
+      ED: valuesExportRow3.ExpirationDate,
+      Size: valuesExportPNandPS.PackSize,
+      Tank: TankNumber.Tank,
+      Quantity: valuesQuantity.Quantity,
+      testDate: valuesQuantity.TestDate,
+    }
+
+    let Udo = UpdateDatailOrder(token, index)
+
+    console.log("index save : ", index)
   }
 
   const handleChangeValueAnalysis = name => event => {
@@ -1382,7 +1461,7 @@ const FormBeforeExport = props => {
                 paddingRight: "30px",
               }}
             >
-              <Input disabled={!DisProtein} />
+              <Input disabled={!DisProtein} value={spcChem.scpProtein} />
             </div>
           </Col>
           <Col
@@ -2393,9 +2472,26 @@ const FormBeforeExport = props => {
                       alignItems: "center",
                     }}
                   >
-                    <span style={{ margin: 0, fontWeight: "bold" }}>
-                      Salmonella spp.
-                    </span>
+                    <div className="form-check form-check-warning">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckSalmon"
+                        checked={salmon}
+                        onChange={() => {
+                          setSalmon(!salmon)
+                        }}
+                      />
+                    </div>
+                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
+                    <label
+                      className="form-check-label"
+                      htmlFor="customCheckSalmon"
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        Salmonella spp.
+                      </span>
+                    </label>
                   </Col>
                   <Col
                     style={{
@@ -2597,120 +2693,136 @@ const FormBeforeExport = props => {
   return (
     <React.Fragment>
       <div className="page-content">
-      <Row>
-        <Col className="col-12">
-          <Card>
-            <CardBody>
-              <Row>
-                <Col md="12" xs="12">
-                  <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "1",
-                        })}
-                        onClick={() => {
-                          toggleTab("1")
-                        }}
-                      >
-                        COA FORM 1
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "2",
-                        })}
-                        onClick={() => {
-                          toggleTab("2")
-                        }}
-                      >
-                         COA FORM 2
-                      </NavLink>
-                    </NavItem>
-                  </ul>
-                </Col>
-              </Row>
-              <TabContent activeTab={activeTab} className="p-3">
-                <TabPane tabId="1" id="processing">
-                  <div
-                    style={{ width: "100%", height: "100%", background: "" }}
-                  >
-                    {headerForm()}
-                    <br />
-                    {RefForm()}
-                    {headDetail()}
-                    <br />
-                    {Analysis()}
-                    {/* <h1>FormBeforeExport</h1> */}
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        height: "100%",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Col sm="4" style={{ padding: "5px" }}>
-                        Report By ................................
-                        <Select
-                          value={selectedGroup2}
-                          name="To"
-                          onChange={e => {
-                            handleSelectGroup2()
-                            handleChangeApproveValue(e.value)
-                          }}
-                          options={ApproveSelect}
-                        />
-                      </Col>
-                      <Col sm="4" style={{ padding: "5px" }}>
-                        Approve By ................................
-                        <Select
-                          value={selectedGroup3}
-                          name="To"
-                          onChange={e => {
-                            handleSelectGroup3()
-                            handleChangeReportValue(e.value)
-                          }}
-                          options={ApproveSelect}
-                        />
-                      </Col>
-                      <Col
-                        sm="4"
-                        style={{ textAlign: "right", paddingRight: "0px" }}
-                      >
-                        <Button
-                          color="primary"
-                          size="lg"
-                          style={{ width: "60%" }}
+        <Row>
+          <Col className="col-12">
+            <Card>
+              <CardBody>
+                <Row>
+                  <Col md="12" xs="12">
+                    <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === "1",
+                          })}
                           onClick={() => {
-                            handleExportPDF()
-                            handleUpdateStatusCoa()
+                            toggleTab("1")
                           }}
                         >
-                          Print COA
-                        </Button>
-                      </Col>
+                          COA FORM 1
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === "2",
+                          })}
+                          onClick={() => {
+                            toggleTab("2")
+                          }}
+                        >
+                          COA FORM 2
+                        </NavLink>
+                      </NavItem>
+                    </ul>
+                  </Col>
+                </Row>
+                <TabContent activeTab={activeTab} className="p-3">
+                  <TabPane tabId="1" id="processing">
+                    <div
+                      style={{ width: "100%", height: "100%", background: "" }}
+                    >
+                      {headerForm()}
+                      <br />
+                      {RefForm()}
+                      {headDetail()}
+                      <br />
+                      {Analysis()}
+                      {/* <h1>FormBeforeExport</h1> */}
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "100%",
+                          height: "100%",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Col sm="3" style={{ padding: "5px" }}>
+                          Report By ................................
+                          <Select
+                            value={selectedGroup2}
+                            name="To"
+                            onChange={e => {
+                              handleSelectGroup2()
+                              handleChangeApproveValue(e.value)
+                            }}
+                            options={ReportSelect}
+                          />
+                        </Col>
+                        <Col sm="3" style={{ padding: "5px" }}>
+                          Approve By ................................
+                          <Select
+                            value={selectedGroup3}
+                            name="To"
+                            onChange={e => {
+                              handleSelectGroup3()
+                              handleChangeReportValue(e.value)
+                            }}
+                            options={ApproveSelect}
+                          />
+                        </Col>
+                        <Col
+                          sm="3"
+                          style={{ textAlign: "right", paddingRight: "10px" }}
+                        >
+                          <Button
+                            color="warning"
+                            size="lg"
+                            style={{ width: "100%", marginTop: "15px" }}
+                            onClick={() => {
+                              handleSaveIndex()
+                              // handleExportPDF()
+                              // handleUpdateStatusCoa()
+                            }}
+                          >
+                            SAVE
+                          </Button>
+                        </Col>
+                        <Col
+                          sm="3"
+                          style={{ textAlign: "right", paddingRight: "10px" }}
+                        >
+                          <Button
+                            color="primary"
+                            size="lg"
+                            style={{ width: "100%", marginTop: "15px" }}
+                            onClick={() => {
+                              handleExportPDF()
+                              handleUpdateStatusCoa()
+                            }}
+                          >
+                            Print COA
+                          </Button>
+                        </Col>
+                      </div>
+                      <br></br>
+                      <br></br>
+                      <br></br>
+                      <br></br>
+                      <br></br>
                     </div>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                  </div>
-                </TabPane>
+                  </TabPane>
 
-                <TabPane tabId="2" id="CompleteCheck">
-                  <div>
-                    <FormBeforeExport2/>
-                  </div>
-                </TabPane>
-              </TabContent>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-
+                  <TabPane tabId="2" id="CompleteCheck">
+                    <div>
+                      <FormBeforeExport2 />
+                    </div>
+                  </TabPane>
+                </TabContent>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
     </React.Fragment>
   )
