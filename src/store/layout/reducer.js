@@ -15,10 +15,10 @@ import {
 const INIT_STATE = {
   layoutType: "vertical",
   layoutWidth: "fluid",
-  leftSideBarTheme: "dark",
+  leftSideBarTheme: "light",
   leftSideBarThemeImage: "img4",
   leftSideBarType: "default",
-  topbarTheme: "dark",
+  topbarTheme: "light",
   isPreloader: false,
   showRightSidebar: false,
   isMobile: false,
