@@ -143,7 +143,7 @@ const TableReprocess = props => {
 
   useEffect(() => {
     getAllOrder(token).then(data => {
-      console.log("getAllOrder: ", data)
+      // console.log("getAllOrder: ", data)
       if (data == undefined) {
         setDataMerch({
           columns: columnTable,

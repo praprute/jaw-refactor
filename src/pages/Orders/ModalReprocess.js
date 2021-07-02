@@ -81,6 +81,7 @@ const ModalReprocess = props => {
   useEffect(() => {
     // console.log(tr[0])
     // setDescription([])
+    // console.log(orders)
     if (tr[0] != undefined) {
       setresultChem(tr[0])
       setdetailById(orders)
@@ -150,6 +151,7 @@ const ModalReprocess = props => {
         let index = {
           idOrders: detailById.idOrders,
           Description: description,
+          ProductName: orders.ProductName,
         }
         console.log("index : ", index)
         let re = await Reprocess(token, index)
