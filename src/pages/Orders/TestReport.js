@@ -547,7 +547,7 @@ const ModalTestReport = props => {
 
   useEffect(() => {
     if (tr[0] != undefined) {
-      console.log("test report tr[0]", tr)
+      // console.log("test report tr[0]", tr)
       if (tr[3][0].Description) {
         setDescription(tr[3][0].Description)
         const usingSplit = tr[3][0].Description.split(",")

@@ -33,6 +33,7 @@ import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
 import "./ModalFullScreen.css"
 import FormBeforeExport2 from "../COA2/FormBeforeExport2"
+import FormBeforeExport3 from '../COA3/FormBeforeExport3'
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
 import { getCustomers } from "../api"
@@ -2785,6 +2786,7 @@ const FormBeforeExport = props => {
                           COA FORM 1
                         </NavLink>
                       </NavItem>
+                      {/* FormBeforeExport3 */}
                       <NavItem>
                         <NavLink
                           className={classnames({
@@ -2795,6 +2797,18 @@ const FormBeforeExport = props => {
                           }}
                         >
                           COA FORM 2
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === "3",
+                          })}
+                          onClick={() => {
+                            toggleTab("3")
+                          }}
+                        >
+                          COA FORM 3
                         </NavLink>
                       </NavItem>
                     </ul>
@@ -2889,6 +2903,11 @@ const FormBeforeExport = props => {
                   <TabPane tabId="2" id="CompleteCheck">
                     <div>
                       <FormBeforeExport2 />
+                    </div>
+                  </TabPane>
+                  <TabPane tabId="3" id="CompleteCheck">
+                    <div>
+                      <FormBeforeExport3 />
                     </div>
                   </TabPane>
                 </TabContent>

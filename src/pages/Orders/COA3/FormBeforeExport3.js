@@ -21,7 +21,7 @@ import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA,loadHalalLogo,UpdateDatailOrder } from "../api"
+import { UpdatexportCOA, loadHalalLogo, UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -32,8 +32,9 @@ import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "../../../assets/custom-fonts"
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-import { originalFormCOA2 } from "./Original2"
+import { originalFormCOA3 } from "./Original3"
 import { getCustomers } from "../api"
+import ModalAddExport from './ModalAddExport'
 import "./StyleCOA2.css"
 
 const animatedComponents = makeAnimated()
@@ -58,7 +59,7 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-const FormBeforeExport2 = props => {
+const FormBeforeExport3 = props => {
   const history = useHistory()
   const { user, token } = isAuthenticated()
   const { orders, spc, tr, bio } = props
@@ -80,7 +81,7 @@ const FormBeforeExport2 = props => {
   })
   const [spcChem, setSpcChem] = useState({})
   const [spcMicro, setSpcMicro] = useState({})
-
+  const [modalAddSamples, setModalAddSamples] = useState(false)
   const [MicroRender, setMicroRender] = useState(false)
   const [MicroAnalysis, setMicroAnalysis] = useState(true)
 
@@ -97,8 +98,10 @@ const FormBeforeExport2 = props => {
   const [DisSPG, setDisSPG] = useState(true)
   const [DisAW, setDisAW] = useState(true)
   const [DisTss, setDisTss] = useState(true)
-  const [DisSaltMeter, setDisSaltMeter] = useState(true)
   const [DisAN, setDisAN] = useState(true)
+
+  const [redirect, setRedirect] = useState(false)
+  const [DisSaltMeter, setDisSaltMeter] = useState(true)
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
   const [success_msg, setsuccess_msg] = useState(false)
@@ -177,7 +180,7 @@ const FormBeforeExport2 = props => {
     Quantity: "",
     TestDate: "",
   })
-const [uid, setUid] = useState(null)
+  const [uid, setUid] = useState(null)
   const [method, setMethod] = useState({
     TN: "Kjeldahl method",
     AN: "TIS 3-2526",
@@ -198,8 +201,8 @@ const [uid, setUid] = useState(null)
     Odor: 0,
     Color: 0,
     Appearance: 0,
-    testDate:"",
-    CompletionDate:""
+    testDate: "",
+    CompletionDate: "",
   })
 
   const handleChangeScoreLevel = name => event => {
@@ -227,13 +230,13 @@ const [uid, setUid] = useState(null)
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      //   console.log("index : ", paresIndex)
+      console.log("index : ", paresIndex)
 
       setValuesExportRow2({
         CollectedDate: "",
         productName: "",
       })
-setUid(paresIndex.Orders.idOrders)
+      setUid(paresIndex.Orders.idOrders)
       setValuesExportPNandPS({
         ExpirationDate: paresIndex.Orders.ED,
         // ProductName: paresIndex.Orders.ProductName,
@@ -266,7 +269,7 @@ setUid(paresIndex.Orders.idOrders)
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[8].render)
       setDisViscosity(paresIndex.chem[9].render)
-setDisSaltMeter(paresIndex.chem[10].render)
+      setDisSaltMeter(paresIndex.chem[10].render)
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
       setSpcChem({
@@ -391,7 +394,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
 
     // console.log("AnalysisRender", AnalysisRender)
 
-    originalFormCOA2(
+    originalFormCOA3(
       values.logo,
       values.halal,
       valuesExportRef,
@@ -445,7 +448,6 @@ setDisSaltMeter(paresIndex.chem[10].render)
       console.error
     }
   }
-
 
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
@@ -1079,7 +1081,27 @@ setDisSaltMeter(paresIndex.chem[10].render)
     )
   }
 
-  const Sinsory = () => {
+  // const [valScoreLevel, setValScoreLevel] = useState({
+  //   Taste:0,
+  //   Odor:0,
+  //   Color:0,
+  //   Appearance:0
+  // })
+
+  const handleRedi = () => {
+    setRedirect(!redirect)
+  }
+
+  const toggleModalReprocess = () => {
+    setModalAddSamples(!modalAddSamples)
+    // console.log("bug modalReprocess: ", modalReprocess)
+  }
+
+  const offReprocess = () => {
+    setModalAddSamples(false)
+  }
+
+  const AnalysisVeitHong = () => {
     return (
       <React.Fragment>
         <Row
@@ -1088,209 +1110,48 @@ setDisSaltMeter(paresIndex.chem[10].render)
             width: "100%",
             justifyContent: "flex-start",
             alignItems: "center",
-            marginTop: "15px",
+            marginBottom: "10px",
           }}
         >
-          <h4 style={{ margin: "0", padding: "0" }}>
-            <span style={{ margin: 0, fontWeight: "bold" }}>
-              Sensory Test Results
-            </span>
-          </h4>
+          <Col>
+            <Select
+              value={selectedGroup}
+              name="To"
+              onChange={e => {
+                handleSelectGroup()
+                handleChangeValueCustomer(e.value)
+              }}
+              options={CustomersOption}
+            />
+          </Col>
+          <Col>
+            <Button color="primary" onClick={toggleModalReprocess}>
+              {" "}
+              + Add
+            </Button>
+          </Col>
         </Row>
-        <React.Fragment>
-          <Row
-            style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "flex-start",
-              // alignItems: "center",
-              marginTop: "10px",
-            }}
-          >
-            <Col xs={6} style={{ padding: "0" }}>
-              <table id="score-level">
-                <tr>
-                  <th>Parameter</th>
-                  <th>Score level</th>
-                </tr>
-                <tr>
-                  <td>Taste</td>
-                  <td>
-                    {" "}
-                    <Input
-                      name="Taste"
-                      type="number"
-                      min="0"
-                      max="5"
-                      placeholder={valScoreLevel.Taste}
-                      onChange={handleChangeScoreLevel("Taste")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Odor</td>
-                  <td>
-                    {" "}
-                    <Input
-                      min="0"
-                      max="5"
-                      name="Odor"
-                      type="number"
-                      placeholder={valScoreLevel.Odor}
-                      onChange={handleChangeScoreLevel("Odor")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Color</td>
-                  <td>
-                    {" "}
-                    <Input
-                      min="0"
-                      max="5"
-                      name="Color"
-                      type="number"
-                      placeholder={valScoreLevel.Color}
-                      onChange={handleChangeScoreLevel("Color")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Appearance</td>
-                  <td>
-                    {" "}
-                    <Input
-                      min="0"
-                      max="5"
-                      name="Appearance"
-                      type="number"
-                      placeholder={valScoreLevel.Appearance}
-                      onChange={handleChangeScoreLevel("Appearance")}
-                    />
-                  </td>
-                </tr>
-              </table>
-            </Col>
-            <Col xs={6} style={{paddingLeft:'10px'}}>
-              <table style={{position:'absolute', bottom:'0', left:'20px'}}>
-                <tr>
-                  <td>Remark:</td>
-                  <td>Score level</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>5 = Very Good</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>4 = Good</td>
-                </tr>
-                <tr>
-                  <td>less than</td>
-                  <td>4 = Not Good</td>
-                </tr>
-              </table>
-            </Col>
-          </Row>
-          <br/>
-          <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="2"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Test date:
-              </span>
-            </Col>
-            <Col
-              sm="10"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="testDate"
-                  onChange={handleChangeScoreLevel("testDate")}
-                  value={valScoreLevel.testDate}
-                />
-              </div>
-            </Col>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                paddingLeft: "15px"
-              }}
-            >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Completion date:
-              </span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="CompletionDate"
-                  onChange={handleChangeScoreLevel("CompletionDate")}
-                  value={valScoreLevel.CompletionDate}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
-        </React.Fragment>
+
+        <table id="score-level">
+          <tr>
+            <th>Container No.</th>
+            <th>BAG No.</th>
+            <th>LOT No.</th>
+            {DisTN ? <th>T.N. (g/l)</th> : null}
+            {DisHistamine ? <th>Histamine (ppm,)</th> : null}
+            {DisSalt ? <th>Salt (g/l)</th> : null}
+            {DisSaltMeter ? <th>Salt Meter</th> : null}
+            {DisPH ? <th>pH at 25 {`\u00B0C`}</th> : null}
+            {DisSPG ? <th>Specific Gravity</th> : null}
+            <th>APC cfu/ml</th>
+            <th>E.coli & Coliform</th>
+            {DisAW ? <th>Aw/{`\u00B0C`}</th> : null}
+            {/* <th>LOT No.</th> */}
+          </tr>
+        </table>
       </React.Fragment>
     )
   }
-
-  // const [valScoreLevel, setValScoreLevel] = useState({
-  //   Taste:0,
-  //   Odor:0,
-  //   Color:0,
-  //   Appearance:0
-  // })
 
   const Analysis = () => {
     return (
@@ -2548,13 +2409,20 @@ setDisSaltMeter(paresIndex.chem[10].render)
             {/* {Sinsory()} */}
           </React.Fragment>
         ) : null}
-        {Sinsory()}
+        {/* {Sinsory()} */}
       </Row>
     )
   }
 
   return (
     <React.Fragment>
+      <ModalAddExport
+        isOpenRro={modalAddSamples}
+        toggleRepro={toggleModalReprocess}
+        redirect={redirect}
+        handleRedirect={handleRedi}
+        offModal={offReprocess}
+      />
       {success_msg ? (
         <SweetAlert
           title="Add Order Success"
@@ -2594,6 +2462,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
         {RefForm()}
         {headDetail()}
         <br />
+        {AnalysisVeitHong()}
         {Analysis()}
         {/* {Sinsory()} */}
         <div
@@ -2713,7 +2582,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
   )
 }
 
-FormBeforeExport2.propTypes = {
+FormBeforeExport3.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   tr: PropTypes.array,
@@ -2727,4 +2596,4 @@ const mapStateToProps = state => ({
   bio: state.DetailOrder.SpecificBio,
 })
 
-export default connect(mapStateToProps)(withRouter(FormBeforeExport2))
+export default connect(mapStateToProps)(withRouter(FormBeforeExport3))

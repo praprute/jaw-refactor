@@ -155,6 +155,7 @@ const ModalEditSample = props => {
       Viscosity: Viscosity,
       SaltMeter: SaltMeter,
       Color: Color,
+      tricker:true
     }
     // console.log(index)
     updateDetail(token, index).then(data => {

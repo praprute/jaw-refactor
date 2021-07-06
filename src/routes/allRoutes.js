@@ -5,13 +5,13 @@ import { Redirect } from "react-router-dom"
 import Chat from "../pages/Chat/Chat"
 
 // // File Manager
-import FileManager from "../pages/FileManager/index"
+// import FileManager from "../pages/FileManager/index"
 
 // Profile
 import UserProfile from "../pages/Authentication/user-profile"
 
 // Pages Calendar
-import Calendar from "../pages/Calendar/index"
+// import Calendar from "../pages/Calendar/index"
 
 // //Tasks
 import TasksList from "../pages/Tasks/tasks-list"
@@ -25,25 +25,25 @@ import ProjectsOverview from "../pages/Projects/ProjectOverview/projects-overvie
 import ProjectsCreate from "../pages/Projects/projects-create"
 
 // //Ecommerce Pages
-import EcommerceProducts from "../pages/Ecommerce/EcommerceProducts/index"
-import EcommerceProductDetail from "../pages/Ecommerce/EcommerceProducts/EcommerceProductDetail"
-import EcommerceOrders from "../pages/Ecommerce/EcommerceOrders/index"
-import EcommerceCustomers from "../pages/Ecommerce/EcommerceCustomers/index"
-import EcommerceCart from "../pages/Ecommerce/EcommerceCart"
-import EcommerceCheckout from "../pages/Ecommerce/EcommerceCheckout"
-import EcommerceShops from "../pages/Ecommerce/EcommerceShops/index"
-import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct"
+// import EcommerceProducts from "../pages/Ecommerce/EcommerceProducts/index"
+// import EcommerceProductDetail from "../pages/Ecommerce/EcommerceProducts/EcommerceProductDetail"
+// import EcommerceOrders from "../pages/Ecommerce/EcommerceOrders/index"
+// import EcommerceCustomers from "../pages/Ecommerce/EcommerceCustomers/index"
+// import EcommerceCart from "../pages/Ecommerce/EcommerceCart"
+// import EcommerceCheckout from "../pages/Ecommerce/EcommerceCheckout"
+// import EcommerceShops from "../pages/Ecommerce/EcommerceShops/index"
+// import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct"
 
 //Email
-import EmailInbox from "../pages/Email/email-inbox"
-import EmailRead from "../pages/Email/email-read"
-import EmailBasicTemplte from "../pages/Email/email-basic-templte"
-import EmailAlertTemplte from "../pages/Email/email-template-alert"
-import EmailTemplateBilling from "../pages/Email/email-template-billing"
+// import EmailInbox from "../pages/Email/email-inbox"
+// import EmailRead from "../pages/Email/email-read"
+// import EmailBasicTemplte from "../pages/Email/email-basic-templte"
+// import EmailAlertTemplte from "../pages/Email/email-template-alert"
+// import EmailTemplateBilling from "../pages/Email/email-template-billing"
 
 //Invoices
-import InvoicesList from "../pages/Invoices/invoices-list"
-import InvoiceDetail from "../pages/Invoices/invoices-detail"
+// import InvoicesList from "../pages/Invoices/invoices-list"
+// import InvoiceDetail from "../pages/Invoices/invoices-detail"
 
 // Authentication related pages
 import Login from "../pages/Authentication/Login"
@@ -71,20 +71,20 @@ import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-ver
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
-import DashboardSaas from "../pages/Dashboard-saas/index"
-import DashboardCrypto from "../pages/Dashboard-crypto/index"
-import Blog from "../pages/Dashboard-Blog/index"
+// import DashboardSaas from "../pages/Dashboard-saas/index"
+// import DashboardCrypto from "../pages/Dashboard-crypto/index"
+// import Blog from "../pages/Dashboard-Blog/index"
 //JAW
 import Orderpage from '../pages/Orders/index'
 import Labatorypage from '../pages/Lab/index'
 //Crypto
-import CryptoWallet from "../pages/Crypto/CryptoWallet/crypto-wallet"
-import CryptoBuySell from "../pages/Crypto/crypto-buy-sell"
-import CryptoExchange from "../pages/Crypto/crypto-exchange"
-import CryptoLending from "../pages/Crypto/crypto-lending"
-import CryptoOrders from "../pages/Crypto/CryptoOrders/crypto-orders"
-import CryptoKYCApplication from "../pages/Crypto/crypto-kyc-application"
-import CryptoIcoLanding from "../pages/Crypto/CryptoIcoLanding/index"
+// import CryptoWallet from "../pages/Crypto/CryptoWallet/crypto-wallet"
+// import CryptoBuySell from "../pages/Crypto/crypto-buy-sell"
+// import CryptoExchange from "../pages/Crypto/crypto-exchange"
+// import CryptoLending from "../pages/Crypto/crypto-lending"
+// import CryptoOrders from "../pages/Crypto/CryptoOrders/crypto-orders"
+// import CryptoKYCApplication from "../pages/Crypto/crypto-kyc-application"
+// import CryptoIcoLanding from "../pages/Crypto/CryptoIcoLanding/index"
 
 // Charts
 import ChartApex from "../pages/Charts/Apexcharts"
@@ -97,9 +97,9 @@ import ChartsKnob from "../pages/Charts/charts-knob"
 import ReCharts from "../pages/Charts/ReCharts"
 
 // Maps
-import MapsGoogle from "../pages/Maps/MapsGoogle"
-import MapsVector from "../pages/Maps/MapsVector"
-import MapsLeaflet from "../pages/Maps/MapsLeaflet"
+// import MapsGoogle from "../pages/Maps/MapsGoogle"
+// import MapsVector from "../pages/Maps/MapsVector"
+// import MapsLeaflet from "../pages/Maps/MapsLeaflet"
 
 //Icons
 import IconBoxicons from "../pages/Icons/IconBoxicons"
@@ -116,9 +116,6 @@ import DragDropTables from '../pages/Tables/DragDropTables'
 import DualListbox from "../pages/Tables/DualListbox"
 
 //Blog
-import BlogList from "../pages/Blog/BlogList/index"
-import BlogGrid from "../pages/Blog/BlogGrid/index"
-import BlogDetails from "../pages/Blog/BlogDetails"
 
 // Forms
 import FormElements from "../pages/Forms/FormElements"
@@ -177,55 +174,55 @@ import FormBeforeExport2 from '../pages/Orders/COA2/FormBeforeExport2'
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
-  { path: "/dashboard-saas", component: DashboardSaas },
-  { path: "/dashboard-crypto", component: DashboardCrypto },
-  { path: "/blog", component: Blog },
+  // { path: "/dashboard-saas", component: DashboardSaas },
+  // { path: "/dashboard-crypto", component: DashboardCrypto },
+  // { path: "/blog", component: Blog },
   { path: "/Orders", component: Orderpage },
   { path: "/Labatory", component: Labatorypage},
   { path: "/ExportForm", component: FormBeforeExport},
   // { path: "/ExportForm2", component: FormBeforeExport2},
 
   //Crypto
-  { path: "/crypto-wallet", component: CryptoWallet },
-  { path: "/crypto-buy-sell", component: CryptoBuySell },
-  { path: "/crypto-exchange", component: CryptoExchange },
-  { path: "/crypto-lending", component: CryptoLending },
-  { path: "/crypto-orders", component: CryptoOrders },
-  { path: "/crypto-kyc-application", component: CryptoKYCApplication },
+  // { path: "/crypto-wallet", component: CryptoWallet },
+  // { path: "/crypto-buy-sell", component: CryptoBuySell },
+  // { path: "/crypto-exchange", component: CryptoExchange },
+  // { path: "/crypto-lending", component: CryptoLending },
+  // { path: "/crypto-orders", component: CryptoOrders },
+  // { path: "/crypto-kyc-application", component: CryptoKYCApplication },
 
   //chat
   { path: "/chat", component: Chat },
 
   //File Manager
-  { path: "/apps-filemanager", component: FileManager },
+  // { path: "/apps-filemanager", component: FileManager },
 
   // //calendar
-  { path: "/calendar", component: Calendar },
+  // { path: "/calendar", component: Calendar },
 
   // //profile
   { path: "/profile", component: UserProfile },
 
   //Ecommerce
-  { path: "/ecommerce-product-detail/:id", component: EcommerceProductDetail },
-  { path: "/ecommerce-products", component: EcommerceProducts },
-  { path: "/ecommerce-orders", component: EcommerceOrders },
-  { path: "/ecommerce-customers", component: EcommerceCustomers },
-  { path: "/ecommerce-cart", component: EcommerceCart },
-  { path: "/ecommerce-checkout", component: EcommerceCheckout },
-  { path: "/ecommerce-shops", component: EcommerceShops },
-  { path: "/ecommerce-add-product", component: EcommerceAddProduct },
+  // { path: "/ecommerce-product-detail/:id", component: EcommerceProductDetail },
+  // { path: "/ecommerce-products", component: EcommerceProducts },
+  // { path: "/ecommerce-orders", component: EcommerceOrders },
+  // { path: "/ecommerce-customers", component: EcommerceCustomers },
+  // { path: "/ecommerce-cart", component: EcommerceCart },
+  // { path: "/ecommerce-checkout", component: EcommerceCheckout },
+  // { path: "/ecommerce-shops", component: EcommerceShops },
+  // { path: "/ecommerce-add-product", component: EcommerceAddProduct },
 
   //Email
-  { path: "/email-inbox", component: EmailInbox },
-  { path: "/email-read", component: EmailRead },
-  { path: "/email-template-basic", component: EmailBasicTemplte },
-  { path: "/email-template-alert", component: EmailAlertTemplte },
-  { path: "/email-template-billing", component: EmailTemplateBilling },
+  // { path: "/email-inbox", component: EmailInbox },
+  // { path: "/email-read", component: EmailRead },
+  // { path: "/email-template-basic", component: EmailBasicTemplte },
+  // { path: "/email-template-alert", component: EmailAlertTemplte },
+  // { path: "/email-template-billing", component: EmailTemplateBilling },
 
   //Invoices
-  { path: "/invoices-list", component: InvoicesList },
-  { path: "/invoices-detail", component: InvoiceDetail },
-  { path: "/invoices-detail/:id", component: InvoiceDetail },
+  // { path: "/invoices-list", component: InvoicesList },
+  // { path: "/invoices-detail", component: InvoiceDetail },
+  // { path: "/invoices-detail/:id", component: InvoiceDetail },
 
   // Tasks
   { path: "/tasks-list", component: TasksList },
@@ -240,9 +237,9 @@ const userRoutes = [
   { path: "/projects-create", component: ProjectsCreate },
 
   //Blog
-  { path: "/blog-list", component: BlogList },
-  { path: "/blog-grid", component: BlogGrid },
-  { path: "/blog-details", component: BlogDetails },
+  // { path: "/blog-list", component: BlogList },
+  // { path: "/blog-grid", component: BlogGrid },
+  // { path: "/blog-details", component: BlogDetails },
 
   // Contacts
   { path: "/contacts-grid", component: ContactsGrid },
@@ -275,9 +272,9 @@ const userRoutes = [
 
 
   // Maps
-  { path: "/maps-google", component: MapsGoogle },
-  { path: "/maps-vector", component: MapsVector },
-  { path: "/maps-leaflet", component: MapsLeaflet },
+  // { path: "/maps-google", component: MapsGoogle },
+  // { path: "/maps-vector", component: MapsVector },
+  // { path: "/maps-leaflet", component: MapsLeaflet },
 
   // Forms
   { path: "/form-elements", component: FormElements },
@@ -335,7 +332,7 @@ const authRoutes = [
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
-  { path: "/crypto-ico-landing", component: CryptoIcoLanding },
+  // { path: "/crypto-ico-landing", component: CryptoIcoLanding },
 
   // Authentication Inner
   { path: "/pages-login", component: Login1 },

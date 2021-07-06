@@ -141,6 +141,7 @@ const ModalEdit = props => {
       Viscosity: Viscosity,
       SaltMeter: SaltMeter,
       Color: Color,
+      tricker: false,
     }
     updateDetail(token, index).then(data => {
       // console.log('response add order : ', data)
