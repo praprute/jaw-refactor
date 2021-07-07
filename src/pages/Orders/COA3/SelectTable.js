@@ -35,6 +35,7 @@ import {
   readOrderById,
   readTestResultlasted,
   deleteOrder,
+  queryDetailMulti,
 } from "./../../Orders/api"
 import { map } from "lodash"
 import { orders } from "common/data"
@@ -67,8 +68,40 @@ const TableCompleteCheck = props => {
     onAddSpcBio,
   } = props
   // const [redirect, setRedirect] = useState(false)
+  const [selectRowEx, setSelectRowEx] = useState([])
+  let indexCheckBox = []
+  let unCheck = []
   const selectRow = {
     mode: "checkbox",
+    onSelect: (row, isSelect, rowIndex, e) => {
+      console.log("row", row.id)
+      console.log("isSelect", isSelect)
+      //   console.log("rowIndex", rowIndex)
+      //   console.log("e", e)
+      if (isSelect) {
+        indexCheckBox.push(row.id)
+      } else {
+        unCheck.push(row.id)
+      }
+      //   console.log("checked", checked)
+    },
+    onSelectAll: (isSelect, rows, e) => {
+      // ...
+      console.log("rows all", rows)
+    },
+  }
+
+  const addButton = async () => {
+    // try {
+    //   setSelectRowEx(indexCheckBox)
+    //   let array1 = indexCheckBox.filter(val => !unCheck.includes(val))
+    //   let data = await queryDetailMulti(token, array1)
+    //   console.log("indexCheckBox : ", indexCheckBox)
+    //   console.log("unCheck : ", unCheck)
+    //   console.log("array1 : ", array1)
+    // } catch (err) {
+    //   console.log(err)
+    // }
   }
   const { SearchBar } = Search
 
@@ -215,19 +248,19 @@ const TableCompleteCheck = props => {
     try {
       if (props.page == "lab") {
         let data = await getAllOrder(token)
-        console.log(data)
+        // console.log(data)
         let index = []
         if (data) {
           data.message.forEach(data => {
             let js = {}
             if (data.Status == 4) {
-                index.push({
-                  id: data.idOrders,
-                  name: data.ProductName,
-                  Specific: data.name,
-                  timeStamp: data.timestamp,
+              index.push({
+                id: data.idOrders,
+                name: data.ProductName,
+                Specific: data.name,
+                timeStamp: data.timestamp,
                 //   detail: "11",
-                })
+              })
             }
           })
           setPd(index)
@@ -256,127 +289,11 @@ const TableCompleteCheck = props => {
       },
     ])
   }, [redirect, props.tt])
-  //   useEffect(() => {
-  //     if (props.page == "lab") {
-  //       getAllOrder(token).then(data => {
-  //         if (data == undefined) {
-  //           setDataMerch([])
-  //         } else {
-  //           if (data.success == "success") {
-  //             var index = []
-  //             for (let i = 0; i < data.message.length; i++) {
-  //               // if(data.message[i].Status != 1){
-  //               const rd = {
-  //                 "id": data.message[i].idOrders,
-  //                 // "ponumber": data.message[i].PO,
-  //                 "name": data.message[i].ProductName,
-  //                 "Specific": data.message[i].name,
-  //                 // "priority": data.message[i].Priority,
-  //                 // status: data.message[i].Status,
-  //                 // Recheck: data.message[i].Recheck,
-  //                 "timeStamp": data.message[i].timestamp,
-  //                 "detail": (
-  //                   <span
-  //                     style={{ display: "flex", justifyContent: "center" }}
-  //                     onClick={() => {
-  //                       fetchDetail(token, data.message[i].idOrders)
-  //                       fetchTestResultlasted(token, data.message[i].idOrders)
-  //                     }}
-  //                   >
-  //                     <i
-  //                       className={"bx bx-file font-size-24"}
-  //                       style={{ cursor: "pointer" }}
-  //                       onClick={props.toggle}
-  //                     ></i>
-  //                   </span>
-  //                 ),
-  //                 // TestResult: (
-  //                 //   <div style={{ display: "flex", justifyContent: "center" }}>
-  //                 //     <span
-  //                 //       onClick={() => {
-  //                 //         fetchDetail(token, data.message[i].idOrders)
-  //                 //         fetchTestResultlasted(token, data.message[i].idOrders)
-  //                 //       }}
-  //                 //     >
-  //                 //       <button
-  //                 //         type="button"
-  //                 //         color="primary"
-  //                 //         className="btn btn-primary waves-effect waves-light .w-xs"
-  //                 //         onClick={props.toggleTR}
-  //                 //       >
-  //                 //         <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
-  //                 //         TEST
-  //                 //       </button>
-  //                 //     </span>
-  //                 //   </div>
-  //                 // ),
-  //               }
-  //               if (props.tricker == "CompleteCheck") {
-  //                 if (data.message[i].Status == 4) {
-  //                   index.push(rd)
-  //                 }
-  //               }
-  //               // TablePassCheckAndPass
-  //             }
-  //             console.log(index)
-  //             const status = {
-  //               1: (
-  //                 <span className="badge bg-success font-size-10">Completed</span>
-  //               ),
-  //               0: (
-  //                 <span className="badge bg-warning font-size-10">
-  //                   Waiting to check
-  //                 </span>
-  //               ),
-  //               3: (
-  //                 <span className="badge bg-warning font-size-10">
-  //                   Waiting to Micro
-  //                 </span>
-  //               ),
-  //               2: (
-  //                 <span className="badge bg-danger font-size-10">Rechecking</span>
-  //               ),
-  //               4: (
-  //                 <span className="badge bg-primary font-size-10">
-  //                   complete check
-  //                 </span>
-  //               ),
-  //             }
 
-  //             const statePriority = {
-  //               0: <span className="badge bg-success font-size-10">normal</span>,
-  //               1: <span className="badge bg-warning font-size-10">rush</span>,
-  //               2: <span className="badge bg-danger font-size-10">urgent</span>,
-  //             }
-  //             // setDataMerch({
-  //             //   columns: columnTable,
-  //             //   rows: map(index, order => ({
-  //             //     ...order,
-  //             //     priority: statePriority[order.priority],
-  //             //     status: status[order.status],
-  //             //   })),
-  //             // })
-  //             setDataMerch(index)
-  //           } else {
-  //             setDataMerch(index)
-  //             // setDataMerch({
-  //             //   columns: columnTable,
-  //             //   rows: [
-  //             //     {
-  //             //       lot: "NULL",
-  //             //     },
-  //             //   ],
-  //             // })
-  //           }
-  //         }
-  //       })
-  //     }
-  //   }, [redirect, props.tt])
-  //
   const defaultSorted = [
     {
       dataField: "id",
-      order: "asc",
+      order: "desc",
     },
   ]
 
@@ -475,11 +392,13 @@ const TableCompleteCheck = props => {
                     <div className="table-responsive">
                       <BootstrapTable
                         keyField={"id"}
+                        // sort={{ dataField: "timeStamp", order: "asc" }}
                         responsive
                         bordered={false}
                         striped={false}
                         defaultSorted={defaultSorted}
                         selectRow={selectRow}
+                        // rowEvents={rowEvents}
                         classes={"table align-middle table-nowrap"}
                         headerWrapperClasses={"thead-light"}
                         {...toolkitProps.baseProps}
@@ -504,6 +423,12 @@ const TableCompleteCheck = props => {
           </ToolkitProvider>
         )}
       </PaginationProvider>
+      <br />
+      <Row>
+        <Button color="primary" size="lg" onClick={addButton}>
+          + Add
+        </Button>
+      </Row>
     </React.Fragment>
   )
 }

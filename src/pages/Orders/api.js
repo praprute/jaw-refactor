@@ -511,3 +511,21 @@ export const UpdateDatailOrder = (token, index) => {
     })
     .catch(err => console.log(err))
 }
+
+// queryDetailMulti
+export const queryDetailMulti = (token, index) => {
+  return fetch(`${API}/queryDetailMulti`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(index),
+  })
+    .then(response => {
+      return response.json()
+    })
+    .catch(err => console.log(err))
+}
