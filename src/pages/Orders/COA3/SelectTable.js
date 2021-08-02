@@ -50,6 +50,7 @@ import {
   AddSpecificDetail,
   AddTestResultlasted,
   AddSpecificBioDetail,
+  AddOrderVeit,                                        
 } from "store/actions"
 
 //SweetAlert
@@ -66,16 +67,22 @@ const TableCompleteCheck = props => {
     onAddSpcChem,
     onAddTestResult,
     onAddSpcBio,
+    onClose,
+    setOrders,
+    onAddOrderVeit,
   } = props
   // const [redirect, setRedirect] = useState(false)
   const [selectRowEx, setSelectRowEx] = useState([])
+
   let indexCheckBox = []
   let unCheck = []
+                                       
   const selectRow = {
     mode: "checkbox",
     onSelect: (row, isSelect, rowIndex, e) => {
-      console.log("row", row.id)
-      console.log("isSelect", isSelect)
+      //   console.log("row", row.id)
+      //   console.log("isSelect", isSelect)
+
       //   console.log("rowIndex", rowIndex)
       //   console.log("e", e)
       if (isSelect) {
@@ -91,18 +98,6 @@ const TableCompleteCheck = props => {
     },
   }
 
-  const addButton = async () => {
-    // try {
-    //   setSelectRowEx(indexCheckBox)
-    //   let array1 = indexCheckBox.filter(val => !unCheck.includes(val))
-    //   let data = await queryDetailMulti(token, array1)
-    //   console.log("indexCheckBox : ", indexCheckBox)
-    //   console.log("unCheck : ", unCheck)
-    //   console.log("array1 : ", array1)
-    // } catch (err) {
-    //   console.log(err)
-    // }
-  }
   const { SearchBar } = Search
 
   const columns = [
@@ -143,44 +138,6 @@ const TableCompleteCheck = props => {
     //   sort: true,
     // },
   ]
-  //   const [columns, setColumnTable] = useState([
-  //     { text: "Select", dataField: "Select", sort: true },
-  //     {
-  //       text: "Product Name",
-  //       dataField: "name",
-  //       sort: true,
-  //     },
-  //     {
-  //       text: "Specific",
-  //       dataField: "Specific",
-  //       sort: true,
-  //     },
-  //     // {
-  //     //   label: "Status",
-  //     //   field: "status",
-  //     //   sort: "asc",
-  //     // },
-  //     // {
-  //     //   label: "Priority",
-  //     //   field: "priority",
-  //     //   sort: "asc",
-  //     // },
-  //     // {
-  //     //   label: "Recheck",
-  //     //   field: "Recheck",
-  //     //   sort: "asc",
-  //     // },
-  //     {
-  //       text: "Timestamp",
-  //       dataField: "timeStamp",
-  //       sort: true,
-  //     },
-  //     {
-  //       text: "Detail",
-  //       dataField: "detail",
-  //       sort: true,
-  //     },
-  //   ])
   const [dataMerch, setDataMerch] = useState({})
   const [detail, setdetail] = useState({})
   const [TRLasted, setTRLasted] = useState({})
@@ -302,6 +259,7 @@ const TableCompleteCheck = props => {
     totalSize: pd.length, // replace later with size(customers),
     custom: true,
   }
+  
   const productData = [
     {
       id: 1,
@@ -311,6 +269,40 @@ const TableCompleteCheck = props => {
       detail: "33",
     },
   ]
+
+  const addButton = async () => {
+    try {
+      let Orders = []
+      setSelectRowEx(indexCheckBox)
+      let array1 = indexCheckBox.filter(val => !unCheck.includes(val))
+      array1.forEach(async data => {
+        // console.log("data : ", data)
+        let index = {
+          id: data,
+        }
+        let response = await queryDetailMulti(token, index)
+        console.log("response : ", response)
+        Orders.push(response.message[0])
+      })
+      await setOrders(Orders)
+      await onAddOrderVeit(Orders)
+
+      let index = {
+        Orders: Orders,
+      }
+
+      // if(Orders.length > 0){
+      //   if ((typeof window !== "undefined") && index.Orders) {
+      //   localStorage.setItem("VeitIndexExport", JSON.stringify(index))
+      // }
+      // }
+      setconfirm_alert(true)
+      // await props.toggle()
+      // console.log("Orders : ", Orders)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <React.Fragment>
       {success_dlg ? (
@@ -319,6 +311,7 @@ const TableCompleteCheck = props => {
           title={dynamic_title}
           onConfirm={() => {
             setsuccess_dlg(false)
+            props.toggle()
             // const refreshPage = ()=>{
             //     window.location.reload();
             //  }
@@ -345,12 +338,12 @@ const TableCompleteCheck = props => {
               if (data) {
                 if (data.sucess == "success") {
                   setsuccess_dlg(true)
-                  setdynamic_title("Deleted")
-                  setdynamic_description("Your file has been deleted.")
+                  setdynamic_title("success")
+                  // setdynamic_description("Your file has been deleted.")
                 }
                 setsuccess_dlg(true)
-                setdynamic_title("Deleted")
-                setdynamic_description("Your file has been deleted.")
+                setdynamic_title("success")
+                // setdynamic_description("Your file has been deleted.")
               } else {
                 setsuccess_error(false)
                 setdynamic_title("Deleted ERROR")
@@ -360,7 +353,7 @@ const TableCompleteCheck = props => {
           }}
           onCancel={() => setconfirm_alert(false)}
         >
-          You won't be able to revert this!
+          {/* You won't be able to revert this! */}
         </SweetAlert>
       ) : null}
 
@@ -440,6 +433,7 @@ TableCompleteCheck.propTypes = {
   onAddSpcChem: PropTypes.func,
   onAddSpcBio: PropTypes.func,
   onAddTestResult: PropTypes.func,
+  onAddOrderVeit: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -451,8 +445,9 @@ const mapDispatchToProps = dispatch => ({
   onAddDetail: detail => dispatch(AddProductDetail(detail)),
   onAddSpcChem: detailSpcChem => dispatch(AddSpecificDetail(detailSpcChem)),
   onAddTestResult: detailSpcChem =>
-    dispatch(AddTestResultlasted(detailSpcChem)),
+  dispatch(AddTestResultlasted(detailSpcChem)),
   onAddSpcBio: detailSpcChem => dispatch(AddSpecificBioDetail(detailSpcChem)),
+  onAddOrderVeit: detailVeit => dispatch(AddOrderVeit(detailVeit)),
 })
 
 export default connect(

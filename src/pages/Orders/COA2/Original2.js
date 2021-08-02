@@ -503,7 +503,7 @@ export const originalFormCOA2 = (
   }
 
   if (MicroRender.MicroRender && MicroRender.MicroAnalysis) {
-    if(salmon){
+    if (salmon) {
       dataAnaly.push(
         [
           {
@@ -721,180 +721,179 @@ export const originalFormCOA2 = (
           },
         ]
       )
-    }else{
-       dataAnaly.push(
-         [
-           {
-             text: `MICROBIOLOGICAL`,
-             style: "invoiceTitle",
-             alignment: "left",
-             fontSize: 12,
-             decoration: "underline",
-             // italics: true, ตัวเอียง
-             bold: true,
-             margin: [0, 3, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 3, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 3, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 3, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ],
-         [
-           {
-             text: `APC`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: `< 1x10\u2074 CFU/g`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             columns: [
-               {
-                 text: `${valuesMicro.TPC}`,
-                 style: "RefBoxValue",
-                 margin: [0, 0, 0, 2],
-               },
-               {
-                 text: `(Every lot)`,
-                 style: "RefBoxValue",
-                 margin: [10, 0, 0, 2],
-               },
-             ],
+    } else {
+      dataAnaly.push(
+        [
+          {
+            text: `MICROBIOLOGICAL`,
+            style: "invoiceTitle",
+            alignment: "left",
+            fontSize: 12,
+            decoration: "underline",
+            // italics: true, ตัวเอียง
+            bold: true,
+            margin: [0, 3, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 3, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 3, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 3, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `APC`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: `< 1x10\u2074 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.TPC}`,
+                style: "RefBoxValue",
+                margin: [0, 0, 0, 2],
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+                margin: [10, 0, 0, 2],
+              },
+            ],
 
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 2, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ],
-         [
-           {
-             text: `Yeasts and Molds`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: `\u2264 100 CFU/g`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             columns: [
-               {
-                 text: `${valuesMicro.YeaseandMold}`,
-                 style: "RefBoxValue",
-                 margin: [0, 0, 0, 2],
-               },
-               {
-                 text: `(Every lot)`,
-                 style: "RefBoxValue",
-                 margin: [10, 0, 0, 2],
-               },
-             ],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 2, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Yeasts and Molds`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: `\u2264 100 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.YeaseandMold}`,
+                style: "RefBoxValue",
+                margin: [0, 0, 0, 2],
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+                margin: [10, 0, 0, 2],
+              },
+            ],
 
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 2, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ],
-         [
-           {
-             text: `E. coli`,
-             style: "RefBoxValue",
-             alignment: "left",
-             italics: true,
-             margin: [0, 0, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: `< 3.0 (NOT DETECTED)`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             columns: [
-               {
-                 text: `${valuesMicro.Ecoil}`,
-                 // text: `${valuesMicro.Ecoil}`,
-                 width: "auto",
-                 alignment: "left",
-                 style: "RefBoxValue",
-                 margin: [0, 0, 0, 2],
-               },
-               {
-                 text: `(Every lot)`,
-                 width: "auto",
-                 alignment: "left",
-                 style: "RefBoxValue",
-                 margin: [17, 0, 0, 2],
-               },
-             ],
-             // margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 2, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ]
-       )
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 2, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `E. coli`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: `< 3.0 (NOT DETECTED)`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Ecoil}`,
+                // text: `${valuesMicro.Ecoil}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+                margin: [0, 0, 0, 2],
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+                margin: [17, 0, 0, 2],
+              },
+            ],
+            // margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 2, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ]
+      )
     }
-    
   }
 
   if (ScoreLevel) {
@@ -1261,15 +1260,30 @@ export const originalFormCOA2 = (
             ],
           },
           {
+            stack: [
+              {
+                text: "FM-LA-23-02",
+                fontSize: "6",
+                bold: true,
+                width: 60,
+                margin: [0,0,0,3]
+              },
+              {
+                image: `data:image/png;base64,${halal}`,
+                width: 60,
+                alignment: "center",
+              },
+            ],
             // margin: 'auto',
-
-            image: `data:image/png;base64,${halal}`,
+            // text: "FM-LA-23-02",
             width: 60,
             alignment: "center",
           },
         ],
       },
       {
+        // text: "FM-LA-23-02",
+
         // halal
         margin: [0, 20, 0, 0],
         columns: [

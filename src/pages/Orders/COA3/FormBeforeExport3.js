@@ -34,7 +34,8 @@ import pdfFonts from "../../../assets/custom-fonts"
 import SweetAlert from "react-bootstrap-sweetalert"
 import { originalFormCOA3 } from "./Original3"
 import { getCustomers } from "../api"
-import ModalAddExport from './ModalAddExport'
+import ModalAddExport from "./ModalAddExport"
+import { AddOrderVeit } from "store/actions"
 import "./StyleCOA2.css"
 
 const animatedComponents = makeAnimated()
@@ -62,7 +63,7 @@ pdfMake.fonts = {
 const FormBeforeExport3 = props => {
   const history = useHistory()
   const { user, token } = isAuthenticated()
-  const { orders, spc, tr, bio } = props
+  const { orders, spc, tr, bio, OderVeit, onAddOrderVeit } = props
   const [detailById, setdetailById] = useState([])
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
@@ -75,7 +76,6 @@ const FormBeforeExport3 = props => {
     Saureus: "",
     Salmonella: "",
   })
-
   const [valuesProtein, setValuesProtein] = useState({
     protein: "",
   })
@@ -152,6 +152,12 @@ const FormBeforeExport3 = props => {
   const [selectedGroup2, setSelectedGroup2] = useState(null)
   const [selectedGroup3, setSelectedGroup3] = useState(null)
   const [customerNameSelect, setCustomerNameSelect] = useState(null)
+  const [descriptionVeit, setDescriptionVeit] = useState({
+    description: "",
+    Invoice: "",
+    ETA: "",
+    ShelfLife: "",
+  })
   const [ApproveValue, setApproveValue] = useState(null)
   const [ReportValue, setReportValue] = useState(null)
   const [valuesExportRow1, setValuesExportRow1] = useState({
@@ -205,9 +211,75 @@ const FormBeforeExport3 = props => {
     CompletionDate: "",
   })
 
-  const handleChangeScoreLevel = name => event => {
-    setValScoreLevel({ ...valScoreLevel, [name]: event.target.value })
-    // console.log('valScoreLevel : ', valScoreLevel)
+  const [orderAdded, setOrderAdded] = useState([{}])
+  const [valuesAplove, setValuesAplove] = useState({
+    nameLeft: "",
+    nameRight: "",
+    dateLeft: "",
+    dateRight: "",
+  })
+
+  const [valuesContainer, setValuesContainer] = useState({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+    7: "",
+    // 8: "",
+  })
+
+  const [valuesBagNo, setValuesBagNo] = useState({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+    7: "",
+    // 8: "",
+  })
+
+  const [valuesLot, setValuesLot] = useState({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+    7: "",
+    // 8: "",
+  })
+
+  const [OrderformTableVeit, setOrderformTableVeit] = useState([])
+
+  const handleChangeDesVeit = name => event => {
+    // descriptionVeit, setDescriptionVeit
+    setDescriptionVeit({ ...descriptionVeit, [name]: event.target.value })
+    console.log("descriptionVeit: ", descriptionVeit)
+  }
+
+  const handleChangeValuesApplove = name => event => {
+    setValuesAplove({ ...valuesAplove, [name]: event.target.value })
+  }
+
+  const handleChangeValuesContainer = name => event => {
+    setValuesContainer({ ...valuesContainer, [name]: event.target.value })
+    // console.log("valuesContainer : ", valuesContainer)
+  }
+
+  const handleChangeValuesBagNo = name => event => {
+    setValuesBagNo({ ...valuesBagNo, [name]: event.target.value })
+    // console.log("valuesBagNo : ", valuesBagNo)
+  }
+
+  const handleChangeValuesLot = name => event => {
+    setValuesLot({ ...valuesLot, [name]: event.target.value })
+    // console.log("valuesLot : ", valuesLot)
   }
 
   useEffect(async () => {
@@ -442,7 +514,6 @@ const FormBeforeExport3 = props => {
       } else {
         setsuccess_error(true)
       }
-      // console.log("index save : ", index)
     } catch (err) {
       setsuccess_error(true)
       console.error
@@ -526,177 +597,75 @@ const FormBeforeExport3 = props => {
   // const [ReportValue, setReportValue] = useState(null)
   const headerForm = () => {
     return (
-      <Row
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 0,
-        }}
-      >
-        <Col
-          sm="3"
+      <React.Fragment>
+        <Row
           style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={`data:image/png;base64,${values.logo}`}
-            style={{ maxWidth: 140, maxHeight: 90 }}
-          />
-        </Col>
-        <Col
-          sm="6"
-          style={{
+            width: "100%",
+            height: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            flexDirection: "column",
+            margin: 0,
           }}
         >
-          <h4 style={{ margin: 0 }}>RUNGROJ FISH SAUCE CO., LTD.</h4>
-          <span>8/4 Samutjadee Rd. Paknum Mueang Rayong 21000 Thailand</span>
-          <span>Tel: 66-38-940388 Fax: 66-38-940086</span>
-          <span>Email: fishsauce@rungrojfishsauce.com</span>
-          <h4 style={{ margin: 0 }}>CERTIFICATE OF ANALYSIS</h4>
-        </Col>
-        <Col
-          sm="3"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={`data:image/png;base64,${values.halal}`}
-            style={{ maxWidth: 140, maxHeight: 90 }}
-          />
-        </Col>
-      </Row>
-    )
-  }
+          <Col
+            sm="3"
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={`data:image/png;base64,${values.logo}`}
+              style={{ maxWidth: 140, maxHeight: 90 }}
+            />
+          </Col>
+          <Col
+            sm="6"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <h4 style={{ margin: 0 }}>VIET HUONG CO., LTD.</h4>
+            <span>89 Moo 4, Makamku, Nikom Pattana, Rayoung 21180</span>
+            <span>Tel: 66-38-624432 Fax: 66-38-940086</span>
 
-  const RefForm = () => {
-    return (
-      <Row
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 0,
-          padding: 0,
-        }}
-      >
-        <Col
-          sm="3"
-          style={{
-            // margin: "auto",
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        ></Col>
-        <Col
-          sm="5"
-          style={{
-            // margin: "auto",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        ></Col>
-        <Col
-          sm="4"
-          style={{
-            // margin: "auto",
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            flexDirection: "column",
-            padding: 0,
-          }}
-        >
-          <div
+            {/* <h4 style={{ margin: 0 }}>CERTIFICATE OF ANALYSIS</h4> */}
+          </Col>
+          <Col
+            sm="3"
             style={{
-              padding: "5px",
               display: "flex",
-              justifyContent: "flex-start",
+              justifyContent: "flex-end",
               alignItems: "center",
-              border: "1px solid #000000",
-              width: "100%",
-              height: "100%",
             }}
           >
-            <Col sm="2">
-              <h5 style={{ margin: 0 }}>REF.NO</h5>
-            </Col>
-            <Col sm="10">
-              <Input
-                name="refNo"
-                onChange={handleChange("refNo")}
-                value={valuesExportRef.refNo}
-              />
-            </Col>
-          </div>
-          <div
+            <img
+              src={`data:image/png;base64,${values.halal}`}
+              style={{ maxWidth: 140, maxHeight: 90 }}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col
             style={{
-              borderRight: "1px solid #000000",
-              borderLeft: "1px solid #000000",
-              padding: "5px",
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
               width: "100%",
               height: "100%",
-            }}
-          >
-            <Col sm="2">
-              <h5 style={{ margin: 0 }}>DATE:</h5>
-            </Col>
-            <Col sm="10">
-              <Input
-                name="date"
-                onChange={handleChange("date")}
-                value={valuesExportRef.date}
-              />
-            </Col>
-          </div>
-          <div
-            style={{
-              padding: "5px",
               display: "flex",
-              justifyContent: "flex-start",
+              justifyContent: "center",
               alignItems: "center",
-              border: "1px solid #000000",
-              width: "100%",
-              height: "100%",
+              margin: 0,
             }}
           >
-            <Col sm="3">
-              <h5 style={{ margin: 0 }}>PAGE NO.</h5>
-            </Col>
-            <Col sm="9">
-              <Input
-                name="pageNo"
-                onChange={handleChange("pageNo")}
-                value={valuesExportRef.pageNo}
-              />
-            </Col>
-          </div>
-          {/* <img
-            src={`data:image/png;base64,${values.logo}`}
-            style={{ maxWidth: 150, maxHeight: 100 }}
-          /> */}
-        </Col>
-      </Row>
+            {" "}
+            <h4 style={{ margin: 0 }}>CERTIFICATE OF ANALYSIS</h4>
+          </Col>
+        </Row>
+      </React.Fragment>
     )
   }
 
@@ -715,368 +684,114 @@ const FormBeforeExport3 = props => {
           padding: "5px",
         }}
       >
-        <div
+        <Row
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
-            width: "100%",
-            height: "100%",
             marginBottom: "10px",
           }}
         >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ margin: 0, fontWeight: "bold" }}>TO.</span>
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingLeft: "10px",
-                paddingRight: "10px",
-              }}
-            >
-              <Select
-                value={selectedGroup}
-                name="To"
-                onChange={e => {
-                  handleSelectGroup()
-                  handleChangeValueCustomer(e.value)
-                }}
-                options={CustomersOption}
-              />
-            </div>
+          <Col md={1} style={{ padding: "0" }}>
+            <span style={{ margin: 0, fontWeight: "bold" }}>Description :</span>
           </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ margin: 0, fontWeight: "bold" }}>Lot: &nbsp;</span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="DCL1"
-                  onChange={handleChangeDetailRow1("DCL1")}
-                  value={valuesExportRow1.DCL1}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
 
-        {/* Collection Date */}
-        <div
+          <Col md={11} style={{ padding: "0" }}>
+            <Input
+              value={descriptionVeit.description}
+              name="description"
+              onChange={handleChangeDesVeit("description")}
+            />
+          </Col>
+        </Row>
+
+        <Row
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
+            marginBottom: "10px",
           }}
         >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckcolorTn"
-                  checked={!disCollectedDate}
-                  onChange={() => {
-                    setdisCollectedDate(!disCollectedDate)
-                  }}
-                />
-              </div> */}
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Collected date:
-              </span>
-            </Col>
-            <Col
-              sm="9"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={disCollectedDate}
-                  name="CollectedDate"
-                  onChange={handleChangeDetailRow2PD("CollectedDate")}
-                  value={valuesExportRow2.CollectedDate}
-                />
-              </div>
-            </Col>
+          <Col sm={1} style={{ padding: "0" }}>
+            <span style={{ margin: 0, fontWeight: "bold" }}>Customer :</span>
           </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div>
-              <span style={{ fontWeight: "bold" }}>Tank No. </span> */}
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisTank}
-                  name="productName"
-                  onChange={handleChangeDetailRow2PD("productName")}
-                  value={valuesExportRow2.productName}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
 
-        {/* Production Date */}
-        <div
+          <Col sm={11} style={{ padding: "0" }}>
+            <Select
+              value={selectedGroup}
+              name="To"
+              onChange={e => {
+                handleSelectGroup()
+                handleChangeValueCustomer(e.value)
+              }}
+              options={CustomersOption}
+            />
+          </Col>
+        </Row>
+
+        <Row
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
+            marginBottom: "10px",
           }}
         >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckcolorTn"
-                  checked={!DisProductDate}
-                  onChange={() => {
-                    setDisProductDate(!DisProductDate)
-                  }}
-                />
-              </div> */}
-              <span style={{ fontWeight: "bold" }}>Production date:</span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisProductDate}
-                  name="productionDate"
-                  onChange={handleChangeDetailRow3EX("productionDate")}
-                  value={valuesExportRow3.productionDate}
-                />
-              </div>
-            </Col>
+          <Col sm={1} style={{ padding: "0" }}>
+            <span style={{ margin: 0, fontWeight: "bold" }}>Invoice No. :</span>
           </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div> */}
-              <span style={{ fontWeight: "bold" }}>Tank No. </span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisTank}
-                  name="TankNo"
-                  onChange={handleChangeDetailRow3EX("TankNo")}
-                  value={valuesExportRow3.TankNo}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
 
-        {/* ExpirationDate  */}
-        <div
+          <Col sm={11} style={{ padding: "0" }}>
+            <Input
+              value={descriptionVeit.Invoice}
+              name="Invoice"
+              onChange={handleChangeDesVeit("Invoice")}
+            />
+          </Col>
+        </Row>
+
+        <Row
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
+            marginBottom: "10px",
           }}
         >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisExpiration}
-                  onChange={() => {
-                    setDisExpiration(!DisExpiration)
-                  }}
-                />
-              </div> */}
-              <span style={{ fontWeight: "bold" }}>Expiration date:</span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisExpiration}
-                  name="ExpirationDate"
-                  onChange={handleChangeExpirationDate("ExpirationDate")}
-                  value={valuesExportPNandPS.ExpirationDate}
-                />
-              </div>
-            </Col>
+          <Col sm={1} style={{ padding: "0" }}>
+            <span style={{ margin: 0, fontWeight: "bold" }}>ETA :</span>
           </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            ></Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              ></div>
-            </Col>
+
+          <Col sm={11} style={{ padding: "0" }}>
+            <Input
+              value={descriptionVeit.ETA}
+              name="ETA"
+              onChange={handleChangeDesVeit("ETA")}
+            />
           </Col>
-        </div>
+        </Row>
+
+        <Row
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <Col sm={1} style={{ padding: "0" }}>
+            <span style={{ margin: 0, fontWeight: "bold" }}>Shelf life :</span>
+          </Col>
+
+          <Col sm={11} style={{ padding: "0" }}>
+            <Input
+              value={descriptionVeit.ShelfLife}
+              name="ShelfLife"
+              onChange={handleChangeDesVeit("ShelfLife")}
+            />
+          </Col>
+        </Row>
       </Row>
     )
   }
@@ -1101,7 +816,29 @@ const FormBeforeExport3 = props => {
     setModalAddSamples(false)
   }
 
-  const AnalysisVeitHong = () => {
+  const SelectAddValues = async index => {
+    console.log("select index : ", index)
+    let i = index
+    let oo = []
+    i.forEach(async data => {
+      oo.push(data)
+    })
+    console.log("select oo : ", oo)
+    setOrderAdded(oo)
+  }
+
+  useEffect(async () => {
+    try {
+      // if (modalAddSamples == false) {
+      //   console.log("OderVeit : ", OderVeit)
+      setOrderformTableVeit(OderVeit)
+      // }
+    } catch (e) {
+      console.log(e)
+    }
+  }, [OderVeit, modalAddSamples])
+
+  const AnalysisVeitHong = OderVeit => {
     return (
       <React.Fragment>
         <Row
@@ -1113,7 +850,7 @@ const FormBeforeExport3 = props => {
             marginBottom: "10px",
           }}
         >
-          <Col>
+          {/* <Col>
             <Select
               value={selectedGroup}
               name="To"
@@ -1123,17 +860,28 @@ const FormBeforeExport3 = props => {
               }}
               options={CustomersOption}
             />
-          </Col>
+          </Col> */}
           <Col>
             <Button color="primary" onClick={toggleModalReprocess}>
               {" "}
               + Add
+            </Button>{" "}
+            <Button
+              color="danger"
+              onClick={() => {
+                onAddOrderVeit([])
+              }}
+            >
+              {" "}
+              - Clear
             </Button>
           </Col>
         </Row>
 
         <table id="score-level">
           <tr>
+            {/* ProductName */}
+            <th>Name</th>
             <th>Container No.</th>
             <th>BAG No.</th>
             <th>LOT No.</th>
@@ -1143,1280 +891,251 @@ const FormBeforeExport3 = props => {
             {DisSaltMeter ? <th>Salt Meter</th> : null}
             {DisPH ? <th>pH at 25 {`\u00B0C`}</th> : null}
             {DisSPG ? <th>Specific Gravity</th> : null}
-            <th>APC cfu/ml</th>
+            <th>APC cfu/g</th>
             <th>E.coli & Coliform</th>
             {DisAW ? <th>Aw/{`\u00B0C`}</th> : null}
             {/* <th>LOT No.</th> */}
           </tr>
+          {/* {JSON.stringify(OderVeit.Name)} */}
+          {OrderformTableVeit.map((data, i) => (
+            <tr>
+              {/* {JSON.stringify(i)} */}
+              <td>{data.ProductName}</td>
+              <td>
+                <Input
+                  name={i}
+                  onChange={handleChangeValuesContainer(`${i}`)}
+                  // value={valuesContainer.refNo}
+                />
+              </td>
+              <td>
+                <Input
+                  name={i}
+                  onChange={handleChangeValuesBagNo(`${i}`)}
+                  // value={valuesContainer.refNo}
+                />
+              </td>
+              <td>
+                <Input
+                  name={i}
+                  onChange={handleChangeValuesLot(`${i}`)}
+                  // value={valuesContainer.refNo}
+                />
+              </td>
+
+              {/* TN */}
+              <td style={{ textAlign: "center" }}>
+                {data.Tn ? data.Tn.toFixed(2) : "null"}
+              </td>
+              {/* Histamine */}
+              <td style={{ textAlign: "center" }}>
+                {data.Histamine ? data.Histamine.toFixed(2) : "null"}
+              </td>
+              {/* Salt */}
+              <td style={{ textAlign: "center" }}>
+                {data.Salt ? data.Salt.toFixed(2) : "null"}
+              </td>
+              {/* Salt Meter */}
+              <td style={{ textAlign: "center" }}>
+                {data.SaltMeter ? data.SaltMeter.toFixed(2) : "null"}
+              </td>
+              {/* pH */}
+              <td style={{ textAlign: "center" }}>
+                {data.PH ? data.PH.toFixed(2) : "null"}
+              </td>
+              {/* SPGTest */}
+              <td style={{ textAlign: "center" }}>
+                {data.SPGTest ? data.SPGTest.toFixed(2) : "null"}
+              </td>
+              {/* APC */}
+              <td style={{ textAlign: "center" }}>
+                {data.APC ? data.APC : "null"}
+              </td>
+              {/* E.coli */}
+              <td style={{ textAlign: "center" }}>
+                {data.EColi ? "ND" : "null"}
+              </td>
+              {/* AW */}
+              <td style={{ textAlign: "center" }}>
+                {data.Aw
+                  ? `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`
+                  : "null"}
+                {/* {() => {
+                  if (data.Aw != null) {
+                    return `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`
+                  } else {
+                    return `null`
+                  }
+                }} */}
+                {/* {data.Aw ? `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`: "null"} */}
+              </td>
+            </tr>
+          ))}
         </table>
-      </React.Fragment>
-    )
-  }
 
-  const Analysis = () => {
-    return (
-      <Row
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 0,
-          border: "1px solid #000000",
-          flexDirection: "column",
-          padding: "5px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "10px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          ></Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <h4>
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Product Specification
-              </span>
-            </h4>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <h4>
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Analysis Results
-              </span>
-            </h4>
-          </Col>
-        </div>
-        {/* TN */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "10px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckTN"
-                checked={DisTN}
-                onChange={() => {
-                  setDisTN(!DisTN)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>
-              Total Nitrogen
-            </span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-                // paddingLeft: "20px",
-              }}
-            >
-              <Input disabled={!DisTN} value={spcChem.scpTN} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input
-                disabled={!DisTN}
-                name="TN"
-                onChange={handleChangeValueAnalysis("TN")}
-                value={valuesChem.TN}
-              />
-            </div>
-          </Col>
-        </div>
-        {/* Protein */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckProtein"
-                checked={DisProtein}
-                onChange={() => {
-                  setDisProtein(!DisProtein)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>Protein</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisProtein} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input
-                disabled={!DisProtein}
-                name="Protein"
-                onChange={handleChangeProtein("Protein")}
-                value={valuesChem.Protein}
-              />
-            </div>
-          </Col>
-        </div>
-        {/* PH */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckPH"
-                checked={DisPH}
-                onChange={() => {
-                  setDisPH(!DisPH)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>PH</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisPH} value={spcChem.scpPH} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisPH} value={valuesChem.PH} />
-            </div>
-          </Col>
-        </div>
-        {/* Salt */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckSalt"
-                checked={DisSalt}
-                onChange={() => {
-                  setDisSalt(!DisSalt)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>% NaCl</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisSalt} value={spcChem.scpSalt} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisSalt} value={valuesChem.Salt} />
-            </div>
-          </Col>
-        </div>
-        {/* Histamine */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckHistamine"
-                checked={DisHistamine}
-                onChange={() => {
-                  setDisHistamine(!DisHistamine)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>Histamine</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-                // paddingLeft: "20px",
-              }}
-            >
-              <Input disabled={!DisHistamine} value={spcChem.scpHistamine} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisHistamine} value={valuesChem.Histamine} />
-            </div>
-          </Col>
-        </div>
-        {/* SPG */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckSPG"
-                checked={DisSPG}
-                onChange={() => {
-                  setDisSPG(!DisSPG)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>
-              Specific Gravity
-            </span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            {/* &nbsp; */}
-            {/* &ge; */}
-            {/* {"\u2265"} */}
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-                // paddingLeft: "20px",
-              }}
-            >
-              <Input disabled={!DisSPG} value={spcChem.scpSPG} />
-            </div>
-            {/* {"\u00B0C"} */}
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisSPG} value={valuesChem.SPG} />
-            </div>
-            {/* {"\u00B0C"} */}
-          </Col>
-        </div>
-
-        {/* Water Activity */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckAW"
-                checked={DisAW}
-                onChange={() => {
-                  setDisAW(!DisAW)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>
-              Water Activity
-            </span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisAW} value={spcChem.scpAW} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisAW} value={valuesChem.AW} />
-            </div>
-          </Col>
-        </div>
-        {/* TSS */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckAW"
-                checked={DisTss}
-                onChange={() => {
-                  setDisTss(!DisTss)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>TSS(Brix)</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisTss} value={spcChem.scpTSS} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisTss} value={valuesChem.TSS} />
-            </div>
-          </Col>
-        </div>
-        {/* AN */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckAN"
-                checked={DisAN}
-                onChange={() => {
-                  setDisAN(!DisAN)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>AN</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisAN} value={spcChem.scpAN} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisAN} value={valuesChem.AN} />
-            </div>
-          </Col>
-        </div>
-        {/* Acidity */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckAcidity"
-                checked={DisAcidity}
-                onChange={() => {
-                  setDisAcidity(!DisAcidity)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>Acidity</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisAcidity} value={spcChem.scpAcidity} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisAcidity} value={valuesChem.Acidity} />
-            </div>
-          </Col>
-        </div>
-        {/* Viscosity */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginTop: "5px",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div className="form-check form-check-warning">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="customCheckViscosity"
-                checked={DisViscosity}
-                onChange={() => {
-                  setDisViscosity(!DisViscosity)
-                }}
-              />
-            </div>
-            <span style={{ margin: 0, fontWeight: "bold" }}>Viscosity</span>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            &nbsp;
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisViscosity} value={spcChem.scpViscosity} />
-            </div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingRight: "30px",
-              }}
-            >
-              <Input disabled={!DisViscosity} value={valuesChem.Viscosity} />
-            </div>
-          </Col>
-        </div>
-
-        {/* MicroBiological */}
-        {MicroRender ? (
-          <React.Fragment>
+        <Row style={{ marginTop: "50px" }}>
+          <Col>
             <div
               style={{
                 display: "flex",
-                width: "100%",
-                justifyContent: "flex-start",
+                flexDirection: "column",
                 alignItems: "center",
-                marginTop: "15px",
+                justifyContent: "center",
               }}
             >
-              <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckMicroAnalysis"
-                  checked={MicroAnalysis}
-                  onChange={() => {
-                    setMicroAnalysis(!MicroAnalysis)
-                  }}
+              <span>
+                ......................................................
+              </span>
+              <br />
+              <div style={{ width: "100%" }}>
+                <Input
+                  name="nameLeft"
+                  onChange={handleChangeValuesApplove("nameLeft")}
                 />
               </div>
-              <h4 style={{ margin: "0" }}>
-                <span style={{ margin: 0, fontWeight: "bold" }}>
-                  MICROBIOLOGICAL
-                </span>
-              </h4>
+              <br />
+              <div style={{ width: "100%" }}>
+                <Select
+                  value={selectedGroup2}
+                  name="To"
+                  onChange={e => {
+                    handleSelectGroup2()
+                    handleChangeApproveValue(e.value)
+                  }}
+                  options={ReportSelect}
+                />
+              </div>
+              <br />
+              <div
+                style={{ width: "100%", display: "flex", alignItems: "center" }}
+              >
+                <span>Date</span>
+                <div style={{ width: "100%", paddingLeft: "10px" }}>
+                  <Input
+                    name="dateLeft"
+                    onChange={handleChangeValuesApplove("dateLeft")}
+                  />
+                </div>
+              </div>
             </div>
-            {MicroAnalysis ? (
-              <React.Fragment>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "5px",
-                    marginBottom: "5px",
+          </Col>
+          <Col>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>
+                ......................................................
+              </span>
+              <br />
+              <div style={{ width: "100%" }}>
+                <Input
+                  name="nameRight"
+                  onChange={handleChangeValuesApplove("nameRight")}
+                />
+              </div>
+              <br />
+              <div style={{ width: "100%" }}>
+                <Select
+                  value={selectedGroup3}
+                  name="To"
+                  onChange={e => {
+                    handleSelectGroup3()
+                    handleChangeReportValue(e.value)
                   }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    {/* <div className="form-check form-check-warning">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="customCheckViscosity"
-                      checked={DisViscosity}
-                      onChange={() => {
-                        setDisViscosity(!DisViscosity)
-                      }}
-                    />
-                  </div> */}
-                    <span style={{ margin: 0, fontWeight: "bold" }}>TPC</span>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      {/* <Input /> */}
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        {"<" + " " + "1 x 10" + "\u2074" + " CFU/g"}
-                      </span>
-                    </div>
-                    {/* {"10"+"\u2074"} */}
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <Input value={valuesMicro.TPC} />
-                    </div>
-                  </Col>
+                  options={ApproveSelect}
+                />
+              </div>
+              <br />
+              <div
+                style={{ width: "100%", display: "flex", alignItems: "center" }}
+              >
+                <span>Date</span>
+                <div style={{ width: "100%", paddingLeft: "10px" }}>
+                  <Input
+                    name="dateRight"
+                    onChange={handleChangeValuesApplove("dateRight")}
+                  />
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "5px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ margin: 0, fontWeight: "bold" }}>
-                      Yeasts and Molds
-                    </span>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      {/* <Input /> */}
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        {"\u2264" + " " + "100" + " CFU/g"}
-                      </span>
-                    </div>
-                    {/* {"10"+"\u2074"} */}
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <Input value={valuesMicro.YeaseandMold} />
-                    </div>
-                  </Col>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "5px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ margin: 0, fontWeight: "bold" }}>
-                      E. coli
-                    </span>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        NOT DETECTED
-                      </span>
-                    </div>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <Input value={valuesMicro.Ecoil} />
-                    </div>
-                  </Col>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "5px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ margin: 0, fontWeight: "bold" }}>
-                      Coliform
-                    </span>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        NOT DETECTED
-                      </span>
-                    </div>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <Input value={valuesMicro.Coliform} />
-                    </div>
-                  </Col>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "5px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span style={{ margin: 0, fontWeight: "bold" }}>
-                      S. aureus
-                    </span>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        NOT DETECTED
-                      </span>
-                    </div>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <Input value={valuesMicro.Saureus} />
-                    </div>
-                  </Col>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "5px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div className="form-check form-check-warning">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="customCheckSalmon2"
-                        checked={salmon}
-                        onChange={() => {
-                          setSalmon(!salmon)
-                        }}
-                      />
-                    </div>
-                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
-                    <label
-                      className="form-check-label"
-                      htmlFor="customCheckSalmon2"
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        Salmonella spp.
-                      </span>
-                    </label>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        NOT DETECTED
-                      </span>
-                    </div>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <Input value={valuesMicro.Salmonella} />
-                    </div>
-                  </Col>
-                </div>
-              </React.Fragment>
-            ) : null}
-            {/* {Sinsory()} */}
-          </React.Fragment>
-        ) : null}
-        {/* {Sinsory()} */}
-      </Row>
+              </div>
+
+              {/* </span> */}
+            </div>
+          </Col>
+        </Row>
+        <br />
+        <br />
+        <br />
+        <Row>
+          <h5>Physico-Chemical Specifications</h5>
+        </Row>
+        {/* <br /> */}
+        <Row>
+          <Col
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <h5>Parameter</h5>
+
+            <span>Total Nitrogen gm/liter, %</span>
+            <span>Sodium Chloride</span>
+            <span>Histamine</span>
+            <span>pH</span>
+            <span>Water Activity</span>
+            <span>Specific Gravity</span>
+            <span>APC</span>
+            <span>E.coli & Coliform</span>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <h5>Specification Limits</h5>
+            <span>TN {"\u2265"} 20 dm/Liter minimum</span>
+            <span>28.4 - 28.95%</span>
+            <span>200ppm maximum</span>
+            <span>5.2 - 5.4 at 25 {"\u00B0C"}</span>
+            <span>0.85 maximum</span>
+            <span>1.20 g/mL minimum</span>
+            <span>500 cfu/g maximum</span>
+            <span> {"<3.0 (None Detected)"} </span>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <h5>Test Method</h5>
+            <span>TN Auto-analyzer</span>
+            <span>Volumetric Method</span>
+            <span>Enzymatic Biosensor Method(AOAC 051604)</span>
+            <span>Using pH meter</span>
+            <span>Using Water Acticity analyzer</span>
+            <span>Hydrometer method</span>
+            <span>Pour Plate Technique</span>
+            <span>MPN Method</span>
+          </Col>
+        </Row>
+      </React.Fragment>
     )
   }
 
   return (
     <React.Fragment>
       <ModalAddExport
+        setOrders={SelectAddValues}
         isOpenRro={modalAddSamples}
         toggleRepro={toggleModalReprocess}
         redirect={redirect}
@@ -2459,22 +1178,25 @@ const FormBeforeExport3 = props => {
       <div style={{ width: "100%", height: "100%", background: "" }}>
         {headerForm()}
         <br />
-        {RefForm()}
+        {/* {RefForm()} */}
         {headDetail()}
         <br />
-        {AnalysisVeitHong()}
-        {Analysis()}
+        {AnalysisVeitHong(OderVeit)}
+
+        {/* {Analysis()} */}
         {/* {Sinsory()} */}
+
         <div
           style={{
             display: "flex",
             width: "100%",
             height: "100%",
             alignItems: "center",
+            marginTop: "20px",
           }}
         >
           <Col sm="3" style={{ padding: "5px" }}>
-            Report By ................................
+            {/* Report By ................................
             <Select
               value={selectedGroup2}
               name="To"
@@ -2483,10 +1205,10 @@ const FormBeforeExport3 = props => {
                 handleChangeApproveValue(e.value)
               }}
               options={ReportSelect}
-            />
+            /> */}
           </Col>
           <Col sm="3" style={{ padding: "5px" }}>
-            Approve By ................................
+            {/* Approve By ................................
             <Select
               value={selectedGroup3}
               name="To"
@@ -2495,7 +1217,7 @@ const FormBeforeExport3 = props => {
                 handleChangeReportValue(e.value)
               }}
               options={ApproveSelect}
-            />
+            /> */}
           </Col>
           <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
             <Button
@@ -2587,6 +1309,8 @@ FormBeforeExport3.propTypes = {
   spc: PropTypes.array,
   tr: PropTypes.array,
   bio: PropTypes.array,
+  OderVeit: PropTypes.array,
+  onAddOrderVeit: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -2594,6 +1318,14 @@ const mapStateToProps = state => ({
   spc: state.DetailOrder.SpecificChem,
   tr: state.DetailOrder.TestResultLasted,
   bio: state.DetailOrder.SpecificBio,
+  OderVeit: state.DetailOrder.veit,
 })
 
-export default connect(mapStateToProps)(withRouter(FormBeforeExport3))
+const mapDispatchToProps = dispatch => ({
+  onAddOrderVeit: detailVeit => dispatch(AddOrderVeit(detailVeit)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(FormBeforeExport3))

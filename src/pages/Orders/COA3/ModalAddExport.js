@@ -9,6 +9,8 @@ import {
   Button,
   Modal,
   ModalFooter,
+  ModalHeader,
+  ModalBody,
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import { map, result } from "lodash"
@@ -29,15 +31,20 @@ const ModalAddExport = props => {
     toggleRepro,
     tr,
     redirect,
+    offModal,
     handleRedirect,
+    setOrders,
   } = props
   return (
     <Modal isOpen={isOpenRro} toggle={toggleRepro} centered={true} size="xl">
+      <ModalHeader toggle={toggleRepro}>Modal title</ModalHeader>
       <div style={{ padding: "15px" }}>
         <TableCompleteCheck
+          setOrders={setOrders}
           page={"lab"}
           tricker={"CompleteCheck"}
-          tt={isOpenRro}
+          toggle={toggleRepro}
+          onClose={offModal}
         />
       </div>
     </Modal>

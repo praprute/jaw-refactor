@@ -1320,8 +1320,10 @@ export const originalFormCOA = (
             ],
           },
           {
-            text: " ",
-            style: "codeDoc",
+            text: "FM-LA-23-02",
+            // style: "codeDoc",
+            fontSize: "8",
+            bold:true,
             width: 60,
           },
         ],

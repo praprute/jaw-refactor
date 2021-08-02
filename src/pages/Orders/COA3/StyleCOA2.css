@@ -7,6 +7,7 @@
   #score-level td, #score-level th {
     border: 1px solid #ddd;
     padding: 8px;
+    
   }
   
   #score-level tr:nth-child(even){background-color: #f2f2f2;}
