@@ -33,7 +33,7 @@ import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
 import "./ModalFullScreen.css"
 import FormBeforeExport2 from "../COA2/FormBeforeExport2"
-import FormBeforeExport3 from '../COA3/FormBeforeExport3'
+import FormBeforeExport3 from "../COA3/FormBeforeExport3"
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
 import { getCustomers } from "../api"
@@ -259,19 +259,36 @@ const FormBeforeExport = props => {
 
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
-      setSpcChem({
-        scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
-        scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
-        scpProtein: `2.3-3.5%`,
-        scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
-        scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
-        scpSPG: `\u2265 1.20/20 \u00B0C`,
-        scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-        scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
-        scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
-        scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
-        scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
-      })
+      if (paresIndex.Orders.idScfChem == 14) {
+        setSpcChem({
+          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
+          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpProtein: `\u2265  9.375%`,
+          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
+          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
+          scpSPG: `\u2265 1.20/20 \u00B0C`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
+          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
+          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+        })
+      } else {
+         setSpcChem({
+          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
+          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpProtein: `2.3-3.5%`,
+          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
+          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
+          scpSPG: `\u2265 1.20/20 \u00B0C`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
+          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
+          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+        })
+      }
+
       setvaluesChem({
         TN: `${
           paresIndex.chem[0].val

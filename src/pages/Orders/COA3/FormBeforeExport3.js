@@ -335,13 +335,15 @@ const FormBeforeExport3 = props => {
       setDisPH(paresIndex.chem[3].render)
       setDisSalt(paresIndex.chem[1].render)
       setDisHistamine(paresIndex.chem[2].render)
-      setDisSPG(paresIndex.chem[6].render)
+      // setDisSPG(paresIndex.chem[6].render)
+      setDisSPG(true)
       setDisAW(paresIndex.chem[4].render)
       setDisTss(paresIndex.chem[5].render)
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[8].render)
       setDisViscosity(paresIndex.chem[9].render)
-      setDisSaltMeter(paresIndex.chem[10].render)
+      // setDisSaltMeter(paresIndex.chem[10].render)
+      setDisSaltMeter(true)
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
       setSpcChem({
@@ -487,7 +489,8 @@ const FormBeforeExport3 = props => {
       method,
       ScoreLevel,
       valScoreLevel,
-      salmon
+      salmon,
+      descriptionVeit
     )
   }
 
@@ -949,11 +952,11 @@ const FormBeforeExport3 = props => {
               </td>
               {/* APC */}
               <td style={{ textAlign: "center" }}>
-                {data.APC ? data.APC : "null"}
+                {data.APC ? data.APC : "ND"}
               </td>
               {/* E.coli */}
               <td style={{ textAlign: "center" }}>
-                {data.EColi ? "ND" : "null"}
+                {data.EColi ? "ND" : "ND"}
               </td>
               {/* AW */}
               <td style={{ textAlign: "center" }}>

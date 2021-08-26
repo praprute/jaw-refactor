@@ -19,7 +19,8 @@ export const originalFormCOA3 = (
   method,
   ScoreLevel,
   valScoreLevel,
-  salmon
+  salmon,
+  descriptionVeit
 ) => {
   let DetailOrderRow1 = []
   let DetailOrderRow2 = []
@@ -503,7 +504,7 @@ export const originalFormCOA3 = (
   }
 
   if (MicroRender.MicroRender && MicroRender.MicroAnalysis) {
-    if(salmon){
+    if (salmon) {
       dataAnaly.push(
         [
           {
@@ -721,180 +722,179 @@ export const originalFormCOA3 = (
           },
         ]
       )
-    }else{
-       dataAnaly.push(
-         [
-           {
-             text: `MICROBIOLOGICAL`,
-             style: "invoiceTitle",
-             alignment: "left",
-             fontSize: 12,
-             decoration: "underline",
-             // italics: true, ตัวเอียง
-             bold: true,
-             margin: [0, 3, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 3, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 3, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 3, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ],
-         [
-           {
-             text: `APC`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: `< 1x10\u2074 CFU/g`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             columns: [
-               {
-                 text: `${valuesMicro.TPC}`,
-                 style: "RefBoxValue",
-                 margin: [0, 0, 0, 2],
-               },
-               {
-                 text: `(Every lot)`,
-                 style: "RefBoxValue",
-                 margin: [10, 0, 0, 2],
-               },
-             ],
+    } else {
+      dataAnaly.push(
+        [
+          {
+            text: `MICROBIOLOGICAL`,
+            style: "invoiceTitle",
+            alignment: "left",
+            fontSize: 12,
+            decoration: "underline",
+            // italics: true, ตัวเอียง
+            bold: true,
+            margin: [0, 3, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 3, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 3, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 3, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `APC`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: `< 1x10\u2074 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.TPC}`,
+                style: "RefBoxValue",
+                margin: [0, 0, 0, 2],
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+                margin: [10, 0, 0, 2],
+              },
+            ],
 
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 2, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ],
-         [
-           {
-             text: `Yeasts and Molds`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: `\u2264 100 CFU/g`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             columns: [
-               {
-                 text: `${valuesMicro.YeaseandMold}`,
-                 style: "RefBoxValue",
-                 margin: [0, 0, 0, 2],
-               },
-               {
-                 text: `(Every lot)`,
-                 style: "RefBoxValue",
-                 margin: [10, 0, 0, 2],
-               },
-             ],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 2, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `Yeasts and Molds`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: `\u2264 100 CFU/g`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.YeaseandMold}`,
+                style: "RefBoxValue",
+                margin: [0, 0, 0, 2],
+              },
+              {
+                text: `(Every lot)`,
+                style: "RefBoxValue",
+                margin: [10, 0, 0, 2],
+              },
+            ],
 
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 2, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ],
-         [
-           {
-             text: `E. coli`,
-             style: "RefBoxValue",
-             alignment: "left",
-             italics: true,
-             margin: [0, 0, 0, 2],
-             border: [true, false, false, false],
-           },
-           {
-             text: `< 3.0 (NOT DETECTED)`,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             columns: [
-               {
-                 text: `${valuesMicro.Ecoil}`,
-                 // text: `${valuesMicro.Ecoil}`,
-                 width: "auto",
-                 alignment: "left",
-                 style: "RefBoxValue",
-                 margin: [0, 0, 0, 2],
-               },
-               {
-                 text: `(Every lot)`,
-                 width: "auto",
-                 alignment: "left",
-                 style: "RefBoxValue",
-                 margin: [17, 0, 0, 2],
-               },
-             ],
-             // margin: [0, 0, 0, 2],
-             // bold: true,
-             border: [false, false, false, false],
-           },
-           {
-             text: ``,
-             style: "RefBoxValue",
-             alignment: "left",
-             margin: [0, 2, 0, 2],
-             // bold: true,
-             border: [false, false, true, false],
-           },
-         ]
-       )
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 2, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `E. coli`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 2],
+            border: [true, false, false, false],
+          },
+          {
+            text: `< 3.0 (NOT DETECTED)`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${valuesMicro.Ecoil}`,
+                // text: `${valuesMicro.Ecoil}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+                margin: [0, 0, 0, 2],
+              },
+              {
+                text: `(Every lot)`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+                margin: [17, 0, 0, 2],
+              },
+            ],
+            // margin: [0, 0, 0, 2],
+            // bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: ``,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 2, 0, 2],
+            // bold: true,
+            border: [false, false, true, false],
+          },
+        ]
+      )
     }
-    
   }
 
   if (ScoreLevel) {
@@ -1215,7 +1215,7 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "RUNGROJ FISH SAUCE CO., LTD.",
+                    text: "VIET HUONG CO.,LTD",
                     style: "invoiceTitle",
                     width: "*",
                   },
@@ -1224,8 +1224,7 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text:
-                      "8/4 Samutjadee Rd. Paknum Mueang Rayong, Rayong 21000 Thailand",
+                    text: "89 Moo 4, Makamku, Nikom Pattana, Rayong 21180",
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1234,7 +1233,7 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "Tel: 66-38-940388 Fax: 66-38-940086",
+                    text: "Tel: 66-38-624432 Fax: 66-38-940086",
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1243,9 +1242,10 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "Email: fishsauce@rungrojfishsauce.com",
+                    text: "",
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
+                    margin: [0, 0, 0, 20],
                   },
                 ],
               },
@@ -1255,6 +1255,7 @@ export const originalFormCOA3 = (
                     text: "CERTIFICATE OF ANALYSIS",
                     style: "invoiceTitle",
                     width: "*",
+                    margin: [0, 0, 0, 20],
                   },
                 ],
               },
@@ -1270,64 +1271,45 @@ export const originalFormCOA3 = (
         ],
       },
       {
-        // halal
-        margin: [0, 20, 0, 0],
-        columns: [
-          {},
-          {},
+        // margin: 'auto',
+        margin: [0, 0, 20, 0],
+        alignment: "center",
+        stack: [
           {
-            style: "rightRef",
-            table: {
-              alignment: "left",
-              widths: ["auto", "*"],
-              body: [
-                [
-                  {
-                    text: `REF.NO `,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [true, true, false, true],
-                  },
-                  {
-                    text: `${ref.refNo}`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [false, true, true, true],
-                  },
-                ],
-                [
-                  {
-                    text: `DATE: `,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [true, false, false, true],
-                  },
-                  {
-                    text: `${ref.date}`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [false, false, true, true],
-                  },
-                ],
-                [
-                  {
-                    text: `PAGE NO.`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [true, false, false, false],
-                  },
-                  {
-                    text: `${ref.pageNo}`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [false, false, true, false],
-                  },
-                ],
-              ],
-            },
+            columns: [
+              {
+                text: "Description ",
+                style: "RefBoxValue",
+                alignment: "left",
+                bold: true,
+              },
+              {
+                text: `${descriptionVeit.description}`,
+                style: "RefBoxValue",
+                alignment: "left",
+                margin: [-200, 0, 0, 0],
+              },
+            ],
+          },
+          {
+            columns: [
+              {
+                text: "Customer ",
+                style: "RefBoxValue",
+                alignment: "left",
+                bold: true,
+              },
+              {
+                text: `${selectedGroupNameTo}`,
+                style: "RefBoxValue",
+                alignment: "left",
+                margin: [-200, 0, 0, 0],
+              },
+            ],
           },
         ],
       },
+
       {
         margin: [0, 0, 0, 0],
         table: {
@@ -1336,7 +1318,7 @@ export const originalFormCOA3 = (
           body: [
             [
               {
-                text: `TO. ${selectedGroupNameTo}`,
+                text: `scsc`,
                 style: "RefBoxValue",
                 alignment: "left",
                 border: [true, true, false, false],
@@ -1349,9 +1331,6 @@ export const originalFormCOA3 = (
               },
             ],
             DetailOrderRow2,
-            // DetailOrderRow2.map(data => (
-            //     data
-            // )),
             DetailOrderRow3,
             [
               {

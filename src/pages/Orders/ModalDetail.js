@@ -101,15 +101,16 @@ const ModalDetail = props => {
 
   const [scoreTested, setscoreTested] = useState("")
   useEffect(() => {
-    // console.log(tr)
+    // console.log('tr l',tr)
     setdetailById(orders)
     setMicrorender(orders.Micro)
 
     if (tr.length > 0) {
       var countChem = 0
       for (let i = 0; i < tr[0].length; i++) {
-        if (tr[0][i].render == true) {
+        if (tr[0][i].render == 1) {
           countChem = countChem + 1
+          // console.log('countChem : ', countChem) 
         } else {
           countChem = countChem
         }
@@ -125,17 +126,19 @@ const ModalDetail = props => {
 
       var testedScore = 0
       for (let i = 0; i < tr[0].length; i++) {
-        if (tr[0][i].coa == true) {
+        if (tr[0][i].coa == 1 && tr[0][i].render == 1) {
           testedScore = testedScore + 1
         } else {
           testedScore = testedScore
         }
       }
+
+      console.log("testedScore : ", testedScore)
       //   setscoreTested(testedScore)
 
       var countMicro = 0
       for (let i = 0; i < tr[1].length; i++) {
-        if (tr[1][i].coa == true) {
+        if (tr[1][i].coa == true ) {
           countMicro = countMicro + 1
         } else {
           countMicro = countMicro
