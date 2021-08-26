@@ -1284,7 +1284,7 @@ export const originalFormCOA3 = (
                 bold: true,
               },
               {
-                text: `${descriptionVeit.description}`,
+                text: `: ${descriptionVeit.description}`,
                 style: "RefBoxValue",
                 alignment: "left",
                 margin: [-200, 0, 0, 0],
@@ -1300,7 +1300,7 @@ export const originalFormCOA3 = (
                 bold: true,
               },
               {
-                text: `${selectedGroupNameTo}`,
+                text: `: ${selectedGroupNameTo}`,
                 style: "RefBoxValue",
                 alignment: "left",
                 margin: [-200, 0, 0, 0],
