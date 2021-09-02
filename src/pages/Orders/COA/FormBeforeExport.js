@@ -34,6 +34,7 @@ import { originalFormCOA } from "./OriginalForm"
 import "./ModalFullScreen.css"
 import FormBeforeExport2 from "../COA2/FormBeforeExport2"
 import FormBeforeExport3 from "../COA3/FormBeforeExport3"
+import FormBeforeExport4 from '../COA4/FormBeforeExport'
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
 import { getCustomers } from "../api"
@@ -2749,6 +2750,7 @@ const FormBeforeExport = props => {
       </Row>
     )
   }
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -2826,6 +2828,18 @@ const FormBeforeExport = props => {
                           }}
                         >
                           COA FORM 3
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === "4",
+                          })}
+                          onClick={() => {
+                            toggleTab("4")
+                          }}
+                        >
+                          COA FORM 4
                         </NavLink>
                       </NavItem>
                     </ul>
@@ -2925,6 +2939,11 @@ const FormBeforeExport = props => {
                   <TabPane tabId="3" id="CompleteCheck">
                     <div>
                       <FormBeforeExport3 />
+                    </div>
+                  </TabPane>
+                  <TabPane tabId="4" id="CompleteCheck">
+                    <div>
+                      <FormBeforeExport4 />
                     </div>
                   </TabPane>
                 </TabContent>

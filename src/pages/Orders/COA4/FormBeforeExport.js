@@ -21,7 +21,7 @@ import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA,loadHalalLogo,UpdateDatailOrder } from "../api"
+import { UpdatexportCOA, UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -30,12 +30,14 @@ import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
 // import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
+import { originalFormCOA } from "./OriginalForm"
+import "./ModalFullScreen.css"
+import FormBeforeExport2 from "../COA2/FormBeforeExport2"
+import FormBeforeExport3 from "../COA3/FormBeforeExport3"
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-import { originalFormCOA2 } from "./Original2"
 import { getCustomers } from "../api"
-import "./StyleCOA2.css"
-
+import e from "cors"
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
@@ -58,14 +60,13 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-const FormBeforeExport2 = props => {
+const FormBeforeExport4 = props => {
   const history = useHistory()
   const { user, token } = isAuthenticated()
   const { orders, spc, tr, bio } = props
   const [detailById, setdetailById] = useState([])
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
-  const [salmon, setSalmon] = useState(false)
   const [valuesMicro, setvaluesMicro] = useState({
     TPC: "",
     YeaseandMold: "",
@@ -74,7 +75,7 @@ const FormBeforeExport2 = props => {
     Saureus: "",
     Salmonella: "",
   })
-
+  const [activeTab, setActiveTab] = useState("1")
   const [valuesProtein, setValuesProtein] = useState({
     protein: "",
   })
@@ -85,9 +86,8 @@ const FormBeforeExport2 = props => {
   const [MicroAnalysis, setMicroAnalysis] = useState(true)
 
   const [DisProductDate, setDisProductDate] = useState(false)
-  const [DisExpiration, setDisExpiration] = useState(false)
-  const [DisTank, setDisTank] = useState(false)
-  const [disCollectedDate, setdisCollectedDate] = useState(false)
+  const [DisExpiration, setDisExpiration] = useState(true)
+  const [DisTank, setDisTank] = useState(true)
 
   const [DisTN, setDisTN] = useState(true)
   const [DisProtein, setDisProtein] = useState(false)
@@ -97,13 +97,11 @@ const FormBeforeExport2 = props => {
   const [DisSPG, setDisSPG] = useState(true)
   const [DisAW, setDisAW] = useState(true)
   const [DisTss, setDisTss] = useState(true)
-  const [DisSaltMeter, setDisSaltMeter] = useState(true)
   const [DisAN, setDisAN] = useState(true)
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
-  const [success_msg, setsuccess_msg] = useState(false)
-  const [success_error, setsuccess_error] = useState(false)
   const [CustomersOption, setCustomers] = useState([])
+  const [salmon, setSalmon] = useState(false)
   const [ApproveSelect, setApproveSelect] = useState([
     {
       label: "DCC",
@@ -151,24 +149,24 @@ const FormBeforeExport2 = props => {
   const [customerNameSelect, setCustomerNameSelect] = useState(null)
   const [ApproveValue, setApproveValue] = useState(null)
   const [ReportValue, setReportValue] = useState(null)
+  const [success_msg, setsuccess_msg] = useState(false)
+  const [success_error, setsuccess_error] = useState(false)
   const [valuesExportRow1, setValuesExportRow1] = useState({
     To: customerNameSelect,
-    DCL1: "00/00/00",
+    DCL1: "MFG:",
+    DCL2: "BB:",
+    DCL3: "",
   })
   const [valuesExportRow2, setValuesExportRow2] = useState({
-    CollectedDate: "",
-    productName: "",
-    // ProductionDate: "",
-    // DaliveryDate: "",
+    ProductionDate: "",
+    DaliveryDate: "",
   })
   const [valuesExportRow3, setValuesExportRow3] = useState({
-    productionDate: "",
-    TankNo: "",
+    ExpirationDate: "",
   })
   const [valuesExportPNandPS, setValuesExportPNandPS] = useState({
-    // CollectedDate: "",
-    // productName: "",
-    ExpirationDate: "",
+    ProductName: "",
+    PackSize: "",
   })
   const [TankNumber, setTankNumber] = useState({
     Tank: "",
@@ -176,36 +174,12 @@ const FormBeforeExport2 = props => {
   const [valuesQuantity, setValuesQuantity] = useState({
     Quantity: "",
     TestDate: "",
+    CompletionDate:"",
   })
-const [uid, setUid] = useState(null)
-  const [method, setMethod] = useState({
-    TN: "Kjeldahl method",
-    AN: "TIS 3-2526",
-    protien: " ",
-    PH: "pH meter",
-    Nacl: "Volumetric method",
-    Histamine: "Enzymatic Biosensor method",
-    spg: "SPG meter",
-    AW: "Aw meter",
-    TSS: "TSS meter",
-    Acidity: "Potentiometric method",
-    Viscosity: "Viscometer",
-    AOA: "(AOAC 051604)",
+  const [uid, setUid] = useState(null)
+  const [shelfLife, setShelfLife] = useState({
+    ShelfLife:""
   })
-
-  const [valScoreLevel, setValScoreLevel] = useState({
-    Taste: 0,
-    Odor: 0,
-    Color: 0,
-    Appearance: 0,
-    testDate:"",
-    CompletionDate:""
-  })
-
-  const handleChangeScoreLevel = name => event => {
-    setValScoreLevel({ ...valScoreLevel, [name]: event.target.value })
-    // console.log('valScoreLevel : ', valScoreLevel)
-  }
 
   useEffect(async () => {
     try {
@@ -227,22 +201,42 @@ const [uid, setUid] = useState(null)
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      //   console.log("index : ", paresIndex)
+      // console.log("index : ", paresIndex)
 
       setValuesExportRow2({
-        CollectedDate: "",
-        productName: "",
+        ProductionDate: paresIndex.Orders.PD,
+        DaliveryDate: paresIndex.Orders.DD,
       })
-setUid(paresIndex.Orders.idOrders)
+
+      setTankNumber({
+        Tank: paresIndex.Orders.Tank,
+      })
+
+      setUid(paresIndex.Orders.idOrders)
+
+      if (!paresIndex.Orders.DCL1) {
+        setValuesExportRow1({
+          To: customerNameSelect,
+          DCL1: "MFG:",
+          DCL2: "BB:",
+          DCL3: "",
+        })
+      } else {
+        setValuesExportRow1({
+          To: customerNameSelect,
+          DCL1: paresIndex.Orders.DCL1,
+          DCL2: paresIndex.Orders.DCL2,
+          DCL3: paresIndex.Orders.DCL3,
+        })
+      }
+
       setValuesExportPNandPS({
-        ExpirationDate: paresIndex.Orders.ED,
-        // ProductName: paresIndex.Orders.ProductName,
-        // PackSize: paresIndex.Orders.Size,
+        ProductName: `${paresIndex.Orders.ProductName}`,
+        PackSize: paresIndex.Orders.Size,
       })
 
       setValuesExportRow3({
-        productionDate: paresIndex.Orders.PD,
-        TankNo: paresIndex.Orders.Tank,
+        ExpirationDate: paresIndex.Orders.ED,
       })
 
       setValuesQuantity({
@@ -266,34 +260,83 @@ setUid(paresIndex.Orders.idOrders)
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[8].render)
       setDisViscosity(paresIndex.chem[9].render)
-setDisSaltMeter(paresIndex.chem[10].render)
+
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
-      setSpcChem({
-        scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
-        scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
-        scpProtein: "",
-        scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
-        scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
-        scpSPG: `\u2265 1.20/20 \u00B0C`,
-        scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-        scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
-        scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
-        scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
-        scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
-      })
+      if (paresIndex.Orders.idScfChem == 14) {
+        setSpcChem({
+          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
+          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpProtein: `\u2265  9.375%`,
+          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
+          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
+          scpSPG: `\u2265 1.20/20 \u00B0C`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
+          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
+          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+        })
+      } else {
+        setSpcChem({
+          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
+          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpProtein: `2.3-3.5%`,
+          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
+          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
+          scpSPG: `\u2265 1.20/20 \u00B0C`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
+          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
+          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+        })
+      }
+
       setvaluesChem({
-        TN: `${paresIndex.chem[0].val}  g/L`,
-        PH: `${paresIndex.chem[3].val} / ${paresIndex.chem[3].temp} \u00B0C`,
+        TN: `${
+          paresIndex.chem[0].val
+            ? paresIndex.chem[0].val.toFixed(2)
+            : paresIndex.chem[0].val
+        }  g/L`,
+        PH: `${
+          paresIndex.chem[3].val
+            ? paresIndex.chem[3].val.toFixed(2)
+            : paresIndex.chem[3].val
+        } / ${paresIndex.chem[3].temp} \u00B0C`,
         Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  g/L`,
-        Salt: `${paresIndex.chem[1].val}% w/v`,
-        Histamine: `${paresIndex.chem[2].val} ppm`,
-        SPG: `${paresIndex.chem[6].val}/${paresIndex.chem[6].temp} \u00B0C`,
-        AW: `${paresIndex.chem[4].val}/${paresIndex.chem[4].temp} \u00B0C`,
-        TSS: paresIndex.chem[5].val,
-        AN: paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[8].val,
-        Viscosity: paresIndex.chem[9].val,
+        Salt: `${
+          paresIndex.chem[1].val
+            ? paresIndex.chem[1].val.toFixed(2)
+            : paresIndex.chem[1].val
+        }% w/v`,
+        Histamine: `${
+          paresIndex.chem[2].val
+            ? paresIndex.chem[2].val.toFixed(2)
+            : paresIndex.chem[2].val
+        } ppm`,
+        SPG: `${
+          paresIndex.chem[6].val
+            ? paresIndex.chem[6].val.toFixed(2)
+            : paresIndex.chem[6].val
+        }/${paresIndex.chem[6].temp} \u00B0C`,
+        AW: `${
+          paresIndex.chem[4].val
+            ? paresIndex.chem[4].val.toFixed(3)
+            : paresIndex.chem[4].val
+        }/${paresIndex.chem[4].temp} \u00B0C`,
+        TSS: paresIndex.chem[5].val
+          ? paresIndex.chem[5].val.toFixed(2)
+          : paresIndex.chem[5].val,
+        AN: paresIndex.chem[7].val
+          ? paresIndex.chem[7].val.toFixed(2)
+          : paresIndex.chem[7].val,
+        Acidity: paresIndex.chem[8].val
+          ? paresIndex.chem[8].val.toFixed(2)
+          : paresIndex.chem[8].val,
+        Viscosity: paresIndex.chem[9].val
+          ? paresIndex.chem[9].val.toFixed(2)
+          : paresIndex.chem[9].val,
       })
       let TPC = ""
       let YeaseandMold = ""
@@ -315,7 +358,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
       }
 
       if (paresIndex.micro[2].val < 3) {
-        Ecoil = `< 3.0 CFU/g`
+        Ecoil = `NOT DETECTED`
       } else {
         Ecoil = `${paresIndex.micro[2].val} MPN/g`
       }
@@ -348,25 +391,24 @@ setDisSaltMeter(paresIndex.chem[10].render)
 
   const handleUpdateStatusCoa = async () => {
     try {
-      let update = await UpdatexportCOA(token)
+      let update = UpdatexportCOA(token)
     } catch (err) {
       console.log(err)
     }
   }
 
-  const handleExportPDF = () => {
-    // console.log("valScoreLevel : ", valScoreLevel)
+  const toggleTab = tab => {
+    if (activeTab !== tab) {
+      setActiveTab(tab)
+    }
+  }
 
+  const handleExportPDF = () => {
     let dataRow2 = [
-      { values: valuesExportRow2.CollectedDate },
-      { values: valuesExportRow2.productName },
+      { values: valuesExportRow2.ProductionDate },
+      { values: valuesExportRow2.DaliveryDate },
     ]
-    // CollectedDate: "",
-    // productName: "",
-    let dataRow3 = [
-      { values: valuesExportRow3.productionDate },
-      { values: valuesExportRow3.TankNo },
-    ]
+    let dataRow3 = [{ values: valuesExportRow3.ExpirationDate }, { values: "" }]
 
     let AnalysisRender = {
       DisTN: DisTN,
@@ -387,13 +429,10 @@ setDisSaltMeter(paresIndex.chem[10].render)
       MicroAnalysis,
     }
 
-    let ScoreLevel = true
-
     // console.log("AnalysisRender", AnalysisRender)
 
-    originalFormCOA2(
+    originalFormCOA(
       values.logo,
-      values.halal,
       valuesExportRef,
       valuesExportRow1,
       dataRow2,
@@ -409,10 +448,11 @@ setDisSaltMeter(paresIndex.chem[10].render)
       customerNameSelect,
       ApproveValue,
       ReportValue,
-      method,
-      ScoreLevel,
-      valScoreLevel,
-      salmon
+      salmon,
+      DisProductDate,
+      DisExpiration,
+      DisTank,
+      shelfLife
     )
   }
 
@@ -421,15 +461,15 @@ setDisSaltMeter(paresIndex.chem[10].render)
       let index = {
         idOrders: uid,
         RefNo: valuesExportRef.refNo,
-        DCL1: null,
-        DCL2: null,
-        DCL3: null,
-        PD: valuesExportRow3.productionDate,
-        DD: null,
-        ED: valuesExportPNandPS.ExpirationDate,
-        Size: null,
-        Tank: valuesExportRow3.TankNo,
-        Quantity: null,
+        DCL1: valuesExportRow1.DCL1,
+        DCL2: valuesExportRow1.DCL2,
+        DCL3: valuesExportRow1.DCL3,
+        PD: valuesExportRow2.ProductionDate,
+        DD: valuesExportRow2.DaliveryDate,
+        ED: valuesExportRow3.ExpirationDate,
+        Size: valuesExportPNandPS.PackSize,
+        Tank: TankNumber.Tank,
+        Quantity: valuesQuantity.Quantity,
         testDate: valuesQuantity.TestDate,
       }
 
@@ -445,7 +485,10 @@ setDisSaltMeter(paresIndex.chem[10].render)
       console.error
     }
   }
-
+  // shelfLife, setShelfLife
+  const handleChangeshelfLife = name => event => {
+    setShelfLife({ ...shelfLife, [name]: event.target.value })
+  }
 
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
@@ -472,7 +515,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
     // console.log("valuesExportRow2 : ", valuesExportRow3)
   }
 
-  const handleChangeExpirationDate = name => event => {
+  const handleChangeDetailPNandPS = name => event => {
     setValuesExportPNandPS({
       ...valuesExportPNandPS,
       [name]: event.target.value,
@@ -507,15 +550,15 @@ setDisSaltMeter(paresIndex.chem[10].render)
 
   const handleChangeValueCustomer = e => {
     setCustomerNameSelect(e)
-    // console.log(e)
+    console.log(e)
   }
   const handleChangeApproveValue = e => {
     setApproveValue(e)
-    // console.log(e)
+    console.log(e)
   }
   const handleChangeReportValue = e => {
     setReportValue(e)
-    // console.log(e)
+    console.log(e)
   }
 
   // ApproveSelect, setApproveSelect
@@ -569,12 +612,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
             justifyContent: "flex-end",
             alignItems: "center",
           }}
-        >
-          <img
-            src={`data:image/png;base64,${values.halal}`}
-            style={{ maxWidth: 140, maxHeight: 90 }}
-          />
-        </Col>
+        ></Col>
       </Row>
     )
   }
@@ -720,7 +758,6 @@ setDisSaltMeter(paresIndex.chem[10].render)
             alignItems: "center",
             width: "100%",
             height: "100%",
-            marginBottom: "10px",
           }}
         >
           <Col
@@ -739,6 +776,22 @@ setDisSaltMeter(paresIndex.chem[10].render)
                 paddingRight: "10px",
               }}
             >
+              {/* <Input
+                name="To"
+                onChange={handleChangeDetailRow1("To")}
+                value={valuesExportRow1.To}
+              /> */}
+              {/* <select
+                name="To"
+                onChange={handleChangeDetailRow1("To")}
+                value={CustomersOption[0].Name}
+                className="form-control"
+              >
+                {CustomersOption.map((index, i) => (
+                  <option value={index.Name}>{index.Name}</option>
+                ))}
+              </select> */}
+
               <Select
                 value={selectedGroup}
                 name="To"
@@ -765,7 +818,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
                 alignItems: "center",
               }}
             >
-              <span style={{ margin: 0, fontWeight: "bold" }}>Lot: &nbsp;</span>
+              <span style={{ margin: 0, fontWeight: "bold" }}>LOT: &nbsp;</span>
             </Col>
             <Col sm="9">
               <div
@@ -783,8 +836,6 @@ setDisSaltMeter(paresIndex.chem[10].render)
             </Col>
           </Col>
         </div>
-
-        {/* Collection Date */}
         <div
           style={{
             display: "flex",
@@ -792,7 +843,6 @@ setDisSaltMeter(paresIndex.chem[10].render)
             alignItems: "center",
             width: "100%",
             height: "100%",
-            marginBottom: "5px",
           }}
         >
           <Col
@@ -802,51 +852,14 @@ setDisSaltMeter(paresIndex.chem[10].render)
               alignItems: "center",
             }}
           >
-            <Col
-              sm="3"
+            <div
               style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                paddingLeft: "10px",
+                paddingRight: "10px",
               }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckcolorTn"
-                  checked={!disCollectedDate}
-                  onChange={() => {
-                    setdisCollectedDate(!disCollectedDate)
-                  }}
-                />
-              </div> */}
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Collected date:
-              </span>
-            </Col>
-            <Col
-              sm="9"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={disCollectedDate}
-                  name="CollectedDate"
-                  onChange={handleChangeDetailRow2PD("CollectedDate")}
-                  value={valuesExportRow2.CollectedDate}
-                />
-              </div>
-            </Col>
+            ></div>
           </Col>
           <Col
             style={{
@@ -855,26 +868,8 @@ setDisSaltMeter(paresIndex.chem[10].render)
               alignItems: "center",
             }}
           >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div>
-              <span style={{ fontWeight: "bold" }}>Tank No. </span> */}
+            <Col sm="3">
+              {/* <h5 style={{ margin: 0 }}>Date Code List: </h5> */}
             </Col>
             <Col sm="9">
               <div
@@ -884,17 +879,15 @@ setDisSaltMeter(paresIndex.chem[10].render)
                 }}
               >
                 <Input
-                  disabled={DisTank}
-                  name="productName"
-                  onChange={handleChangeDetailRow2PD("productName")}
-                  value={valuesExportRow2.productName}
+                  name="DCL2"
+                  onChange={handleChangeDetailRow1("DCL2")}
+                  value={valuesExportRow1.DCL2}
                 />
               </div>
             </Col>
           </Col>
         </div>
-
-        {/* Production Date */}
+       {/* Production Date */}
         <div
           style={{
             display: "flex",
@@ -920,7 +913,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
                 alignItems: "center",
               }}
             >
-              {/* <div className="form-check form-check-warning">
+              <div className="form-check form-check-warning">
                 <input
                   type="checkbox"
                   className="form-check-input"
@@ -930,8 +923,8 @@ setDisSaltMeter(paresIndex.chem[10].render)
                     setDisProductDate(!DisProductDate)
                   }}
                 />
-              </div> */}
-              <span style={{ fontWeight: "bold" }}>Production date:</span>
+              </div>
+              <span style={{ fontWeight: "bold" }}>Date of Report:</span>
             </Col>
             <Col sm="9">
               <div
@@ -942,9 +935,9 @@ setDisSaltMeter(paresIndex.chem[10].render)
               >
                 <Input
                   disabled={DisProductDate}
-                  name="productionDate"
-                  onChange={handleChangeDetailRow3EX("productionDate")}
-                  value={valuesExportRow3.productionDate}
+                  name="ProductionDate"
+                  onChange={handleChangeDetailRow2PD("ProductionDate")}
+                  value={valuesExportRow2.ProductionDate}
                 />
               </div>
             </Col>
@@ -964,18 +957,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
                 alignItems: "center",
               }}
             >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div> */}
-              <span style={{ fontWeight: "bold" }}>Tank No. </span>
+              {/* <span style={{ fontWeight: "bold" }}>Dalivery Date: &nbsp;</span> */}
             </Col>
             <Col sm="9">
               <div
@@ -984,17 +966,15 @@ setDisSaltMeter(paresIndex.chem[10].render)
                   height: "100%",
                 }}
               >
-                <Input
-                  disabled={DisTank}
-                  name="TankNo"
-                  onChange={handleChangeDetailRow3EX("TankNo")}
-                  value={valuesExportRow3.TankNo}
-                />
+                {/* <Input
+                  name="DaliveryDate"
+                  onChange={handleChangeDetailRow2PD("DaliveryDate")}
+                  value={valuesExportRow2.DaliveryDate}
+                /> */}
               </div>
             </Col>
           </Col>
         </div>
-
         {/* ExpirationDate  */}
         <div
           style={{
@@ -1012,44 +992,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
               justifyContent: "flex-start",
               alignItems: "center",
             }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisExpiration}
-                  onChange={() => {
-                    setDisExpiration(!DisExpiration)
-                  }}
-                />
-              </div> */}
-              <span style={{ fontWeight: "bold" }}>Expiration date:</span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisExpiration}
-                  name="ExpirationDate"
-                  onChange={handleChangeExpirationDate("ExpirationDate")}
-                  value={valuesExportPNandPS.ExpirationDate}
-                />
-              </div>
-            </Col>
-          </Col>
+          ></Col>
           <Col
             style={{
               display: "flex",
@@ -1075,125 +1018,8 @@ setDisSaltMeter(paresIndex.chem[10].render)
             </Col>
           </Col>
         </div>
-      </Row>
-    )
-  }
-
-  const Sinsory = () => {
-    return (
-      <React.Fragment>
-        <Row
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            marginTop: "15px",
-          }}
-        >
-          <h4 style={{ margin: "0", padding: "0" }}>
-            <span style={{ margin: 0, fontWeight: "bold" }}>
-              Sensory Test Results
-            </span>
-          </h4>
-        </Row>
-        <React.Fragment>
-          <Row
-            style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "flex-start",
-              // alignItems: "center",
-              marginTop: "10px",
-            }}
-          >
-            <Col xs={6} style={{ padding: "0" }}>
-              <table id="score-level">
-                <tr>
-                  <th>Parameter</th>
-                  <th>Score level</th>
-                </tr>
-                <tr>
-                  <td>Taste</td>
-                  <td>
-                    {" "}
-                    <Input
-                      name="Taste"
-                      type="number"
-                      min="0"
-                      max="5"
-                      placeholder={valScoreLevel.Taste}
-                      onChange={handleChangeScoreLevel("Taste")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Odor</td>
-                  <td>
-                    {" "}
-                    <Input
-                      min="0"
-                      max="5"
-                      name="Odor"
-                      type="number"
-                      placeholder={valScoreLevel.Odor}
-                      onChange={handleChangeScoreLevel("Odor")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Color</td>
-                  <td>
-                    {" "}
-                    <Input
-                      min="0"
-                      max="5"
-                      name="Color"
-                      type="number"
-                      placeholder={valScoreLevel.Color}
-                      onChange={handleChangeScoreLevel("Color")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Appearance</td>
-                  <td>
-                    {" "}
-                    <Input
-                      min="0"
-                      max="5"
-                      name="Appearance"
-                      type="number"
-                      placeholder={valScoreLevel.Appearance}
-                      onChange={handleChangeScoreLevel("Appearance")}
-                    />
-                  </td>
-                </tr>
-              </table>
-            </Col>
-            <Col xs={6} style={{paddingLeft:'10px'}}>
-              <table style={{position:'absolute', bottom:'0', left:'20px'}}>
-                <tr>
-                  <td>Remark:</td>
-                  <td>Score level</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>5 = Very Good</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>4 = Good</td>
-                </tr>
-                <tr>
-                  <td>less than</td>
-                  <td>4 = Not Good</td>
-                </tr>
-              </table>
-            </Col>
-          </Row>
-          <br/>
-          <div
+        {/* Product Name: pank size */}
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -1211,7 +1037,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
             }}
           >
             <Col
-              sm="2"
+              sm="3"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -1219,11 +1045,11 @@ setDisSaltMeter(paresIndex.chem[10].render)
               }}
             >
               <span style={{ margin: 0, fontWeight: "bold" }}>
-                Test date:
+                Product Name:
               </span>
             </Col>
             <Col
-              sm="10"
+              sm="9"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -1237,9 +1063,9 @@ setDisSaltMeter(paresIndex.chem[10].render)
                 }}
               >
                 <Input
-                  name="testDate"
-                  onChange={handleChangeScoreLevel("testDate")}
-                  value={valScoreLevel.testDate}
+                  name="ProductName"
+                  onChange={handleChangeDetailPNandPS("ProductName")}
+                  value={valuesExportPNandPS.ProductName}
                 />
               </div>
             </Col>
@@ -1255,13 +1081,177 @@ setDisSaltMeter(paresIndex.chem[10].render)
               sm="3"
               style={{
                 display: "flex",
-                justifyContent: "flex-start",
+                justifyContent: "flex-end",
                 alignItems: "center",
-                paddingLeft: "15px"
               }}
             >
               <span style={{ margin: 0, fontWeight: "bold" }}>
-                Completion date:
+                Pack Size: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="PackSize"
+                  onChange={handleChangeDetailPNandPS("PackSize")}
+                  value={valuesExportPNandPS.PackSize}
+                />
+              </div>
+            </Col>
+          </Col>
+        </div>
+        {/* Tank No */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            marginBottom: "5px",
+          }}
+        >
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>Quantity:</span>
+            </Col>
+            <Col
+              sm="9"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="Quantity"
+                  onChange={handleChangeQuantity("Quantity")}
+                  value={valuesQuantity.Quantity}
+                />
+              </div>
+            </Col>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Shelf life: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="ShelfLife"
+                  onChange={handleChangeshelfLife("ShelfLife")}
+                  value={shelfLife.ShelfLife}
+                />
+              </div>
+            </Col>
+          </Col>
+        </div>
+        {/* Quantity  */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            marginBottom: "5px",
+          }}
+        >
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Test Date: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="TestDate"
+                  onChange={handleChangeQuantity("TestDate")}
+                  value={valuesQuantity.TestDate}
+                />
+              </div>
+            </Col>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Completion Date: &nbsp;
               </span>
             </Col>
             <Col sm="9">
@@ -1273,24 +1263,17 @@ setDisSaltMeter(paresIndex.chem[10].render)
               >
                 <Input
                   name="CompletionDate"
-                  onChange={handleChangeScoreLevel("CompletionDate")}
-                  value={valScoreLevel.CompletionDate}
+                  onChange={handleChangeQuantity("CompletionDate")}
+                  value={valuesQuantity.CompletionDate}
                 />
               </div>
             </Col>
           </Col>
         </div>
-        </React.Fragment>
-      </React.Fragment>
+
+      </Row>
     )
   }
-
-  // const [valScoreLevel, setValScoreLevel] = useState({
-  //   Taste:0,
-  //   Odor:0,
-  //   Color:0,
-  //   Appearance:0
-  // })
 
   const Analysis = () => {
     return (
@@ -1473,7 +1456,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
                 paddingRight: "30px",
               }}
             >
-              <Input disabled={!DisProtein} />
+              <Input disabled={!DisProtein} value={spcChem.scpProtein} />
             </div>
           </Col>
           <Col
@@ -2182,7 +2165,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
                       }}
                     />
                   </div> */}
-                    <span style={{ margin: 0, fontWeight: "bold" }}>TPC</span>
+                    <span style={{ margin: 0, fontWeight: "bold" }}>APC</span>
                   </Col>
                   <Col
                     style={{
@@ -2488,7 +2471,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        id="customCheckSalmon2"
+                        id="customCheckSalmon"
                         checked={salmon}
                         onChange={() => {
                           setSalmon(!salmon)
@@ -2498,7 +2481,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
                     {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
                     <label
                       className="form-check-label"
-                      htmlFor="customCheckSalmon2"
+                      htmlFor="customCheckSalmon"
                     >
                       <span style={{ margin: 0, fontWeight: "bold" }}>
                         Salmonella spp.
@@ -2543,16 +2526,165 @@ setDisSaltMeter(paresIndex.chem[10].render)
                     </div>
                   </Col>
                 </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    // alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                    marginTop: "20px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      //   alignItems: "center",
+                    }}
+                  >
+                    <h5 style={{ margin: 0 }}>
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        Characteristics
+                      </span>
+                    </h5>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      //   alignItems: "center",
+                    }}
+                  >
+                    &nbsp;
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                      }}
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        Clear light brown <br />
+                        Thin liquid, fishy
+                        <br />
+                        flavor, First pressing,
+                        <br />
+                        Extre virgin
+                      </span>
+                    </div>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Appearance
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            No sedimentation
+                          </span>
+                        </Col>
+                      </div>
+
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Order
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            Fresh fish sauce odor/aroma
+                          </span>
+                        </Col>
+                      </div>
+
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Taste
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            Fresh fish sauce taste
+                          </span>
+                        </Col>
+                      </div>
+
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Color
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            Clear rockfish brown thin liquid
+                          </span>
+                        </Col>
+                      </div>
+                    </div>
+                  </Col>
+                </div>
               </React.Fragment>
             ) : null}
-            {/* {Sinsory()} */}
           </React.Fragment>
         ) : null}
-        {Sinsory()}
       </Row>
     )
   }
-
   return (
     <React.Fragment>
       {success_msg ? (
@@ -2587,16 +2719,15 @@ setDisSaltMeter(paresIndex.chem[10].render)
           You clicked the button!
         </SweetAlert>
       ) : null}
-      {/* <div className="page-content"> */}
-      
+
       <div style={{ width: "100%", height: "100%", background: "" }}>
         {headerForm()}
         <br />
-        {RefForm()}
+        {/* {RefForm()} */}
         {headDetail()}
         <br />
         {Analysis()}
-        {/* {Sinsory()} */}
+        {/* <h1>FormBeforeExport</h1> */}
         <div
           style={{
             display: "flex",
@@ -2643,7 +2774,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
               SAVE
             </Button>
           </Col>
-          <Col sm="3" style={{ textAlign: "right", paddingRight: "0px" }}>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
             <Button
               color="primary"
               size="lg"
@@ -2663,12 +2794,11 @@ setDisSaltMeter(paresIndex.chem[10].render)
         <br></br>
         <br></br>
       </div>
-      {/* </div> */}
     </React.Fragment>
   )
 }
 
-FormBeforeExport2.propTypes = {
+FormBeforeExport4.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   tr: PropTypes.array,
@@ -2682,4 +2812,4 @@ const mapStateToProps = state => ({
   bio: state.DetailOrder.SpecificBio,
 })
 
-export default connect(mapStateToProps)(withRouter(FormBeforeExport2))
+export default connect(mapStateToProps)(withRouter(FormBeforeExport4))
