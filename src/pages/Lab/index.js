@@ -250,6 +250,26 @@ const Labatorypage = props => {
                       </ul>
                     </Col>
                   </Row>
+                  <Row>
+                    <Col>
+                      <Button
+                        color="success"
+                        size="lg"
+                        style={{ width: "100%", marginTop: "15px" }}
+                        onClick={() => {
+                          // Exportdaily()
+                          // handleExportPDF()
+                          // handleUpdateStatusCoa()
+                        }}
+                      >
+                        SAVE
+                      </Button>
+                    </Col>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col></Col>
+                  </Row>
+
                   <TabContent activeTab={activeTab} className="p-3">
                     <TabPane tabId="1" id="all-order">
                       <div>
@@ -356,6 +376,18 @@ const Labatorypage = props => {
                         </div>
                       </TabPane> */}
                   </TabContent>
+                  <Button
+                    color="warning"
+                    size="lg"
+                    style={{ width: "100%", marginTop: "15px" }}
+                    onClick={() => {
+                      // Exportdaily()
+                      // handleExportPDF()
+                      // handleUpdateStatusCoa()
+                    }}
+                  >
+                    SAVE
+                  </Button>
                 </CardBody>
               </Card>
             </Col>
