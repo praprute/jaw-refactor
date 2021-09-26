@@ -22,7 +22,7 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-export const dailyReport = (logo, date_export, dataImport) => {
+export const dailyReportBio = (logo, date_export, dataImport) => {
   let dataTable = [
     [
       {
@@ -33,49 +33,56 @@ export const dailyReport = (logo, date_export, dataImport) => {
         border: [true, true, true, true],
       },
       {
-        text: `ชื่อตัวอย่าง`,
+        text: `รายการ`,
         style: "RefBoxValue",
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
       },
       {
-        text: `pH (25ºC)`,
+        text: `E.Coli \n\n (48hr)`,
         style: "RefBoxValue",
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
       },
       {
-        text: `%Salt (g/100 ml)`,
+        text: `Coliform \n\n (48hr)`,
         style: "RefBoxValue",
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
       },
       {
-        text: `TN (g/L)`,
+        text: `APC \n\n (48hr)`,
         style: "RefBoxValue",
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
       },
       {
-        text: `Aw`,
+        text: `Yeast & Mold \n\n (120hr)`,
         style: "RefBoxValue",
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
       },
       {
-        text: `SPG`,
+        text: `S.aureus \n\n (48hr)`,
         style: "RefBoxValue",
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
       },
       {
-        text: `°Brix`,
+        text: `ผลการทดสอบ`,
+        style: "RefBoxValue",
+        alignment: "center",
+        font: "Sarabun",
+        border: [true, true, true, true],
+      },
+      {
+        text: `ผู้บันทึก`,
         style: "RefBoxValue",
         alignment: "center",
         font: "Sarabun",
@@ -87,11 +94,17 @@ export const dailyReport = (logo, date_export, dataImport) => {
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
-      },
+      }
     ]
   ]
   if (dataImport) {
     for (let i = 0; i < dataImport.length; i++) {
+      let score = "ไม่ผ่าน"
+      if(dataImport[i].resultAPC == 0 || dataImport[i].resultColiform == 0 || dataImport[i].resultEColi == 0 || dataImport[i].resultSaureus == 0 || dataImport[i].resultYeasts == 0 ){
+          score = 'ไม่ผ่าน'
+      }else{
+        score = "ผ่าน"
+      }
       dataTable.push([
         {
           text: `${dataImport[i].idOrders}`,
@@ -108,42 +121,42 @@ export const dailyReport = (logo, date_export, dataImport) => {
           border: [true, true, true, true],
         },
         {
-          text: `${dataImport[i].PH}`,
+          text: `${dataImport[i].EColi}`,
           style: "RefBoxValue",
           alignment: "center",
           font: "Sarabun",
           border: [true, true, true, true],
         },
         {
-          text: `${dataImport[i].Salt}`,
+          text: `${dataImport[i].Coliform}`,
           style: "RefBoxValue",
           alignment: "center",
           font: "Sarabun",
           border: [true, true, true, true],
         },
         {
-          text: `${dataImport[i].Tn}`,
+          text: `${dataImport[i].APC}`,
           style: "RefBoxValue",
           alignment: "center",
           font: "Sarabun",
           border: [true, true, true, true],
         },
         {
-          text: `${dataImport[i].Aw}`,
+          text: `${dataImport[i].Yeasts}`,
           style: "RefBoxValue",
           alignment: "center",
           font: "Sarabun",
           border: [true, true, true, true],
         },
         {
-          text: `${dataImport[i].SPGTest}`,
+          text: `${dataImport[i].Saureus}`,
           style: "RefBoxValue",
           alignment: "center",
           font: "Sarabun",
           border: [true, true, true, true],
         },
         {
-          text: `${dataImport[i].Tss}`,
+          text: `${score}`,
           style: "RefBoxValue",
           alignment: "center",
           font: "Sarabun",
@@ -155,7 +168,14 @@ export const dailyReport = (logo, date_export, dataImport) => {
           alignment: "center",
           font: "Sarabun",
           border: [true, true, true, true],
-        }
+        },
+        {
+          text: ``,
+          style: "RefBoxValue",
+          alignment: "center",
+          font: "Sarabun",
+          border: [true, true, true, true],
+        },
       ])
     }
   }
@@ -176,13 +196,13 @@ export const dailyReport = (logo, date_export, dataImport) => {
             width: 60,
           },
           {
-            text: "บันทึกผลวิเคราะห์ตัวอย่างทางเคมี",
+            text: "แบบฟอร์มบันทึกผลการวิเคราะห์ทางจุลินทรีย์",
             style: "invoiceTitle",
             width: "*",
             margin: [0, 15, 0, 0],
           },
           {
-            text: "FM-LA-23-03 rev.00",
+            text: "FM-LA-23-08 rev.02",
             // style: "codeDoc",
             fontSize: "7",
             bold: true,
@@ -208,29 +228,42 @@ export const dailyReport = (logo, date_export, dataImport) => {
         alignment: "center",
         margin: [0, 15, 0, 0],
         table: {
-          widths: ["*", "*", "*", "*", "*", "*", "*", "*", "*"],
+          widths: ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],
           body: dataTable,
         },
       },
       {
         margin: [0, 20, 0, 0],
         columns: [
-          {
-            text: `Analyzed by :................................................................ \n\n Date : ${date_export}`,
-            fontSize: "10",
-            alignment: "left",
-            font: "Sarabun",
-            width: "*",
-            margin: [0, 20, 0, 0],
-          },
+          {},
           {},
           {
-            text: `Approved by :................................................................ \n\n Date : ${date_export}`,
-            fontSize: "10",
-            alignment: "right",
-            font: "Sarabun",
-            width: "*",
-            margin: [0, 20, 0, 0],
+            stack: [
+              {
+                text: `ผู้ตรวจสอบ:................................................................`,
+                fontSize: "10",
+                alignment: "right",
+                font: "Sarabun",
+                width: "*",
+                margin: [0, 20, 0, 0],
+              },
+              {
+                text: `ตำแหน่ง:................................................................`,
+                fontSize: "10",
+                alignment: "right",
+                font: "Sarabun",
+                width: "*",
+                margin: [0, 20, 0, 0],
+              },
+              {
+                text: `วันที่: ${date_export}`,
+                fontSize: "10",
+                alignment: "right",
+                font: "Sarabun",
+                width: "*",
+                margin: [0, 20, 0, 0],
+              },
+            ],
           },
         ],
       },

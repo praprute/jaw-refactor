@@ -354,6 +354,40 @@ export const addRealtimeOrder = (token, index) => {
     })
     .catch(err => console.log(err))
 }
+//daily Report
+export const dailyReportFetch = (token, index) => {
+  return fetch(`${API}/dailyReport`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(index),
+  })
+    .then(response => {
+      return response.json()
+    })
+    .catch(err => console.log(err))
+}
+
+export const dailyReportBioFetch = (token, index) => {
+  return fetch(`${API}/dailyReportBio`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(index),
+  })
+    .then(response => {
+      return response.json()
+    })
+    .catch(err => console.log(err))
+}
 
 // exportCOA
 export const exportCOA = token => {

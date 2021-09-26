@@ -17,11 +17,11 @@ import {
   TabContent,
   TabPane,
 } from "reactstrap"
+import moment from "moment"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA, UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -31,13 +31,21 @@ import pdfMake from "pdfmake/build/pdfmake"
 // import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
+import { dailyReport } from "./../Report/DailyReport"
+import { dailyReportBio } from "./../Report/DailyReportBio"
 import "./ModalFullScreen.css"
 import FormBeforeExport2 from "../COA2/FormBeforeExport2"
 import FormBeforeExport3 from "../COA3/FormBeforeExport3"
-import FormBeforeExport4 from '../COA4/FormBeforeExport'
+import FormBeforeExport4 from "../COA4/FormBeforeExport"
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-import { getCustomers } from "../api"
+import {
+  getCustomers,
+  dailyReportFetch,
+  dailyReportBioFetch,
+  UpdatexportCOA,
+  UpdateDatailOrder,
+} from "../api"
 import e from "cors"
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
@@ -275,7 +283,7 @@ const FormBeforeExport = props => {
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
         })
       } else {
-         setSpcChem({
+        setSpcChem({
           scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
           scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
           scpProtein: `2.3-3.5%`,
@@ -397,6 +405,51 @@ const FormBeforeExport = props => {
   const toggleTab = tab => {
     if (activeTab !== tab) {
       setActiveTab(tab)
+    }
+  }
+
+  const ExportdailyBio = async () => {
+    try {
+      const date_export = await moment(new Date(), "Asia/Bangkok").format(
+        "DD/MM/YYYY"
+      )
+      const date_now = await moment(new Date(), "Asia/Bangkok").format(
+        "YYYY-MM-DD"
+      )
+      const date_end = await moment(new Date(), "Asia/Bangkok")
+        .add(1, "d") //แก้ที่ตรงนี้
+        .format("YYYY-MM-DD")
+      let index = {
+        dStart: date_now,
+        dNow: date_end,
+      }
+      const data = await dailyReportBioFetch(token, index)
+      // console.log(data.message)
+      dailyReportBio(values.logo, date_export, data.message)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  const Exportdaily = async () => {
+    try {
+      const date_export = await moment(new Date(), "Asia/Bangkok").format(
+        "DD/MM/YYYY"
+      )
+      const date_now = await moment(new Date(), "Asia/Bangkok").format(
+        "YYYY-MM-DD"
+      )
+      const date_end = await moment(new Date(), "Asia/Bangkok")
+        .add(1, "d") //แก้ที่ตรงนี้
+        .format("YYYY-MM-DD")
+      let index = {
+        dStart: date_now,
+        dNow: date_end,
+      }
+      const data = await dailyReportFetch(token, index)
+      // console.log(data.message)
+      dailyReport(values.logo, date_export, data.message)
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -2844,6 +2897,38 @@ const FormBeforeExport = props => {
                       </NavItem>
                     </ul>
                   </Col>
+                </Row>
+                <Row style={{marginTop:'20px', marginBottom:'20px'}}>
+                  <Col>
+                    <Button
+                      color="success"
+                      size="md"
+                      style={{ width: "100%", marginTop: "15px" }}
+                      onClick={() => {
+                        Exportdaily()
+                        // handleExportPDF()
+                        // handleUpdateStatusCoa()
+                      }}
+                    >
+                      Daily Report Chem
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button
+                      color="primary"
+                      size="md"
+                      style={{ width: "100%", marginTop: "15px" }}
+                      onClick={() => {
+                        ExportdailyBio()
+                        // handleExportPDF()
+                        // handleUpdateStatusCoa()
+                      }}
+                    >
+                      Daily Report Bio
+                    </Button>
+                  </Col>
+                  <Col></Col>
+                  <Col></Col>
                 </Row>
                 <TabContent activeTab={activeTab} className="p-3">
                   <TabPane tabId="1" id="processing">

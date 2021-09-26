@@ -20,6 +20,8 @@ import {
 import classnames from "classnames"
 import { connect } from "react-redux"
 import { withRouter, Link, Redirect } from "react-router-dom"
+import Select from "react-select"
+import makeAnimated from "react-select/animated"
 //Component
 import LatestTranaction from "../Dashboard/LatestTranaction"
 import OrderTable from "./Table"
@@ -41,15 +43,40 @@ import "react-datepicker/dist/react-datepicker.css"
 
 //i18n
 import { withTranslation } from "react-i18next"
-
+import { getAllOrder, readOrderById, exportCOA } from "../Orders/api"
 //api
 // import {getAllOrder,
 //     getRecheckOrder} from './api'
 import { isAuthenticated } from "./../Authentication/api"
 import { useHistory } from "react-router-dom"
-
+import moment from 'moment'
 import ModalSelectCOA from "./../Orders/ModalSelectCOA"
+import pdfMake from "pdfmake/build/pdfmake"
+// import pdfFonts from "pdfmake/build/vfs_fonts"
+import pdfFonts from "../../assets/custom-fonts"
 
+import { dailyReport } from "./../Orders/Report/DailyReport"
+const animatedComponents = makeAnimated()
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.fonts = {
+  Roboto: {
+    normal:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+    bold:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    italics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
+    bolditalics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
+  },
+  // Kanit Font
+  Sarabun: {
+    normal: "Sarabun-Regular.ttf",
+    bold: "Sarabun-Medium.ttf",
+    italics: "Sarabun-Italic.ttf",
+    bolditalics: "Sarabun-MediumItalic.ttf",
+  },
+}
 const Labatorypage = props => {
   const history = useHistory()
 
@@ -63,7 +90,27 @@ const Labatorypage = props => {
   const [modalCoa, setModalCOA] = useState(false)
 
   const [redirect, setRedirect] = useState(false)
+  const [logo, setLogo] = useState(null)
 
+  useEffect(async () => {
+    const logoFetch = await exportCOA(token)
+    if (logoFetch) {
+      // console.log(logoFetch.message)
+      setLogo(logoFetch.message)
+    }
+  }, [])
+
+  const Exportdaily = async () => {
+      
+      const date_now = moment(new Date(), "Asia/Bangkok").format("YYYY-MM-DD")
+      // .add(1, "y")
+      console.log(date_now)
+      return dailyReport(logo, date_now)
+    // const date_now = moment(new Date(), "Asia/Bangkok")
+    //   .add(1, "y")
+    //   .format("YYYY-MM-DD h:mm:ss")
+    // dailyReport(date_now)
+  }
   const handleRedi = () => {
     setRedirect(!redirect)
   }
@@ -250,25 +297,7 @@ const Labatorypage = props => {
                       </ul>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col>
-                      <Button
-                        color="success"
-                        size="lg"
-                        style={{ width: "100%", marginTop: "15px" }}
-                        onClick={() => {
-                          // Exportdaily()
-                          // handleExportPDF()
-                          // handleUpdateStatusCoa()
-                        }}
-                      >
-                        SAVE
-                      </Button>
-                    </Col>
-                    <Col></Col>
-                    <Col></Col>
-                    <Col></Col>
-                  </Row>
+                 
 
                   <TabContent activeTab={activeTab} className="p-3">
                     <TabPane tabId="1" id="all-order">
@@ -376,18 +405,6 @@ const Labatorypage = props => {
                         </div>
                       </TabPane> */}
                   </TabContent>
-                  <Button
-                    color="warning"
-                    size="lg"
-                    style={{ width: "100%", marginTop: "15px" }}
-                    onClick={() => {
-                      // Exportdaily()
-                      // handleExportPDF()
-                      // handleUpdateStatusCoa()
-                    }}
-                  >
-                    SAVE
-                  </Button>
                 </CardBody>
               </Card>
             </Col>
