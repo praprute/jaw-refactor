@@ -266,7 +266,7 @@ setUid(paresIndex.Orders.idOrders)
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[8].render)
       setDisViscosity(paresIndex.chem[9].render)
-setDisSaltMeter(paresIndex.chem[10].render)
+      setDisSaltMeter(paresIndex.chem[10].render)
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
       setSpcChem({
@@ -285,7 +285,7 @@ setDisSaltMeter(paresIndex.chem[10].render)
       setvaluesChem({
         TN: `${paresIndex.chem[0].val}  g/L`,
         PH: `${paresIndex.chem[3].val} / ${paresIndex.chem[3].temp} \u00B0C`,
-        Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  g/L`,
+        Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  %`,
         Salt: `${paresIndex.chem[1].val}% w/v`,
         Histamine: `${paresIndex.chem[2].val} ppm`,
         SPG: `${paresIndex.chem[6].val}/${paresIndex.chem[6].temp} \u00B0C`,

@@ -272,7 +272,7 @@ const FormBeforeExport = props => {
         setSpcChem({
           scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
           scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
-          scpProtein: `\u2265  9.375%`,
+          scpProtein: `\u2265  7.8%`,
           scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
           scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
           scpSPG: `\u2265 1.20/20 \u00B0C`,
@@ -309,7 +309,7 @@ const FormBeforeExport = props => {
             ? paresIndex.chem[3].val.toFixed(2)
             : paresIndex.chem[3].val
         } / ${paresIndex.chem[3].temp} \u00B0C`,
-        Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  g/L`,
+        Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  %`,
         Salt: `${
           paresIndex.chem[1].val
             ? paresIndex.chem[1].val.toFixed(2)
