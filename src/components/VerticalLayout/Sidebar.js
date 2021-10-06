@@ -25,7 +25,7 @@ const Sidebar = props => {
         <div className="navbar-brand-box">
           <Link to="/" className="logo logo-dark">
             <span className="logo-sm">
-              <img src={logoLightSvg2} alt="" height="22" />
+              <img src={logo} alt="" height="22" />
               {/* <img
                 src={logoLightSvg2}
                 alt=""
@@ -34,28 +34,28 @@ const Sidebar = props => {
               /> */}
             </span>
             <span className="logo-lg">
-              <img src={LogoRFSedit2} alt="" height="50" />
-              {/* <img src={logoDark} alt="" height="17" /> */}
+              {/* <img src={LogoRFSedit2} alt="" height="50" /> */}
+              <img src={logoDark} alt="" height="17" />
             </span>
           </Link>
 
           <Link to="/" className="logo logo-light">
             <span className="logo-sm">
-              {/* <img
+              <img
                 src={logoLightSvg}
                 alt=""
                 height="20"
                 style={{ marginLeft: "-10px" }}
-              /> */}
-              <img
+              />
+              {/* <img
                 src={logoLightSvg2}
                 alt=""
                 height="30"
                 style={{ marginLeft: "-5px" }}
-              />
+              /> */}
             </span>
             <span className="logo-lg">
-              <img src={LogoRFSedit2} alt="" height="30" />
+              <img src={LogoRFSedit} alt="" height="30" />
               {/* <img src={LogoRFSedit2} alt="" height="50" /> */}
             </span>
           </Link>
