@@ -37,6 +37,7 @@ import "./ModalFullScreen.css"
 import FormBeforeExport2 from "../COA2/FormBeforeExport2"
 import FormBeforeExport3 from "../COA3/FormBeforeExport3"
 import FormBeforeExport4 from "../COA4/FormBeforeExport"
+import HistoryDaily from '../Report/HistoryTest'
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
 import {
@@ -2895,40 +2896,20 @@ const FormBeforeExport = props => {
                           COA FORM 4
                         </NavLink>
                       </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === "5",
+                          })}
+                          onClick={() => {
+                            toggleTab("5")
+                          }}
+                        >
+                          Daily Report
+                        </NavLink>
+                      </NavItem>
                     </ul>
                   </Col>
-                </Row>
-                <Row style={{marginTop:'20px', marginBottom:'20px'}}>
-                  <Col>
-                    <Button
-                      color="success"
-                      size="md"
-                      style={{ width: "100%", marginTop: "15px" }}
-                      onClick={() => {
-                        Exportdaily()
-                        // handleExportPDF()
-                        // handleUpdateStatusCoa()
-                      }}
-                    >
-                      Daily Report Chem
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button
-                      color="primary"
-                      size="md"
-                      style={{ width: "100%", marginTop: "15px" }}
-                      onClick={() => {
-                        ExportdailyBio()
-                        // handleExportPDF()
-                        // handleUpdateStatusCoa()
-                      }}
-                    >
-                      Daily Report Bio
-                    </Button>
-                  </Col>
-                  <Col></Col>
-                  <Col></Col>
                 </Row>
                 <TabContent activeTab={activeTab} className="p-3">
                   <TabPane tabId="1" id="processing">
@@ -3031,6 +3012,12 @@ const FormBeforeExport = props => {
                       <FormBeforeExport4 />
                     </div>
                   </TabPane>
+                  <TabPane tabId="5" id="CompleteCheck">
+                    <div>
+                      <HistoryDaily />
+                    </div>
+                  </TabPane>
+                  {/* HistoryDaily */}
                 </TabContent>
               </CardBody>
             </Card>

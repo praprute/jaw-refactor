@@ -22,7 +22,7 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-export const dailyReport = (logo, date_export, dataImport) => {
+export const dailyReport = (logo, date_export, dataImport, date_export_to) => {
   let dataTable = [
     [
       {
@@ -88,7 +88,7 @@ export const dailyReport = (logo, date_export, dataImport) => {
         font: "Sarabun",
         border: [true, true, true, true],
       },
-    ]
+    ],
   ]
   if (dataImport) {
     for (let i = 0; i < dataImport.length; i++) {
@@ -155,7 +155,7 @@ export const dailyReport = (logo, date_export, dataImport) => {
           alignment: "center",
           font: "Sarabun",
           border: [true, true, true, true],
-        }
+        },
       ])
     }
   }
@@ -195,7 +195,7 @@ export const dailyReport = (logo, date_export, dataImport) => {
         alignment: "left",
         columns: [
           {
-            text: `วันที่วิเคราะห์: ${date_export}`,
+            text: `วันที่วิเคราะห์: ${date_export} ถึง ${date_export_to}`,
             fontSize: "10",
             alignment: "left",
             font: "Sarabun",

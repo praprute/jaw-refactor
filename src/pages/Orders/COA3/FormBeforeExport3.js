@@ -37,6 +37,7 @@ import { getCustomers } from "../api"
 import ModalAddExport from "./ModalAddExport"
 import { AddOrderVeit } from "store/actions"
 import "./StyleCOA2.css"
+import { LOGOUT_USER_SUCCESS } from "store/auth/login/actionTypes"
 
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
@@ -219,39 +220,43 @@ const FormBeforeExport3 = props => {
     dateRight: "",
   })
 
+  // TWCU2053022
+  // GB180823361
+  // 0209321
+
   const [valuesContainer, setValuesContainer] = useState({
-    0: "",
-    1: "",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-    6: "",
-    7: "",
+    0: null,
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
     // 8: "",
   })
 
   const [valuesBagNo, setValuesBagNo] = useState({
-    0: "",
-    1: "",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-    6: "",
-    7: "",
+    0: null,
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
     // 8: "",
   })
 
   const [valuesLot, setValuesLot] = useState({
-    0: "",
-    1: "",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-    6: "",
-    7: "",
+    0: null,
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
     // 8: "",
   })
 
@@ -431,7 +436,16 @@ const FormBeforeExport3 = props => {
     }
   }
 
-  const handleExportPDF = () => {
+  async function json2array(json) {
+    var result = []
+    var keys = Object.keys(json)
+    keys.forEach(function (key) {
+      result.push(json[key])
+    })
+    return result
+  }
+
+  const handleExportPDF = async () => {
     // console.log("valScoreLevel : ", valScoreLevel)
 
     let dataRow2 = [
@@ -466,7 +480,14 @@ const FormBeforeExport3 = props => {
 
     let ScoreLevel = true
 
-    // console.log("AnalysisRender", AnalysisRender)
+    console.log("OrderformTableVeit", OrderformTableVeit)
+    console.log("valuesBagNo", valuesBagNo)
+    console.log("valuesLot", valuesLot)
+    // valuesContainer
+    // OrderformTableVeit
+    const contain = await json2array(valuesContainer)
+    const bag = await json2array(valuesBagNo)
+    const lots = await json2array(valuesLot)
 
     originalFormCOA3(
       values.logo,
@@ -487,10 +508,14 @@ const FormBeforeExport3 = props => {
       ApproveValue,
       ReportValue,
       method,
-      ScoreLevel,
       valScoreLevel,
       salmon,
-      descriptionVeit
+      descriptionVeit,
+      OrderformTableVeit,
+      contain,
+      bag,
+      lots,
+      valuesAplove
     )
   }
 
@@ -888,15 +913,22 @@ const FormBeforeExport3 = props => {
             <th>Container No.</th>
             <th>BAG No.</th>
             <th>LOT No.</th>
-            {DisTN ? <th>T.N. (g/l)</th> : null}
+            <th>T.N. (g/l)</th>
+            <th>Histamine (ppm,)</th>
+            <th>Salt (g/l)</th>
+            <th>Salt Meter</th>
+            <th>pH at 25 {`\u00B0C`}</th>
+            <th>Specific Gravity</th>
+            {/* {DisTN ? <th>T.N. (g/l)</th> : null}
             {DisHistamine ? <th>Histamine (ppm,)</th> : null}
             {DisSalt ? <th>Salt (g/l)</th> : null}
             {DisSaltMeter ? <th>Salt Meter</th> : null}
             {DisPH ? <th>pH at 25 {`\u00B0C`}</th> : null}
-            {DisSPG ? <th>Specific Gravity</th> : null}
+            {DisSPG ? <th>Specific Gravity</th> : null} */}
             <th>APC cfu/g</th>
             <th>E.coli & Coliform</th>
-            {DisAW ? <th>Aw/{`\u00B0C`}</th> : null}
+            <th>Aw/{`\u00B0C`}</th>
+            {/* {DisAW ? <th>Aw/{`\u00B0C`}</th> : null} */}
             {/* <th>LOT No.</th> */}
           </tr>
           {/* {JSON.stringify(OderVeit.Name)} */}
@@ -1198,45 +1230,9 @@ const FormBeforeExport3 = props => {
             marginTop: "20px",
           }}
         >
-          <Col sm="3" style={{ padding: "5px" }}>
-            {/* Report By ................................
-            <Select
-              value={selectedGroup2}
-              name="To"
-              onChange={e => {
-                handleSelectGroup2()
-                handleChangeApproveValue(e.value)
-              }}
-              options={ReportSelect}
-            /> */}
-          </Col>
-          <Col sm="3" style={{ padding: "5px" }}>
-            {/* Approve By ................................
-            <Select
-              value={selectedGroup3}
-              name="To"
-              onChange={e => {
-                handleSelectGroup3()
-                handleChangeReportValue(e.value)
-              }}
-              options={ApproveSelect}
-            /> */}
-          </Col>
-          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
-            <Button
-              color="warning"
-              size="lg"
-              style={{ width: "100%", marginTop: "15px" }}
-              onClick={() => {
-                handleSaveIndex()
-                // handleExportPDF()
-                // handleUpdateStatusCoa()
-              }}
-            >
-              SAVE
-            </Button>
-          </Col>
-          <Col sm="3" style={{ textAlign: "right", paddingRight: "0px" }}>
+          
+        
+          <Col sm="12" style={{ textAlign: "right", paddingRight: "0px" }}>
             <Button
               color="primary"
               size="lg"
@@ -1255,52 +1251,6 @@ const FormBeforeExport3 = props => {
         <br></br>
         <br></br>
         <br></br>
-        {/* <div
-            style={{
-              display: "flex",
-              width: "100%",
-              height: "100%",
-              alignItems: "center",
-            }}
-          >
-            <Col sm="4" style={{padding:'5px'}}>
-                <Select
-                  value={selectedGroup2}
-                  name="To"
-                  onChange={e => {
-                    handleSelectGroup2()
-                    handleChangeApproveValue(e.value)
-                  }}
-                  options={ApproveSelect}
-                />
-            </Col>
-            <Col sm="4" style={{padding:'5px'}}>
-              <Select
-                  value={selectedGroup3}
-                  name="To"
-                  onChange={e => {
-                    handleSelectGroup3()
-                    handleChangeReportValue(e.value)
-                  }}
-                  options={ApproveSelect}
-                />
-            
-            </Col>
-            <Col sm="4" style={{ textAlign: "right", paddingRight: "0px" }}>
-              <Button
-                color="primary"
-                size="lg"
-                style={{ width: "60%" }}
-                onClick={() => {
-                  handleExportPDF()
-                  handleUpdateStatusCoa()
-                }}
-              >
-                Print COA
-              </Button>
-            </Col>
-          </div> */}
-        {/* <p>{JSON.stringify(valuesMicro)}</p> */}
       </div>
       {/* </div> */}
     </React.Fragment>

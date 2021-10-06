@@ -22,7 +22,7 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-export const dailyReportBio = (logo, date_export, dataImport) => {
+export const dailyReportBio = (logo, date_export, dataImport, date_export_to) => {
   let dataTable = [
     [
       {
@@ -94,15 +94,21 @@ export const dailyReportBio = (logo, date_export, dataImport) => {
         alignment: "center",
         font: "Sarabun",
         border: [true, true, true, true],
-      }
-    ]
+      },
+    ],
   ]
   if (dataImport) {
     for (let i = 0; i < dataImport.length; i++) {
       let score = "ไม่ผ่าน"
-      if(dataImport[i].resultAPC == 0 || dataImport[i].resultColiform == 0 || dataImport[i].resultEColi == 0 || dataImport[i].resultSaureus == 0 || dataImport[i].resultYeasts == 0 ){
-          score = 'ไม่ผ่าน'
-      }else{
+      if (
+        dataImport[i].resultAPC == 0 ||
+        dataImport[i].resultColiform == 0 ||
+        dataImport[i].resultEColi == 0 ||
+        dataImport[i].resultSaureus == 0 ||
+        dataImport[i].resultYeasts == 0
+      ) {
+        score = "ไม่ผ่าน"
+      } else {
         score = "ผ่าน"
       }
       dataTable.push([
@@ -215,7 +221,7 @@ export const dailyReportBio = (logo, date_export, dataImport) => {
         alignment: "left",
         columns: [
           {
-            text: `วันที่วิเคราะห์: ${date_export}`,
+            text: `วันที่วิเคราะห์: ${date_export} ถึง ${date_export_to}`,
             fontSize: "10",
             alignment: "left",
             font: "Sarabun",

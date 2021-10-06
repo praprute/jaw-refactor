@@ -17,14 +17,18 @@ export const originalFormCOA3 = (
   ApproveValue,
   ReportValue,
   method,
-  ScoreLevel,
   valScoreLevel,
   salmon,
-  descriptionVeit
+  descriptionVeit,
+  setDescriptionVeitOrderformTableVeit,
+  valuesContainer,
+  valuesBagNo,
+  valuesLot,
+  valuesAplove
 ) => {
-  let DetailOrderRow1 = []
-  let DetailOrderRow2 = []
-  let DetailOrderRow3 = []
+  let container = []
+  let bag = []
+  let lot = []
   let DetailOrderRow4 = []
   let DetailOrderRow5 = []
   let DetailOrderRow6 = []
@@ -33,1168 +37,188 @@ export const originalFormCOA3 = (
   let dataAnaly = [
     [
       {
-        text: ``,
-        style: "RefBoxValue",
-        alignment: "left",
+        text: `Container No.`,
+        fontSize: "8",
+        alignment: "center",
         margin: [0, 0, 0, 5],
-        border: [true, true, false, false],
+        border: [true, true, true, true],
       },
       {
-        text: `Product Specification`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
+        text: `BAG No.`,
+        alignment: "center",
+        fontSize: "8",
         margin: [0, 0, 0, 5],
-        border: [false, true, false, false],
+        border: [true, true, true, true],
       },
       {
-        text: `Analysis Results`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
+        text: `LOT No.`,
+        fontSize: "8",
+        alignment: "center",
         margin: [0, 0, 0, 5],
-        border: [false, true, false, false],
+        border: [true, true, true, true],
       },
       {
-        text: `Method`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
+        text: `T.N.\n(g/l)`,
+        fontSize: "8",
+        alignment: "center",
         margin: [0, 0, 0, 5],
-        border: [false, true, true, false],
+        border: [true, true, true, true],
+      },
+      {
+        text: `Histamine (ppm.)`,
+        alignment: "center",
+        fontSize: "8",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `Salt (g/l)`,
+        alignment: "center",
+        fontSize: "8",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `Salt Meter`,
+        alignment: "center",
+        fontSize: "8",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `pH\nat 25 °C`,
+        fontSize: "8",
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `Specific Gravity`,
+        fontSize: "8",
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `APC cfu/g`,
+        fontSize: "8",
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `E.coli & Coliform`,
+        fontSize: "8",
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `Aw/°C`,
+        fontSize: "8",
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
       },
     ],
   ]
-
-  let MicroComponent = []
-
-  //   console.log("prop data", AnalysisRender, spcChem, valuesChem)
-  // console.log("/method ", method)
-
-  if (AnalysisRender.DisTN) {
-    dataAnaly.push([
-      {
-        text: `Total Nitrogen`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpTN}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.TN}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.TN}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisProtein) {
-    dataAnaly.push([
-      {
-        text: `Protein`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpProtein}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.Protein}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.protien}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisPH) {
-    dataAnaly.push([
-      {
-        text: `pH`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpPH}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.PH}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.PH}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisSalt) {
-    dataAnaly.push([
-      {
-        text: `% NaCl`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpSalt}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.Salt}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.Nacl}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisHistamine) {
-    dataAnaly.push([
-      {
-        text: `Histamine`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpHistamine}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.Histamine}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.Histamine}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisHistamine && method.AOA) {
-    dataAnaly.push([
-      {
-        text: ``,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, -4, 0, 0],
-        border: [true, false, false, false],
-      },
-      {
-        text: ``,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, -4, 0, 0],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: ``,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, -4, 0, 0],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.AOA}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, -4, 0, 0],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisSPG) {
-    dataAnaly.push([
-      {
-        text: `Specific Gravity`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpSPG}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.SPG}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.spg}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisAW) {
-    dataAnaly.push([
-      {
-        text: `Water Activity`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpAW}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.AW}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.AW}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisTss) {
-    dataAnaly.push([
-      {
-        text: `TSS(Brix)`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpTSS}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.TSS}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.TSS}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisAN) {
-    dataAnaly.push([
-      {
-        text: `AN`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpAN}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.AN}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.AN}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisAcidity) {
-    dataAnaly.push([
-      {
-        text: `Acidity`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpAcidity}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.Acidity}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.Acidity}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (AnalysisRender.DisViscosity) {
-    dataAnaly.push([
-      {
-        text: `Viscosity`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        border: [true, false, false, false],
-      },
-      {
-        text: `${spcChem.scpViscosity}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${valuesChem.Viscosity}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 5],
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: `${method.Viscosity}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        bold: true,
-        margin: [0, 0, 0, 5],
-        border: [false, false, true, false],
-      },
-    ])
-  }
-
-  if (MicroRender.MicroRender && MicroRender.MicroAnalysis) {
-    if (salmon) {
-      dataAnaly.push(
-        [
-          {
-            text: `MICROBIOLOGICAL`,
-            style: "invoiceTitle",
-            alignment: "left",
-            fontSize: 12,
-            decoration: "underline",
-            // italics: true, ตัวเอียง
-            bold: true,
-            margin: [0, 3, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 3, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 3, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 3, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `APC`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: `< 1x10\u2074 CFU/g`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.TPC}`,
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-              {
-                text: ``,
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-            ],
-
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: `(Every lot)`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [-50, 2, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `Yeasts and Molds`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: `\u2264 100 CFU/g`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.YeaseandMold}`,
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-              {
-                text: ``,
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-            ],
-
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: `(Every lot)`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [-50, 2, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `E. coli`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: `< 3.0 (NOT DETECTED)`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.Ecoil}`,
-                // text: `${valuesMicro.Ecoil}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-              {
-                text: ``,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-            ],
-            // margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: `(Every lot)`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [-50, 2, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `Salmonella spp.`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: `NOT DETECTED`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.Salmonella}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-              {
-                text: ``,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-            ],
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            fontSize: 8,
-            border: [false, false, false, false],
-          },
-          {
-            text: `(Once a year)`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [-50, 2, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ]
-      )
-    } else {
-      dataAnaly.push(
-        [
-          {
-            text: `MICROBIOLOGICAL`,
-            style: "invoiceTitle",
-            alignment: "left",
-            fontSize: 12,
-            decoration: "underline",
-            // italics: true, ตัวเอียง
-            bold: true,
-            margin: [0, 3, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 3, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 3, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 3, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `APC`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: `< 1x10\u2074 CFU/g`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.TPC}`,
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-              {
-                text: `(Every lot)`,
-                style: "RefBoxValue",
-                margin: [10, 0, 0, 2],
-              },
-            ],
-
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 2, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `Yeasts and Molds`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: `\u2264 100 CFU/g`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.YeaseandMold}`,
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-              {
-                text: `(Every lot)`,
-                style: "RefBoxValue",
-                margin: [10, 0, 0, 2],
-              },
-            ],
-
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 2, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `E. coli`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 2],
-            border: [true, false, false, false],
-          },
-          {
-            text: `< 3.0 (NOT DETECTED)`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.Ecoil}`,
-                // text: `${valuesMicro.Ecoil}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-                margin: [0, 0, 0, 2],
-              },
-              {
-                text: `(Every lot)`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-                margin: [17, 0, 0, 2],
-              },
-            ],
-            // margin: [0, 0, 0, 2],
-            // bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 2, 0, 2],
-            // bold: true,
-            border: [false, false, true, false],
-          },
-        ]
-      )
+  if (setDescriptionVeitOrderformTableVeit) {
+    for (let i = 0; i < setDescriptionVeitOrderformTableVeit.length; i++) {
+      console.log("container.i : ", valuesContainer.i)
+      dataAnaly.push([
+        {
+          text: `${valuesContainer[i]}`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${valuesBagNo[i]}`,
+          alignment: "center",
+          fontSize: "8",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${valuesLot[i]}`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${setDescriptionVeitOrderformTableVeit[i].Tn}`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${setDescriptionVeitOrderformTableVeit[i].Histamine}`,
+          alignment: "center",
+          fontSize: "8",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${setDescriptionVeitOrderformTableVeit[i].Salt}`,
+          alignment: "center",
+          fontSize: "8",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${setDescriptionVeitOrderformTableVeit[i].SaltMeter}`,
+          alignment: "center",
+          fontSize: "8",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${setDescriptionVeitOrderformTableVeit[i].PH}`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${setDescriptionVeitOrderformTableVeit[i].SPGTest}`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${
+            setDescriptionVeitOrderformTableVeit[i].APC
+              ? setDescriptionVeitOrderformTableVeit[i].APC
+              : "ND"
+          }`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${
+            setDescriptionVeitOrderformTableVeit[i].EColi ? "ND" : "ND"
+          }`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${setDescriptionVeitOrderformTableVeit[i].Aw}`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+      ])
     }
   }
-
-  if (ScoreLevel) {
-    sensory.push(
-      [
-        {
-          text: `Sensory Test Results`,
-          style: "invoiceTitle",
-          alignment: "left",
-          fontSize: 12,
-          decoration: "underline",
-          // italics: true, ตัวเอียง
-          bold: true,
-          margin: [0, 3, 0, 2],
-          border: [true, false, false, false],
-        },
-        {
-          text: ``,
-          style: "RefBoxValue",
-          alignment: "left",
-          margin: [0, 3, 0, 2],
-          // bold: true,
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          margin: [0, 0, 0, 0],
-          table: {
-            widths: ["*", "*"],
-            body: [
-              [
-                "Parameter",
-                {
-                  text: "Score level",
-                  // style: "RefBoxValue",
-                  alignment: "center",
-                },
-              ],
-              [
-                {
-                  text: `Taste`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  text: `${valScoreLevel.Taste}`,
-                  style: "RefBoxValue",
-                  alignment: "center",
-                },
-              ],
-              [
-                {
-                  text: `Odor`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  text: `${valScoreLevel.Odor}`,
-                  style: "RefBoxValue",
-                  alignment: "center",
-                },
-              ],
-              [
-                {
-                  text: `Color`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  text: `${valScoreLevel.Color}`,
-                  style: "RefBoxValue",
-                  alignment: "center",
-                },
-              ],
-              [
-                {
-                  text: `Appearance`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  text: `${valScoreLevel.Appearance}`,
-                  style: "RefBoxValue",
-                  alignment: "center",
-                },
-              ],
-            ],
-          },
-          // margin: [0, 0, 0, 2],
-          border: [true, false, false, false],
-        },
-        {
-          // text: `\u2264 100 CFU/g`,
-          // style: "RefBoxValue",
-          // alignment: "left",
-          stack: [
-            {
-              columns: [
-                {
-                  width: "auto",
-                  text: `Remark:`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  width: "auto",
-                  text: `Score level`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                  margin: [-5, 0, 0, 0],
-                },
-              ],
-            },
-            {
-              columns: [
-                {
-                  width: "auto",
-                  margin: [30, 0, 0, 0],
-                  text: ``,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  width: "auto",
-                  text: `5 = Very Good`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-              ],
-            },
-            {
-              columns: [
-                {
-                  width: "auto",
-                  margin: [30, 0, 0, 0],
-                  text: ``,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  width: "auto",
-                  text: `4 = Good`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-              ],
-            },
-            {
-              columns: [
-                {
-                  width: "auto",
-                  text: `less than`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-                {
-                  width: "auto",
-                  margin: [-8, 0, 0, 0],
-                  text: `4 = Not Good`,
-                  style: "RefBoxValue",
-                  alignment: "left",
-                },
-              ],
-            },
-          ],
-
-          margin: [0, 38, 0, 2],
-          border: [false, false, true, false],
-        },
-      ],
-      [
-        {
-          text: `Test Date ${valScoreLevel.testDate}`,
-          style: "RefBoxValue",
-          alignment: "left",
-          // fontSize: 12,
-          // italics: true, ตัวเอียง
-          bold: true,
-          margin: [0, 3, 0, 2],
-          border: [true, false, false, true],
-        },
-        {
-          text: `Completion date ${valScoreLevel.CompletionDate}`,
-          style: "RefBoxValue",
-          alignment: "right",
-          margin: [0, 3, 15, 2],
-          bold: true,
-          border: [false, false, true, true],
-        },
-      ]
-    )
-  }
-
-  if (tankNo.Tank !== "") {
-    tankNumber.push(
-      {
-        text: `Tank No: ${tankNo.Tank}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        border: [true, false, false, false],
-      },
-      {
-        text: ` `,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, 0, 0, 0],
-        border: [false, false, true, false],
-      }
-    )
-  } else {
-    tankNumber.push(
-      {
-        text: ``,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, -25, 0, 0],
-        border: [true, false, false, false],
-      },
-      {
-        text: ``,
-        style: "RefBoxValue",
-        alignment: "left",
-        margin: [0, -25, 0, 0],
-        border: [false, false, true, false],
-      }
-    )
-  }
-
-  // Success Cellected Productname
-  for (let i = 0; i < row2CollectDandPN.length; i++) {
-    let index = {
-      text: ``,
-      style: " ",
-      alignment: "left",
-      border: [false, false, false, false],
-    }
-    if (i == 0 && row2CollectDandPN[i].values !== "") {
-      index = {
-        text: `Collected date: ${row2CollectDandPN[i].values}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        border: [true, false, false, false],
-      }
-      DetailOrderRow2.push(index)
-    } else if (i == 1 && row2CollectDandPN[i].values !== "") {
-      index = {
-        text: `${row2CollectDandPN[i].values}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        border: [false, false, true, false],
-      }
-      DetailOrderRow2.push(index)
-    } else {
-      index = {
-        text: ``,
-        style: " ",
-        alignment: "left",
-        border: [true, false, false, false],
-      }
-      DetailOrderRow2.push(index)
-    }
-  }
-  //Production Date and Tank Success
-  for (let i = 0; i < row3EXP.length; i++) {
-    let index = {
-      text: ``,
-      style: " ",
-      alignment: "left",
-      border: [false, false, false, false],
-    }
-    if (i == 0 && row3EXP[i].values !== "") {
-      index = {
-        text: `Production date: ${row3EXP[i].values}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        border: [true, false, false, false],
-      }
-      DetailOrderRow3.push(index)
-    } else if (i == 1 && row3EXP[i].values !== "") {
-      index = {
-        text: `Tank No. ${row3EXP[i].values}`,
-        style: "RefBoxValue",
-        alignment: "left",
-        border: [false, false, true, false],
-      }
-      DetailOrderRow3.push(index)
-    } else {
-      index = {
-        text: ``,
-        style: " ",
-        alignment: "left",
-        border: [true, false, false, false],
-      }
-      DetailOrderRow3.push(index)
-    }
-  }
-
-  //   console.log("DetailOrderRow2 :", DetailOrderRow2)
-  //   console.log("dataAnalysis :", dataAnaly)
   var docDefinition = {
     pageMargins: [30, 25, 15, 25],
     content: [
@@ -1282,12 +306,13 @@ export const originalFormCOA3 = (
                 style: "RefBoxValue",
                 alignment: "left",
                 bold: true,
+                margin: [20, 5, 0, 0],
               },
               {
                 text: `: ${descriptionVeit.description}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [-200, 0, 0, 0],
+                margin: [-180, 5, 0, 0],
               },
             ],
           },
@@ -1298,91 +323,89 @@ export const originalFormCOA3 = (
                 style: "RefBoxValue",
                 alignment: "left",
                 bold: true,
+                margin: [20, 5, 0, 0],
               },
               {
                 text: `: ${selectedGroupNameTo}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [-200, 0, 0, 0],
+                margin: [-180, 5, 0, 0],
+              },
+            ],
+          },
+          {
+            columns: [
+              {
+                text: "Invoice No. ",
+                style: "RefBoxValue",
+                alignment: "left",
+                bold: true,
+                margin: [20, 5, 0, 0],
+              },
+              {
+                text: `: ${descriptionVeit.Invoice}`,
+                style: "RefBoxValue",
+                alignment: "left",
+                margin: [-180, 5, 0, 0],
+              },
+            ],
+          },
+          {
+            columns: [
+              {
+                text: "ETA ",
+                style: "RefBoxValue",
+                alignment: "left",
+                bold: true,
+                margin: [20, 5, 0, 0],
+              },
+              {
+                text: `: ${descriptionVeit.ETA}`,
+                style: "RefBoxValue",
+                alignment: "left",
+                margin: [-180, 5, 0, 0],
+              },
+            ],
+          },
+          {
+            columns: [
+              {
+                text: "Shelf life. ",
+                style: "RefBoxValue",
+                alignment: "left",
+                bold: true,
+                margin: [20, 5, 0, 0],
+              },
+              {
+                text: `: ${descriptionVeit.ShelfLife}`,
+                style: "RefBoxValue",
+                alignment: "left",
+                margin: [-180, 5, 0, 0],
               },
             ],
           },
         ],
       },
-
       {
-        margin: [0, 0, 0, 0],
+        margin: [0, 15, 0, 0],
         table: {
-          // alignment: "left",
-          widths: ["*", "*"],
-          body: [
-            [
-              {
-                text: `scsc`,
-                style: "RefBoxValue",
-                alignment: "left",
-                border: [true, true, false, false],
-              },
-              {
-                text: `Lot No. ${row1.DCL1}`,
-                style: "RefBoxValue",
-                alignment: "left",
-                border: [false, true, true, false],
-              },
-            ],
-            DetailOrderRow2,
-            DetailOrderRow3,
-            [
-              {
-                text: `Expiration date:${ExpirationDate.ExpirationDate}`,
-                style: "RefBoxValue",
-                alignment: "left",
-                border: [true, false, false, true],
-              },
-              {
-                text: ``,
-                style: "RefBoxValue",
-                alignment: "left",
-                margin: [0, 0, 0, 0],
-                border: [false, false, true, true],
-              },
-            ],
+          widths: [
+            "12.3%",
+            "12.3%",
+            "10%",
+            "7%",
+            "9%",
+            "7%",
+            "7%",
+            "7%",
+            "7%",
+            "7%",
+            "7%",
+            "7%",
           ],
-        },
-      },
-
-      {
-        margin: [0, 5, 0, 0],
-        table: {
-          widths: ["*", "*", "*", "*"],
           body: dataAnaly,
         },
       },
-      {
-        margin: [0, 0, 0, 0],
-        table: {
-          widths: ["*", "*"],
-          body: sensory,
-        },
-      },
-
-      // {
-      //   margin: [0, 35, 0, 0],
-      //   alignment: "justify",
-      //   columns: [
-      //     {
-      //       text: "Reported By ......................................",
-      //       style: "invoiceTitleHeaderDetail",
-      //       width: "*",
-      //     },
-      //     {
-      //       text: "Approve By ......................................",
-      //       style: "invoiceTitleHeaderDetail",
-      //       width: "*",
-      //     },
-      //   ],
-      // },
-
       {
         // alignment: "justify",
         margin: [0, 10, 0, 0],
@@ -1392,44 +415,158 @@ export const originalFormCOA3 = (
           body: [
             [
               {
-                margin: [5, 10, 0, 10],
-                text: `${ApproveValue} ......................................`,
+                margin: [0, 20, 0, 0],
+                text: `.............................................`,
                 // style: "invoiceTitleHeaderDetail",
-                bold: true,
-                alignment: "left",
-                border: [true, true, false, true],
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
               },
               {
-                margin: [0, 10, 5, 10],
-                text: `${ReportValue} ......................................`,
+                margin: [0, 20, 0, 0],
+                text: `.............................................`,
                 // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
+              },
+            ],
+            [
+              {
+                margin: [0, 0, 0, 0],
+                text: `${valuesAplove.nameLeft}`,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
+              },
+              {
+                margin: [0, 0, 0, 0],
+                text: `${valuesAplove.nameRight}`,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
+              },
+            ],
+            [
+              {
+                margin: [0, 0, 0, 0],
+                text: `${ApproveValue}`,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
+              },
+              {
+                margin: [0, 0, 0, 0],
+                text: `${ReportValue}`,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
+              },
+            ],
+            [
+              {
+                margin: [0, 0, 0, 0],
+                text: `Date ${valuesAplove.dateLeft}`,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
+              },
+              {
+                margin: [0, 0, 0, 0],
+                text: `Date ${valuesAplove.dateRight}`,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
+              },
+            ],
+            [
+              {
+                margin: [-5, 15, 0, 10],
+                text: `Physico-Chemical Specifications`,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "left",
                 bold: true,
-                alignment: "right",
-                border: [false, true, true, true],
+                border: [false, false, false, false],
+              },
+              {
+                margin: [0, 0, 0, 0],
+                text: ``,
+                // style: "invoiceTitleHeaderDetail",
+                fontSize: "10",
+                alignment: "center",
+                border: [false, false, false, false],
               },
             ],
           ],
         },
-        // columns: [
-        //   {
-        //     text: `${ApproveValue}`,
-        //     style: "invoiceTitleHeaderDetail",
-        //     width: "*",
-        //     margin: [40, 0, 0, 0],
-        //   },
-        //   {
-        //     text:  `${ReportValue}`,
-        //     style: "invoiceTitleHeaderDetail",
-        //     width: "*",
-        //     margin: [40, 0, 0, 0],
-        //   },
-        // ],
+      },
+      {
+        columns: [
+          {
+            stack: [
+              {
+                text: `Parameter`,
+                fontSize: "10",
+                alignment: "left",
+                bold: true,
+                margin: [0, 0, 0, 5],
+              },
+              {
+                text: `Total Nitrogen gm/liter, %\nSodium Chloride\nHistamine\npH\nWater Activity\nSpecific Gravity\nAPC\nE.coli & Coliform`,
+                fontSize: "10",
+                alignment: "left",
+                bold: false,
+              },
+            ],
+          },
+          {
+            stack: [
+              {
+                text: `Specification Limits`,
+                fontSize: "10",
+                alignment: "left",
+                bold: true,
+                margin: [0, 0, 0, 5],
+              },
+              {
+                text: `TN \u2265 20 dm/Liter minimum\n28.4 - 28.95%\n200ppm maximum\n5.2 - 5.4 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
+                fontSize: "10",
+                alignment: "left",
+                bold: false,
+              },
+            ],
+          },
+          {
+            stack: [
+              {
+                text: `Test Method`,
+                fontSize: "10",
+                alignment: "left",
+                bold: true,
+                margin: [0, 0, 0, 5],
+              },
+              {
+                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor Method(AOAC 051604)\nUsing pH meter\nUsing Water Acticity analyzer\nHydrometer method\nPour Plate Technique\nMPN Method`,
+                fontSize: "10",
+                alignment: "left",
+                bold: false,
+              },
+            ],
+          },
+        ],
       },
       // TOTAL
     ],
     styles: {
       RefBoxValue: {
-        fontSize: 10,
+        fontSize: 12,
         font: "Sarabun",
       },
       invoiceTitleHeaderDetail: {
