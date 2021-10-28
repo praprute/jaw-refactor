@@ -3,19 +3,10 @@ import React, { useEffect, useState } from "react"
 import MetaTags from "react-meta-tags"
 import {
   Button,
-  Card,
-  CardBody,
   Col,
-  Container,
-  Form,
-  FormGroup,
-  Label,
-  NavItem,
-  NavLink,
+ 
   Row,
   Input,
-  TabContent,
-  TabPane,
 } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"

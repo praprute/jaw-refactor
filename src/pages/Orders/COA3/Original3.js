@@ -1,24 +1,15 @@
 export const originalFormCOA3 = (
   logo,
   halal,
-  ref,
-  row1,
-  row2CollectDandPN, // <------ row2PDandDD,
-  row3EXP,
-  ExpirationDate, // <-------- PnAndPS,
-  tankNo,
-  QuantityAndTestDate,
-  AnalysisRender,
-  spcChem,
-  valuesChem,
-  MicroRender,
-  valuesMicro,
+  
+ 
+
+ 
+ 
   selectedGroupNameTo,
   ApproveValue,
   ReportValue,
-  method,
-  valScoreLevel,
-  salmon,
+ 
   descriptionVeit,
   setDescriptionVeitOrderformTableVeit,
   valuesContainer,
@@ -26,14 +17,7 @@ export const originalFormCOA3 = (
   valuesLot,
   valuesAplove
 ) => {
-  let container = []
-  let bag = []
-  let lot = []
-  let DetailOrderRow4 = []
-  let DetailOrderRow5 = []
-  let DetailOrderRow6 = []
-  let tankNumber = []
-  let sensory = []
+ 
   let dataAnaly = [
     [
       {
@@ -239,7 +223,8 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "VIET HUONG CO.,LTD",
+                    text: "RUNGROJ FISH SAUCE CO., LTD.",
+                    // VIET HUONG CO.,LTD
                     style: "invoiceTitle",
                     width: "*",
                   },
@@ -248,7 +233,9 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "89 Moo 4, Makamku, Nikom Pattana, Rayong 21180",
+                    text:
+                      "8/4 Samutjadee Rd. Paknum Mueang Rayong 21000 Thailand",
+                    // 89 Moo 4, Makamku, Nikom Phattana, Rayong 21180
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -257,7 +244,8 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "Tel: 66-38-624432 Fax: 66-38-940086",
+                    text: "Tel: 66-38-940388 Fax: 66-38-940086",
+                    // Tel: 66-38-624432 Fax: 66-38-940086
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -519,7 +507,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `Total Nitrogen gm/liter, %\nSodium Chloride\nHistamine\npH\nWater Activity\nSpecific Gravity\nAPC\nE.coli & Coliform`,
+                text: `Total Nitrogen gm/liter, %\nSodium Chloride\nHistamine\n\npH\nWater Activity\nSpecific Gravity\nAPC\nE.coli & Coliform`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
@@ -536,7 +524,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN \u2265 20 dm/Liter minimum\n28.4 - 28.95%\n200ppm maximum\n5.2 - 5.4 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
+                text: `TN \u2265 20 gm/Liter minimum\n28.65 - 29.25%\n200ppm maximum\n\n5.0 - 5.2 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
@@ -553,7 +541,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor Method(AOAC 051604)\nUsing pH meter\nUsing Water Acticity analyzer\nHydrometer method\nPour Plate Technique\nMPN Method`,
+                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\nUsing pH meter\nUsing Water Acticity analyzer\nHydrometer method\nPour Plate Technique\nMPN Method`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,

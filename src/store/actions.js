@@ -7,19 +7,19 @@ export * from "./auth/forgetpwd/actions"
 export * from "./auth/profile/actions"
 
 //Ecommerce
-export * from "./e-commerce/actions"
+// export * from "./e-commerce/actions"
 
 //ModalDetail
 export * from './Modal/actions'
 
 //Calendar
-export * from "./calendar/actions"
+// export * from "./calendar/actions"
 
 //chat
-export * from "./chat/actions"
+// export * from "./chat/actions"
 
 //crypto
-export * from "./crypto/actions"
+// export * from "./crypto/actions"
 
 //invoices
 export * from "./invoices/actions"

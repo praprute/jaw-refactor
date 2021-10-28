@@ -10,7 +10,7 @@ import ForgetPassword from "./auth/forgetpwd/reducer"
 import Profile from "./auth/profile/reducer"
 
 //E-commerce
-import ecommerce from "./e-commerce/reducer"
+// import ecommerce from "./e-commerce/reducer"
 
 //DetailOrder
 import DetailOrder from './Modal/reducer'
@@ -19,13 +19,13 @@ import DetailOrder from './Modal/reducer'
 import DFGST from './ChartFGST/reducer'
 
 //Calendar
-import calendar from "./calendar/reducer"
+// import calendar from "./calendar/reducer"
 
 //chat
-import chat from "./chat/reducer"
+// import chat from "./chat/reducer"
 
 //crypto
-import crypto from "./crypto/reducer"
+// import crypto from "./crypto/reducer"
 
 //invoices
 import invoices from "./invoices/reducer"
@@ -48,10 +48,10 @@ const rootReducer = combineReducers({
   Account,
   ForgetPassword,
   Profile,
-  ecommerce,
-  calendar,
-  chat,
-  crypto,
+  // ecommerce,
+  // calendar,
+  // chat,
+  // crypto,
   invoices,
   projects,
   tasks,

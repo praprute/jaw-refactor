@@ -492,24 +492,15 @@ const FormBeforeExport3 = props => {
     originalFormCOA3(
       values.logo,
       values.halal,
-      valuesExportRef,
-      valuesExportRow1,
-      dataRow2,
-      dataRow3,
-      valuesExportPNandPS,
-      TankNumber,
-      valuesQuantity,
-      AnalysisRender,
-      spcChem,
-      valuesChem,
-      MicroPDF,
-      valuesMicro,
+      
+     
+    
+      
+     
       customerNameSelect,
       ApproveValue,
       ReportValue,
-      method,
-      valScoreLevel,
-      salmon,
+     
       descriptionVeit,
       OrderformTableVeit,
       contain,
@@ -517,81 +508,6 @@ const FormBeforeExport3 = props => {
       lots,
       valuesAplove
     )
-  }
-
-  const handleSaveIndex = async () => {
-    try {
-      let index = {
-        idOrders: uid,
-        RefNo: valuesExportRef.refNo,
-        DCL1: null,
-        DCL2: null,
-        DCL3: null,
-        PD: valuesExportRow3.productionDate,
-        DD: null,
-        ED: valuesExportPNandPS.ExpirationDate,
-        Size: null,
-        Tank: valuesExportRow3.TankNo,
-        Quantity: null,
-        testDate: valuesQuantity.TestDate,
-      }
-
-      let Udo = await UpdateDatailOrder(token, index)
-      if (Udo.success == "success") {
-        setsuccess_msg(true)
-      } else {
-        setsuccess_error(true)
-      }
-    } catch (err) {
-      setsuccess_error(true)
-      console.error
-    }
-  }
-
-  const handleChangeValueAnalysis = name => event => {
-    setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
-    // console.log(valuesChem)
-  }
-
-  const handleChange = name => event => {
-    setValuesExportRef({ ...valuesExportRef, [name]: event.target.value })
-    // console.log(valuesExportRef)
-  }
-
-  const handleChangeDetailRow1 = name => event => {
-    setValuesExportRow1({ ...valuesExportRow1, [name]: event.target.value })
-    // console.log("valuesExportRow1 : ", valuesExportRow1)
-  }
-
-  const handleChangeDetailRow2PD = name => event => {
-    setValuesExportRow2({ ...valuesExportRow2, [name]: event.target.value })
-    // console.log("valuesExportRow2 : ", valuesExportRow2)
-  }
-
-  const handleChangeDetailRow3EX = name => event => {
-    setValuesExportRow3({ ...valuesExportRow3, [name]: event.target.value })
-    // console.log("valuesExportRow2 : ", valuesExportRow3)
-  }
-
-  const handleChangeExpirationDate = name => event => {
-    setValuesExportPNandPS({
-      ...valuesExportPNandPS,
-      [name]: event.target.value,
-    })
-    // console.log("valuesExportPNandPS : ", valuesExportPNandPS)
-  }
-
-  const handleChangeTank = name => event => {
-    setTankNumber({ ...TankNumber, [name]: event.target.value })
-  }
-
-  const handleChangeQuantity = name => event => {
-    setValuesQuantity({ ...valuesQuantity, [name]: event.target.value })
-  }
-
-  const handleChangeProtein = name => event => {
-    // setValuesProtein({ ...valuesProtein, [name]: event.target.value })
-    setvaluesChem({ ...valuesChem, [name]: event.target.value })
   }
 
   const handleSelectGroup = selectedGroup => {
@@ -658,9 +574,13 @@ const FormBeforeExport3 = props => {
               flexDirection: "column",
             }}
           >
-            <h4 style={{ margin: 0 }}>VIET HUONG CO., LTD.</h4>
-            <span>89 Moo 4, Makamku, Nikom Pattana, Rayoung 21180</span>
-            <span>Tel: 66-38-624432 Fax: 66-38-940086</span>
+            <h4 style={{ margin: 0 }}>RUNGROJ FISH SAUCE CO., LTD.</h4>
+            <span>8/4 Samutjadee Rd. Paknum Mueang Rayong 21000 Thailand</span>
+            <span>Tel: 66-38-940388 Fax: 66-38-940086</span>
+
+            {/* <h4 style={{ margin: 0 }}>VIET HUONG CO., LTD.</h4>
+            <span>89 Moo 4, Makamku, Nikom Phattana, Rayoung 21180</span>
+            <span>Tel: 66-38-624432 Fax: 66-38-940086</span> */}
 
             {/* <h4 style={{ margin: 0 }}>CERTIFICATE OF ANALYSIS</h4> */}
           </Col>
@@ -1136,10 +1056,10 @@ const FormBeforeExport3 = props => {
             }}
           >
             <h5>Specification Limits</h5>
-            <span>TN {"\u2265"} 20 dm/Liter minimum</span>
-            <span>28.4 - 28.95%</span>
+            <span>TN {"\u2265"} 20 gm/Liter minimum</span>
+            <span>28.65 - 29.25%</span>
             <span>200ppm maximum</span>
-            <span>5.2 - 5.4 at 25 {"\u00B0C"}</span>
+            <span>5.0 - 5.2 at 25 {"\u00B0C"}</span>
             <span>0.85 maximum</span>
             <span>1.20 g/mL minimum</span>
             <span>500 cfu/g maximum</span>

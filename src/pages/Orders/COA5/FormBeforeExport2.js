@@ -3,25 +3,16 @@ import React, { useEffect, useState } from "react"
 import MetaTags from "react-meta-tags"
 import {
   Button,
-  Card,
-  CardBody,
   Col,
-  Container,
-  Form,
-  FormGroup,
-  Label,
-  NavItem,
-  NavLink,
+ 
   Row,
   Input,
-  TabContent,
-  TabPane,
 } from "reactstrap"
-import moment from "moment"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
+import { UpdatexportCOA,loadHalalLogo,UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -30,25 +21,12 @@ import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
 // import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
-import { originalFormCOA } from "./OriginalForm"
-import { dailyReport } from "./../Report/DailyReport"
-import { dailyReportBio } from "./../Report/DailyReportBio"
-import "./ModalFullScreen.css"
-import FormBeforeExport2 from "../COA2/FormBeforeExport2"
-import FormBeforeExport3 from "../COA3/FormBeforeExport3"
-import FormBeforeExport4 from "../COA4/FormBeforeExport"
-import FormBeforeExport5 from '../COA5/FormBeforeExport2'
-import HistoryDaily from '../Report/HistoryTest'
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-import {
-  getCustomers,
-  dailyReportFetch,
-  dailyReportBioFetch,
-  UpdatexportCOA,
-  UpdateDatailOrder,
-} from "../api"
-import e from "cors"
+import { originalFormCOA2 } from "./Original2"
+import { getCustomers } from "../api"
+import "./StyleCOA2.css"
+
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
@@ -71,13 +49,14 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-const FormBeforeExport = props => {
+const FormBeforeExport5 = props => {
   const history = useHistory()
   const { user, token } = isAuthenticated()
   const { orders, spc, tr, bio } = props
   const [detailById, setdetailById] = useState([])
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
+  const [salmon, setSalmon] = useState(false)
   const [valuesMicro, setvaluesMicro] = useState({
     TPC: "",
     YeaseandMold: "",
@@ -86,7 +65,7 @@ const FormBeforeExport = props => {
     Saureus: "",
     Salmonella: "",
   })
-  const [activeTab, setActiveTab] = useState("1")
+
   const [valuesProtein, setValuesProtein] = useState({
     protein: "",
   })
@@ -96,9 +75,10 @@ const FormBeforeExport = props => {
   const [MicroRender, setMicroRender] = useState(false)
   const [MicroAnalysis, setMicroAnalysis] = useState(true)
 
-  const [DisProductDate, setDisProductDate] = useState(true)
-  const [DisExpiration, setDisExpiration] = useState(true)
-  const [DisTank, setDisTank] = useState(true)
+  const [DisProductDate, setDisProductDate] = useState(false)
+  const [DisExpiration, setDisExpiration] = useState(false)
+  const [DisTank, setDisTank] = useState(false)
+  const [disCollectedDate, setdisCollectedDate] = useState(false)
 
   const [DisTN, setDisTN] = useState(true)
   const [DisProtein, setDisProtein] = useState(false)
@@ -108,11 +88,13 @@ const FormBeforeExport = props => {
   const [DisSPG, setDisSPG] = useState(true)
   const [DisAW, setDisAW] = useState(true)
   const [DisTss, setDisTss] = useState(true)
+  const [DisSaltMeter, setDisSaltMeter] = useState(true)
   const [DisAN, setDisAN] = useState(true)
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
+  const [success_msg, setsuccess_msg] = useState(false)
+  const [success_error, setsuccess_error] = useState(false)
   const [CustomersOption, setCustomers] = useState([])
-  const [salmon, setSalmon] = useState(false)
   const [ApproveSelect, setApproveSelect] = useState([
     {
       label: "DCC",
@@ -160,24 +142,24 @@ const FormBeforeExport = props => {
   const [customerNameSelect, setCustomerNameSelect] = useState(null)
   const [ApproveValue, setApproveValue] = useState(null)
   const [ReportValue, setReportValue] = useState(null)
-  const [success_msg, setsuccess_msg] = useState(false)
-  const [success_error, setsuccess_error] = useState(false)
   const [valuesExportRow1, setValuesExportRow1] = useState({
     To: customerNameSelect,
-    DCL1: "BEST If Used By:",
-    DCL2: "",
-    DCL3: "",
+    DCL1: "00/00/00",
   })
   const [valuesExportRow2, setValuesExportRow2] = useState({
-    ProductionDate: "",
-    DaliveryDate: "",
+    CollectedDate: "",
+    productName: "",
+    // ProductionDate: "",
+    // DaliveryDate: "",
   })
   const [valuesExportRow3, setValuesExportRow3] = useState({
-    ExpirationDate: "",
+    productionDate: "",
+    TankNo: "",
   })
   const [valuesExportPNandPS, setValuesExportPNandPS] = useState({
-    ProductName: "",
-    PackSize: "",
+    // CollectedDate: "",
+    // productName: "",
+    ExpirationDate: "",
   })
   const [TankNumber, setTankNumber] = useState({
     Tank: "",
@@ -186,7 +168,35 @@ const FormBeforeExport = props => {
     Quantity: "",
     TestDate: "",
   })
-  const [uid, setUid] = useState(null)
+const [uid, setUid] = useState(null)
+  const [method, setMethod] = useState({
+    TN: "Kjeldahl method",
+    AN: "TIS 3-2526",
+    protien: " ",
+    PH: "pH meter",
+    Nacl: "Volumetric method",
+    Histamine: "Enzymatic Biosensor method",
+    spg: "SPG meter",
+    AW: "Aw meter",
+    TSS: "TSS meter",
+    Acidity: "Potentiometric method",
+    Viscosity: "Viscometer",
+    AOA: "(AOAC 051604)",
+  })
+
+  const [valScoreLevel, setValScoreLevel] = useState({
+    Taste: "Typical Fresh fish sauce taste, No itchy after-taste, No off-taste",
+    Odor: "Typical fresh fish sauce odor/aroma, No off-odor",
+    Color: "Clear rockfish brown thin liquid",
+    Appearance: "Clear light brown thin liquid, fishy flavor, first pressing extra virgin No sedimentation",
+    testDate: "",
+    CompletionDate: "",
+  })
+
+  const handleChangeScoreLevel = name => event => {
+    setValScoreLevel({ ...valScoreLevel, [name]: event.target.value })
+    // console.log('valScoreLevel : ', valScoreLevel)
+  }
 
   useEffect(async () => {
     try {
@@ -208,42 +218,22 @@ const FormBeforeExport = props => {
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      // console.log("index : ", paresIndex)
+      //   console.log("index : ", paresIndex)
 
       setValuesExportRow2({
-        ProductionDate: paresIndex.Orders.PD,
-        DaliveryDate: paresIndex.Orders.DD,
+        CollectedDate: "",
+        productName: "",
       })
-
-      setTankNumber({
-        Tank: paresIndex.Orders.Tank,
-      })
-
-      setUid(paresIndex.Orders.idOrders)
-
-      if (!paresIndex.Orders.DCL1) {
-        setValuesExportRow1({
-          To: customerNameSelect,
-          DCL1: "BEST If Used By:",
-          DCL2: "",
-          DCL3: "",
-        })
-      } else {
-        setValuesExportRow1({
-          To: customerNameSelect,
-          DCL1: paresIndex.Orders.DCL1,
-          DCL2: paresIndex.Orders.DCL2,
-          DCL3: paresIndex.Orders.DCL3,
-        })
-      }
-
+setUid(paresIndex.Orders.idOrders)
       setValuesExportPNandPS({
-        ProductName: `${paresIndex.Orders.ProductName}`,
-        PackSize: paresIndex.Orders.Size,
+        ExpirationDate: paresIndex.Orders.ED,
+        // ProductName: paresIndex.Orders.ProductName,
+        // PackSize: paresIndex.Orders.Size,
       })
 
       setValuesExportRow3({
-        ExpirationDate: paresIndex.Orders.ED,
+        productionDate: paresIndex.Orders.PD,
+        TankNo: paresIndex.Orders.Tank,
       })
 
       setValuesQuantity({
@@ -267,83 +257,34 @@ const FormBeforeExport = props => {
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[8].render)
       setDisViscosity(paresIndex.chem[9].render)
-
+      setDisSaltMeter(paresIndex.chem[10].render)
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
-      if (paresIndex.Orders.idScfChem == 14) {
-        setSpcChem({
-          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
-          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
-          scpProtein: `\u2265  7.8%`,
-          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
-          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
-          scpSPG: `\u2265 1.20/20 \u00B0C`,
-          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
-          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
-          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
-          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
-        })
-      } else {
-        setSpcChem({
-          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
-          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
-          scpProtein: `2.3-3.5%`,
-          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
-          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
-          scpSPG: `\u2265 1.20/20 \u00B0C`,
-          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
-          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
-          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
-          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
-        })
-      }
-
+      setSpcChem({
+        scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
+        scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+        scpProtein: "",
+        scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
+        scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
+        scpSPG: `\u2265 1.20/20 \u00B0C`,
+        scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
+        scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+        scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+        scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
+        scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+      })
       setvaluesChem({
-        TN: `${
-          paresIndex.chem[0].val
-            ? paresIndex.chem[0].val.toFixed(2)
-            : paresIndex.chem[0].val
-        }  g/L`,
-        PH: `${
-          paresIndex.chem[3].val
-            ? paresIndex.chem[3].val.toFixed(2)
-            : paresIndex.chem[3].val
-        } / ${paresIndex.chem[3].temp} \u00B0C`,
+        TN: `${paresIndex.chem[0].val}  g/L`,
+        PH: `${paresIndex.chem[3].val} / ${paresIndex.chem[3].temp} \u00B0C`,
         Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  %`,
-        Salt: `${
-          paresIndex.chem[1].val
-            ? paresIndex.chem[1].val.toFixed(2)
-            : paresIndex.chem[1].val
-        }% w/v`,
-        Histamine: `${
-          paresIndex.chem[2].val
-            ? paresIndex.chem[2].val.toFixed(2)
-            : paresIndex.chem[2].val
-        } ppm`,
-        SPG: `${
-          paresIndex.chem[6].val
-            ? paresIndex.chem[6].val.toFixed(2)
-            : paresIndex.chem[6].val
-        }/${paresIndex.chem[6].temp} \u00B0C`,
-        AW: `${
-          paresIndex.chem[4].val
-            ? paresIndex.chem[4].val.toFixed(3)
-            : paresIndex.chem[4].val
-        }/${paresIndex.chem[4].temp} \u00B0C`,
-        TSS: paresIndex.chem[5].val
-          ? paresIndex.chem[5].val.toFixed(2)
-          : paresIndex.chem[5].val,
-        AN: paresIndex.chem[7].val
-          ? paresIndex.chem[7].val.toFixed(2)
-          : paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[8].val
-          ? paresIndex.chem[8].val.toFixed(2)
-          : paresIndex.chem[8].val,
-        Viscosity: paresIndex.chem[9].val
-          ? paresIndex.chem[9].val.toFixed(2)
-          : paresIndex.chem[9].val,
+        Salt: `${paresIndex.chem[1].val}% w/v`,
+        Histamine: `${paresIndex.chem[2].val} ppm`,
+        SPG: `${paresIndex.chem[6].val}/${paresIndex.chem[6].temp} \u00B0C`,
+        AW: `${paresIndex.chem[4].val}/${paresIndex.chem[4].temp} \u00B0C`,
+        TSS: paresIndex.chem[5].val,
+        AN: paresIndex.chem[7].val,
+        Acidity: paresIndex.chem[8].val,
+        Viscosity: paresIndex.chem[9].val,
       })
       let TPC = ""
       let YeaseandMold = ""
@@ -365,7 +306,7 @@ const FormBeforeExport = props => {
       }
 
       if (paresIndex.micro[2].val < 3) {
-        Ecoil = `NOT DETECTED`
+        Ecoil = `< 3.0 CFU/g`
       } else {
         Ecoil = `${paresIndex.micro[2].val} MPN/g`
       }
@@ -398,69 +339,25 @@ const FormBeforeExport = props => {
 
   const handleUpdateStatusCoa = async () => {
     try {
-      let update = UpdatexportCOA(token)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const toggleTab = tab => {
-    if (activeTab !== tab) {
-      setActiveTab(tab)
-    }
-  }
-
-  const ExportdailyBio = async () => {
-    try {
-      const date_export = await moment(new Date(), "Asia/Bangkok").format(
-        "DD/MM/YYYY"
-      )
-      const date_now = await moment(new Date(), "Asia/Bangkok").format(
-        "YYYY-MM-DD"
-      )
-      const date_end = await moment(new Date(), "Asia/Bangkok")
-        .add(1, "d") //แก้ที่ตรงนี้
-        .format("YYYY-MM-DD")
-      let index = {
-        dStart: date_now,
-        dNow: date_end,
-      }
-      const data = await dailyReportBioFetch(token, index)
-      // console.log(data.message)
-      dailyReportBio(values.logo, date_export, data.message)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  const Exportdaily = async () => {
-    try {
-      const date_export = await moment(new Date(), "Asia/Bangkok").format(
-        "DD/MM/YYYY"
-      )
-      const date_now = await moment(new Date(), "Asia/Bangkok").format(
-        "YYYY-MM-DD"
-      )
-      const date_end = await moment(new Date(), "Asia/Bangkok")
-        .add(1, "d") //แก้ที่ตรงนี้
-        .format("YYYY-MM-DD")
-      let index = {
-        dStart: date_now,
-        dNow: date_end,
-      }
-      const data = await dailyReportFetch(token, index)
-      // console.log(data.message)
-      dailyReport(values.logo, date_export, data.message)
+      let update = await UpdatexportCOA(token)
     } catch (err) {
       console.log(err)
     }
   }
 
   const handleExportPDF = () => {
+    // console.log("valScoreLevel : ", valScoreLevel)
+
     let dataRow2 = [
-      { values: valuesExportRow2.ProductionDate },
-      { values: valuesExportRow2.DaliveryDate },
+      { values: valuesExportRow2.CollectedDate },
+      { values: valuesExportRow2.productName },
     ]
-    let dataRow3 = [{ values: valuesExportRow3.ExpirationDate }, { values: "" }]
+    // CollectedDate: "",
+    // productName: "",
+    let dataRow3 = [
+      { values: valuesExportRow3.productionDate },
+      { values: valuesExportRow3.TankNo },
+    ]
 
     let AnalysisRender = {
       DisTN: DisTN,
@@ -481,10 +378,13 @@ const FormBeforeExport = props => {
       MicroAnalysis,
     }
 
+    let ScoreLevel = true
+
     // console.log("AnalysisRender", AnalysisRender)
 
-    originalFormCOA(
+    originalFormCOA2(
       values.logo,
+      values.halal,
       valuesExportRef,
       valuesExportRow1,
       dataRow2,
@@ -500,10 +400,10 @@ const FormBeforeExport = props => {
       customerNameSelect,
       ApproveValue,
       ReportValue,
-      salmon,
-      DisProductDate,
-      DisExpiration,
-      DisTank
+      method,
+      ScoreLevel,
+      valScoreLevel,
+      salmon
     )
   }
 
@@ -512,15 +412,15 @@ const FormBeforeExport = props => {
       let index = {
         idOrders: uid,
         RefNo: valuesExportRef.refNo,
-        DCL1: valuesExportRow1.DCL1,
-        DCL2: valuesExportRow1.DCL2,
-        DCL3: valuesExportRow1.DCL3,
-        PD: valuesExportRow2.ProductionDate,
-        DD: valuesExportRow2.DaliveryDate,
-        ED: valuesExportRow3.ExpirationDate,
-        Size: valuesExportPNandPS.PackSize,
-        Tank: TankNumber.Tank,
-        Quantity: valuesQuantity.Quantity,
+        DCL1: null,
+        DCL2: null,
+        DCL3: null,
+        PD: valuesExportRow3.productionDate,
+        DD: null,
+        ED: valuesExportPNandPS.ExpirationDate,
+        Size: null,
+        Tank: valuesExportRow3.TankNo,
+        Quantity: null,
         testDate: valuesQuantity.TestDate,
       }
 
@@ -536,6 +436,7 @@ const FormBeforeExport = props => {
       console.error
     }
   }
+
 
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
@@ -562,7 +463,7 @@ const FormBeforeExport = props => {
     // console.log("valuesExportRow2 : ", valuesExportRow3)
   }
 
-  const handleChangeDetailPNandPS = name => event => {
+  const handleChangeExpirationDate = name => event => {
     setValuesExportPNandPS({
       ...valuesExportPNandPS,
       [name]: event.target.value,
@@ -597,15 +498,15 @@ const FormBeforeExport = props => {
 
   const handleChangeValueCustomer = e => {
     setCustomerNameSelect(e)
-    console.log(e)
+    // console.log(e)
   }
   const handleChangeApproveValue = e => {
     setApproveValue(e)
-    console.log(e)
+    // console.log(e)
   }
   const handleChangeReportValue = e => {
     setReportValue(e)
-    console.log(e)
+    // console.log(e)
   }
 
   // ApproveSelect, setApproveSelect
@@ -659,7 +560,12 @@ const FormBeforeExport = props => {
             justifyContent: "flex-end",
             alignItems: "center",
           }}
-        ></Col>
+        >
+          <img
+            src={`data:image/png;base64,${values.halal}`}
+            style={{ maxWidth: 140, maxHeight: 90 }}
+          />
+        </Col>
       </Row>
     )
   }
@@ -805,6 +711,7 @@ const FormBeforeExport = props => {
             alignItems: "center",
             width: "100%",
             height: "100%",
+            marginBottom: "10px",
           }}
         >
           <Col
@@ -823,22 +730,6 @@ const FormBeforeExport = props => {
                 paddingRight: "10px",
               }}
             >
-              {/* <Input
-                name="To"
-                onChange={handleChangeDetailRow1("To")}
-                value={valuesExportRow1.To}
-              /> */}
-              {/* <select
-                name="To"
-                onChange={handleChangeDetailRow1("To")}
-                value={CustomersOption[0].Name}
-                className="form-control"
-              >
-                {CustomersOption.map((index, i) => (
-                  <option value={index.Name}>{index.Name}</option>
-                ))}
-              </select> */}
-
               <Select
                 value={selectedGroup}
                 name="To"
@@ -865,9 +756,7 @@ const FormBeforeExport = props => {
                 alignItems: "center",
               }}
             >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Date Code List: &nbsp;
-              </span>
+              <span style={{ margin: 0, fontWeight: "bold" }}>Lot: &nbsp;</span>
             </Col>
             <Col sm="9">
               <div
@@ -885,6 +774,8 @@ const FormBeforeExport = props => {
             </Col>
           </Col>
         </div>
+
+        {/* Collection Date */}
         <div
           style={{
             display: "flex",
@@ -892,6 +783,7 @@ const FormBeforeExport = props => {
             alignItems: "center",
             width: "100%",
             height: "100%",
+            marginBottom: "5px",
           }}
         >
           <Col
@@ -901,14 +793,51 @@ const FormBeforeExport = props => {
               alignItems: "center",
             }}
           >
-            <div
+            <Col
+              sm="3"
               style={{
-                width: "100%",
-                height: "100%",
-                paddingLeft: "10px",
-                paddingRight: "10px",
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
               }}
-            ></div>
+            >
+              {/* <div className="form-check form-check-warning">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="customCheckcolorTn"
+                  checked={!disCollectedDate}
+                  onChange={() => {
+                    setdisCollectedDate(!disCollectedDate)
+                  }}
+                />
+              </div> */}
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Collected date:
+              </span>
+            </Col>
+            <Col
+              sm="9"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  disabled={disCollectedDate}
+                  name="CollectedDate"
+                  onChange={handleChangeDetailRow2PD("CollectedDate")}
+                  value={valuesExportRow2.CollectedDate}
+                />
+              </div>
+            </Col>
           </Col>
           <Col
             style={{
@@ -917,8 +846,26 @@ const FormBeforeExport = props => {
               alignItems: "center",
             }}
           >
-            <Col sm="3">
-              {/* <h5 style={{ margin: 0 }}>Date Code List: </h5> */}
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              {/* <div className="form-check form-check-warning">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="customCheckExpiration"
+                  checked={!DisTank}
+                  onChange={() => {
+                    setDisTank(!DisTank)
+                  }}
+                />
+              </div>
+              <span style={{ fontWeight: "bold" }}>Tank No. </span> */}
             </Col>
             <Col sm="9">
               <div
@@ -928,66 +875,16 @@ const FormBeforeExport = props => {
                 }}
               >
                 <Input
-                  name="DCL2"
-                  onChange={handleChangeDetailRow1("DCL2")}
-                  value={valuesExportRow1.DCL2}
+                  disabled={DisTank}
+                  name="productName"
+                  onChange={handleChangeDetailRow2PD("productName")}
+                  value={valuesExportRow2.productName}
                 />
               </div>
             </Col>
           </Col>
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "10px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingLeft: "10px",
-                paddingRight: "10px",
-              }}
-            ></div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col sm="3">
-              {/* <h5 style={{ margin: 0 }}>Date Code List: </h5> */}
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="DCL3"
-                  onChange={handleChangeDetailRow1("DCL3")}
-                  value={valuesExportRow1.DCL3}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
+
         {/* Production Date */}
         <div
           style={{
@@ -1014,7 +911,7 @@ const FormBeforeExport = props => {
                 alignItems: "center",
               }}
             >
-              <div className="form-check form-check-warning">
+              {/* <div className="form-check form-check-warning">
                 <input
                   type="checkbox"
                   className="form-check-input"
@@ -1024,7 +921,7 @@ const FormBeforeExport = props => {
                     setDisProductDate(!DisProductDate)
                   }}
                 />
-              </div>
+              </div> */}
               <span style={{ fontWeight: "bold" }}>Production date:</span>
             </Col>
             <Col sm="9">
@@ -1036,9 +933,9 @@ const FormBeforeExport = props => {
               >
                 <Input
                   disabled={DisProductDate}
-                  name="ProductionDate"
-                  onChange={handleChangeDetailRow2PD("ProductionDate")}
-                  value={valuesExportRow2.ProductionDate}
+                  name="productionDate"
+                  onChange={handleChangeDetailRow3EX("productionDate")}
+                  value={valuesExportRow3.productionDate}
                 />
               </div>
             </Col>
@@ -1058,7 +955,18 @@ const FormBeforeExport = props => {
                 alignItems: "center",
               }}
             >
-              <span style={{ fontWeight: "bold" }}>Dalivery Date: &nbsp;</span>
+              {/* <div className="form-check form-check-warning">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="customCheckExpiration"
+                  checked={!DisTank}
+                  onChange={() => {
+                    setDisTank(!DisTank)
+                  }}
+                />
+              </div> */}
+              <span style={{ fontWeight: "bold" }}>Tank No. </span>
             </Col>
             <Col sm="9">
               <div
@@ -1068,14 +976,16 @@ const FormBeforeExport = props => {
                 }}
               >
                 <Input
-                  name="DaliveryDate"
-                  onChange={handleChangeDetailRow2PD("DaliveryDate")}
-                  value={valuesExportRow2.DaliveryDate}
+                  disabled={DisTank}
+                  name="TankNo"
+                  onChange={handleChangeDetailRow3EX("TankNo")}
+                  value={valuesExportRow3.TankNo}
                 />
               </div>
             </Col>
           </Col>
         </div>
+
         {/* ExpirationDate  */}
         <div
           style={{
@@ -1102,7 +1012,7 @@ const FormBeforeExport = props => {
                 alignItems: "center",
               }}
             >
-              <div className="form-check form-check-warning">
+              {/* <div className="form-check form-check-warning">
                 <input
                   type="checkbox"
                   className="form-check-input"
@@ -1112,7 +1022,7 @@ const FormBeforeExport = props => {
                     setDisExpiration(!DisExpiration)
                   }}
                 />
-              </div>
+              </div> */}
               <span style={{ fontWeight: "bold" }}>Expiration date:</span>
             </Col>
             <Col sm="9">
@@ -1125,8 +1035,8 @@ const FormBeforeExport = props => {
                 <Input
                   disabled={DisExpiration}
                   name="ExpirationDate"
-                  onChange={handleChangeDetailRow3EX("ExpirationDate")}
-                  value={valuesExportRow3.ExpirationDate}
+                  onChange={handleChangeExpirationDate("ExpirationDate")}
+                  value={valuesExportPNandPS.ExpirationDate}
                 />
               </div>
             </Col>
@@ -1156,244 +1066,203 @@ const FormBeforeExport = props => {
             </Col>
           </Col>
         </div>
-        {/* Product Name: pank size */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Product Name:
-              </span>
-            </Col>
-            <Col
-              sm="9"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="ProductName"
-                  onChange={handleChangeDetailPNandPS("ProductName")}
-                  value={valuesExportPNandPS.ProductName}
-                />
-              </div>
-            </Col>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Pack Size: &nbsp;
-              </span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="PackSize"
-                  onChange={handleChangeDetailPNandPS("PackSize")}
-                  value={valuesExportPNandPS.PackSize}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
-        {/* Tank No */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div>
-              <span style={{ fontWeight: "bold" }}>Tank No. </span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisTank}
-                  name="Tank"
-                  onChange={handleChangeTank("Tank")}
-                  value={TankNumber.Tank}
-                />
-              </div>
-            </Col>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          ></Col>
-        </div>
-        {/* Quantity  */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ margin: 0, fontWeight: "bold" }}>Quantity:</span>
-            </Col>
-            <Col
-              sm="9"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="Quantity"
-                  onChange={handleChangeQuantity("Quantity")}
-                  value={valuesQuantity.Quantity}
-                />
-              </div>
-            </Col>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Test Date: &nbsp;
-              </span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="TestDate"
-                  onChange={handleChangeQuantity("TestDate")}
-                  value={valuesQuantity.TestDate}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
       </Row>
     )
   }
+
+  const Sinsory = () => {
+    return (
+      <React.Fragment>
+        <Row
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            marginTop: "15px",
+          }}
+        >
+          {/* <h4 style={{ margin: "0", padding: "0" }}>
+            <span style={{ margin: 0, fontWeight: "bold" }}>
+              Sensory Test Results
+            </span>
+          </h4> */}
+        </Row>
+        <React.Fragment>
+          <Row
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "flex-start",
+              // alignItems: "center",
+              marginTop: "10px",
+            }}
+          >
+            <Col xs={12} style={{ padding: "0" }}>
+              <table id="score-level">
+               
+                <tr>
+                  <td>Taste</td>
+                  <td>
+                    {" "}
+                    <Input
+                      disabled="true"
+                      name="Taste"
+                      type="number"
+                      min="0"
+                      max="5"
+                      placeholder={valScoreLevel.Taste}
+                      onChange={handleChangeScoreLevel("Taste")}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Odor</td>
+                  <td>
+                    {" "}
+                    <Input
+                      disabled="true"
+                      min="0"
+                      max="5"
+                      name="Odor"
+                      type="number"
+                      placeholder={valScoreLevel.Odor}
+                      onChange={handleChangeScoreLevel("Odor")}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Color</td>
+                  <td>
+                    {" "}
+                    <Input
+                      disabled="true"
+                      min="0"
+                      max="5"
+                      name="Color"
+                      type="number"
+                      placeholder={valScoreLevel.Color}
+                      onChange={handleChangeScoreLevel("Color")}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Appearance</td>
+                  <td>
+                    {" "}
+                    <Input
+                      disabled="true"
+                      min="0"
+                      max="5"
+                      name="Appearance"
+                      type="number"
+                      placeholder={valScoreLevel.Appearance}
+                      onChange={handleChangeScoreLevel("Appearance")}
+                    />
+                  </td>
+                </tr>
+              </table>
+            </Col>
+          </Row>
+          <br />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+              marginBottom: "5px",
+            }}
+          >
+            <Col
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <Col
+                sm="2"
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ margin: 0, fontWeight: "bold" }}>
+                  Test date:
+                </span>
+              </Col>
+              <Col
+                sm="10"
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Input
+                    name="testDate"
+                    onChange={handleChangeScoreLevel("testDate")}
+                    value={valScoreLevel.testDate}
+                  />
+                </div>
+              </Col>
+            </Col>
+            <Col
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <Col
+                sm="3"
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  paddingLeft: "15px",
+                }}
+              >
+                <span style={{ margin: 0, fontWeight: "bold" }}>
+                  Completion date:
+                </span>
+              </Col>
+              <Col sm="9">
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Input
+                    name="CompletionDate"
+                    onChange={handleChangeScoreLevel("CompletionDate")}
+                    value={valScoreLevel.CompletionDate}
+                  />
+                </div>
+              </Col>
+            </Col>
+          </div>
+        </React.Fragment>
+      </React.Fragment>
+    )
+  }
+
+  // const [valScoreLevel, setValScoreLevel] = useState({
+  //   Taste:0,
+  //   Odor:0,
+  //   Color:0,
+  //   Appearance:0
+  // })
 
   const Analysis = () => {
     return (
@@ -1576,7 +1445,7 @@ const FormBeforeExport = props => {
                 paddingRight: "30px",
               }}
             >
-              <Input disabled={!DisProtein} value={spcChem.scpProtein} />
+              <Input disabled={!DisProtein} />
             </div>
           </Col>
           <Col
@@ -2285,7 +2154,7 @@ const FormBeforeExport = props => {
                       }}
                     />
                   </div> */}
-                    <span style={{ margin: 0, fontWeight: "bold" }}>APC</span>
+                    <span style={{ margin: 0, fontWeight: "bold" }}>TPC</span>
                   </Col>
                   <Col
                     style={{
@@ -2591,7 +2460,7 @@ const FormBeforeExport = props => {
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        id="customCheckSalmon"
+                        id="customCheckSalmon2"
                         checked={salmon}
                         onChange={() => {
                           setSalmon(!salmon)
@@ -2601,7 +2470,7 @@ const FormBeforeExport = props => {
                     {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
                     <label
                       className="form-check-label"
-                      htmlFor="customCheckSalmon"
+                      htmlFor="customCheckSalmon2"
                     >
                       <span style={{ margin: 0, fontWeight: "bold" }}>
                         Salmonella spp.
@@ -2646,420 +2515,132 @@ const FormBeforeExport = props => {
                     </div>
                   </Col>
                 </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    // alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "20px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      //   alignItems: "center",
-                    }}
-                  >
-                    <h5 style={{ margin: 0 }}>
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        Characteristics
-                      </span>
-                    </h5>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      //   alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        Clear light brown <br />
-                        Thin liquid, fishy
-                        <br />
-                        flavor, First pressing,
-                        <br />
-                        Extre virgin
-                      </span>
-                    </div>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <div
-                        style={{
-                          margin: 0,
-                          fontWeight: "bold",
-                          width: "100%",
-                          display: "flex",
-                          marginBottom: "10px",
-                        }}
-                      >
-                        <Col sm="4">
-                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
-                            Appearance
-                          </h5>
-                        </Col>
-                        <Col sm="8">
-                          <span style={{ margin: 0, fontWeight: "bold" }}>
-                            No sedimentation
-                          </span>
-                        </Col>
-                      </div>
-
-                      <div
-                        style={{
-                          margin: 0,
-                          fontWeight: "bold",
-                          width: "100%",
-                          display: "flex",
-                          marginBottom: "10px",
-                        }}
-                      >
-                        <Col sm="4">
-                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
-                            Order
-                          </h5>
-                        </Col>
-                        <Col sm="8">
-                          <span style={{ margin: 0, fontWeight: "bold" }}>
-                            Fresh fish sauce odor/aroma
-                          </span>
-                        </Col>
-                      </div>
-
-                      <div
-                        style={{
-                          margin: 0,
-                          fontWeight: "bold",
-                          width: "100%",
-                          display: "flex",
-                          marginBottom: "10px",
-                        }}
-                      >
-                        <Col sm="4">
-                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
-                            Taste
-                          </h5>
-                        </Col>
-                        <Col sm="8">
-                          <span style={{ margin: 0, fontWeight: "bold" }}>
-                            Fresh fish sauce taste
-                          </span>
-                        </Col>
-                      </div>
-
-                      <div
-                        style={{
-                          margin: 0,
-                          fontWeight: "bold",
-                          width: "100%",
-                          display: "flex",
-                          marginBottom: "10px",
-                        }}
-                      >
-                        <Col sm="4">
-                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
-                            Color
-                          </h5>
-                        </Col>
-                        <Col sm="8">
-                          <span style={{ margin: 0, fontWeight: "bold" }}>
-                            Clear rockfish brown thin liquid
-                          </span>
-                        </Col>
-                      </div>
-                    </div>
-                  </Col>
-                </div>
               </React.Fragment>
             ) : null}
+            {/* {Sinsory()} */}
           </React.Fragment>
         ) : null}
+        {Sinsory()}
       </Row>
     )
   }
 
   return (
     <React.Fragment>
-      <div className="page-content">
-        {success_msg ? (
-          <SweetAlert
-            title="Add Order Success"
-            success
-            //   showCancel
-            confirmBtnBsStyle="success"
-            //   cancelBtnBsStyle="danger"
-            onConfirm={async () => {
-              setsuccess_msg(false)
-              // setInterval(() => {
-              //   window.location.reload()
-              // }, 5000)
-            }}
-          >
-            You clicked the button!
-          </SweetAlert>
-        ) : null}
+      {success_msg ? (
+        <SweetAlert
+          title="Add Order Success"
+          success
+          //   showCancel
+          confirmBtnBsStyle="success"
+          //   cancelBtnBsStyle="danger"
+          onConfirm={async () => {
+            setsuccess_msg(false)
+            // setInterval(() => {
+            //   window.location.reload()
+            // }, 5000)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
 
-        {success_error ? (
-          <SweetAlert
-            title="error"
-            danger
-            //   showCancel
-            confirmBtnBsStyle="danger"
-            //   cancelBtnBsStyle="danger"
-            onConfirm={() => {
-              setsuccess_error(false)
-            }}
-          >
-            You clicked the button!
-          </SweetAlert>
-        ) : null}
-        <Row>
-          <Col className="col-12">
-            <Card>
-              <CardBody>
-                <Row>
-                  <Col md="12" xs="12">
-                    <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "1",
-                          })}
-                          onClick={() => {
-                            toggleTab("1")
-                          }}
-                        >
-                          COA FORM 1
-                        </NavLink>
-                      </NavItem>
-                      {/* FormBeforeExport3 */}
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "2",
-                          })}
-                          onClick={() => {
-                            toggleTab("2")
-                          }}
-                        >
-                          COA FORM 2
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "3",
-                          })}
-                          onClick={() => {
-                            toggleTab("3")
-                          }}
-                        >
-                          COA FORM 3
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "4",
-                          })}
-                          onClick={() => {
-                            toggleTab("4")
-                          }}
-                        >
-                          COA FORM 4
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "5",
-                          })}
-                          onClick={() => {
-                            toggleTab("5")
-                          }}
-                        >
-                          COA FORM 5
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "6",
-                          })}
-                          onClick={() => {
-                            toggleTab("6")
-                          }}
-                        >
-                          COA FORM 6
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "7",
-                          })}
-                          onClick={() => {
-                            toggleTab("7")
-                          }}
-                        >
-                          Daily Report
-                        </NavLink>
-                      </NavItem>
-                    </ul>
-                  </Col>
-                </Row>
-                <TabContent activeTab={activeTab} className="p-3">
-                  <TabPane tabId="1" id="processing">
-                    <div
-                      style={{ width: "100%", height: "100%", background: "" }}
-                    >
-                      {headerForm()}
-                      <br />
-                      {RefForm()}
-                      {headDetail()}
-                      <br />
-                      {Analysis()}
-                      {/* <h1>FormBeforeExport</h1> */}
-                      <div
-                        style={{
-                          display: "flex",
-                          width: "100%",
-                          height: "100%",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Col sm="3" style={{ padding: "5px" }}>
-                          Report By ................................
-                          <Select
-                            value={selectedGroup2}
-                            name="To"
-                            onChange={e => {
-                              handleSelectGroup2()
-                              handleChangeApproveValue(e.value)
-                            }}
-                            options={ReportSelect}
-                          />
-                        </Col>
-                        <Col sm="3" style={{ padding: "5px" }}>
-                          Approve By ................................
-                          <Select
-                            value={selectedGroup3}
-                            name="To"
-                            onChange={e => {
-                              handleSelectGroup3()
-                              handleChangeReportValue(e.value)
-                            }}
-                            options={ApproveSelect}
-                          />
-                        </Col>
-                        <Col
-                          sm="3"
-                          style={{ textAlign: "right", paddingRight: "10px" }}
-                        >
-                          <Button
-                            color="warning"
-                            size="lg"
-                            style={{ width: "100%", marginTop: "15px" }}
-                            onClick={() => {
-                              handleSaveIndex()
-                              // handleExportPDF()
-                              // handleUpdateStatusCoa()
-                            }}
-                          >
-                            SAVE
-                          </Button>
-                        </Col>
-                        <Col
-                          sm="3"
-                          style={{ textAlign: "right", paddingRight: "10px" }}
-                        >
-                          <Button
-                            color="primary"
-                            size="lg"
-                            style={{ width: "100%", marginTop: "15px" }}
-                            onClick={() => {
-                              handleExportPDF()
-                              handleUpdateStatusCoa()
-                            }}
-                          >
-                            Print COA
-                          </Button>
-                        </Col>
-                      </div>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-                    </div>
-                  </TabPane>
-
-                  <TabPane tabId="2" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport2 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="3" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport3 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="4" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport4 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="5" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport5 />
-                    </div>
-                  </TabPane>
-                  {/* FormBeforeExport5 */}
-                  <TabPane tabId="7" id="CompleteCheck">
-                    <div>
-                      <HistoryDaily />
-                    </div>
-                  </TabPane>
-                  {/* HistoryDaily */}
-                </TabContent>
-              </CardBody>
-            </Card>
+      {success_error ? (
+        <SweetAlert
+          title="error"
+          danger
+          //   showCancel
+          confirmBtnBsStyle="danger"
+          //   cancelBtnBsStyle="danger"
+          onConfirm={() => {
+            setsuccess_error(false)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
+      {/* <div className="page-content"> */}
+      
+      <div style={{ width: "100%", height: "100%", background: "" }}>
+        {headerForm()}
+        <br />
+        {RefForm()}
+        {headDetail()}
+        <br />
+        {Analysis()}
+        {/* {Sinsory()} */}
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Col sm="3" style={{ padding: "5px" }}>
+            Report By ................................
+            <Select
+              value={selectedGroup2}
+              name="To"
+              onChange={e => {
+                handleSelectGroup2()
+                handleChangeApproveValue(e.value)
+              }}
+              options={ReportSelect}
+            />
           </Col>
-        </Row>
+          <Col sm="3" style={{ padding: "5px" }}>
+            Approve By ................................
+            <Select
+              value={selectedGroup3}
+              name="To"
+              onChange={e => {
+                handleSelectGroup3()
+                handleChangeReportValue(e.value)
+              }}
+              options={ApproveSelect}
+            />
+          </Col>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
+            <Button
+              color="warning"
+              size="lg"
+              style={{ width: "100%", marginTop: "15px" }}
+              onClick={() => {
+                handleSaveIndex()
+                // handleExportPDF()
+                // handleUpdateStatusCoa()
+              }}
+            >
+              SAVE
+            </Button>
+          </Col>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "0px" }}>
+            <Button
+              color="primary"
+              size="lg"
+              style={{ width: "100%", marginTop: "15px" }}
+              onClick={() => {
+                handleExportPDF()
+                handleUpdateStatusCoa()
+              }}
+            >
+              Print COA
+            </Button>
+          </Col>
+        </div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
       </div>
+      {/* </div> */}
     </React.Fragment>
   )
 }
 
-FormBeforeExport.propTypes = {
+FormBeforeExport5.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   tr: PropTypes.array,
@@ -3073,4 +2654,4 @@ const mapStateToProps = state => ({
   bio: state.DetailOrder.SpecificBio,
 })
 
-export default connect(mapStateToProps)(withRouter(FormBeforeExport))
+export default connect(mapStateToProps)(withRouter(FormBeforeExport5))
