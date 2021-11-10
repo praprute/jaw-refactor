@@ -1,15 +1,9 @@
 export const originalFormCOA3 = (
   logo,
   halal,
-  
- 
-
- 
- 
   selectedGroupNameTo,
   ApproveValue,
   ReportValue,
- 
   descriptionVeit,
   setDescriptionVeitOrderformTableVeit,
   valuesContainer,
@@ -194,7 +188,11 @@ export const originalFormCOA3 = (
           border: [true, true, true, true],
         },
         {
-          text: `${setDescriptionVeitOrderformTableVeit[i].Aw}`,
+          text: `${
+            setDescriptionVeitOrderformTableVeit[i].Aw
+          }/\n${setDescriptionVeitOrderformTableVeit[i].tempAW.toFixed(
+            2
+          )}\u00B0C`,
           fontSize: "8",
           alignment: "center",
           margin: [0, 10, 0, 10],
@@ -204,7 +202,8 @@ export const originalFormCOA3 = (
     }
   }
   var docDefinition = {
-    pageMargins: [30, 25, 15, 25],
+    pageSize: "A4",
+    pageMargins: [10, 10, 10, 10],
     content: [
       {
         // alignment: "justify",
@@ -234,7 +233,7 @@ export const originalFormCOA3 = (
                 columns: [
                   {
                     text:
-                      "8/4 Samutjadee Rd. Paknum Mueang Rayong 21000 Thailand",
+                      "8/4 Samutjadee Rd. Paknum Mueang , Rayong 21000 Thailand",
                     // 89 Moo 4, Makamku, Nikom Phattana, Rayong 21180
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
@@ -254,10 +253,10 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "",
+                    text: "Email: fishsauce@rungrojfishsauce.com",
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
-                    margin: [0, 0, 0, 20],
+                    margin: [0, 0, 0, 5],
                   },
                 ],
               },
@@ -267,7 +266,7 @@ export const originalFormCOA3 = (
                     text: "CERTIFICATE OF ANALYSIS",
                     style: "invoiceTitle",
                     width: "*",
-                    margin: [0, 0, 0, 20],
+                    margin: [0, 0, 0, 5],
                   },
                 ],
               },
@@ -375,7 +374,7 @@ export const originalFormCOA3 = (
         ],
       },
       {
-        margin: [0, 15, 0, 0],
+        margin: [0, 10, 0, 0],
         table: {
           widths: [
             "12.3%",
@@ -403,7 +402,7 @@ export const originalFormCOA3 = (
           body: [
             [
               {
-                margin: [0, 20, 0, 0],
+                margin: [0, 10, 0, 0],
                 text: `.............................................`,
                 // style: "invoiceTitleHeaderDetail",
                 fontSize: "10",
@@ -411,7 +410,7 @@ export const originalFormCOA3 = (
                 border: [false, false, false, false],
               },
               {
-                margin: [0, 20, 0, 0],
+                margin: [0, 10, 0, 0],
                 text: `.............................................`,
                 // style: "invoiceTitleHeaderDetail",
                 fontSize: "10",
@@ -541,7 +540,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\nUsing pH meter\nUsing Water Acticity analyzer\nHydrometer method\nPour Plate Technique\nMPN Method`,
+                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\nUsing pH meter\nUsing Water Activity analyzer\nHydrometer method\nPour Plate Technique\nMPN Method`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,

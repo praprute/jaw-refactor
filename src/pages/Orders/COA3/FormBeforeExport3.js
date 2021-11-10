@@ -492,11 +492,6 @@ const FormBeforeExport3 = props => {
     originalFormCOA3(
       values.logo,
       values.halal,
-      
-     
-    
-      
-     
       customerNameSelect,
       ApproveValue,
       ReportValue,
