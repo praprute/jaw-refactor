@@ -190,9 +190,7 @@ export const originalFormCOA3 = (
         {
           text: `${
             setDescriptionVeitOrderformTableVeit[i].Aw
-          }/\n${setDescriptionVeitOrderformTableVeit[i].tempAW.toFixed(
-            2
-          )}\u00B0C`,
+          }/\n${setDescriptionVeitOrderformTableVeit[i].tempAW}\u00B0C`,
           fontSize: "8",
           alignment: "center",
           margin: [0, 10, 0, 10],
