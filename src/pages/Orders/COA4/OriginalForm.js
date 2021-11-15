@@ -237,7 +237,7 @@ export const originalFormCOA = (
         border: [true, false, false, false],
       },
       {
-        text: `${spcChem.scpHistamine}`,
+        text: `${spcChem.scpHistamine} ppm`,
         style: "RefBoxValue",
         alignment: "left",
         margin: [0, 0, 0, 5],
@@ -245,7 +245,7 @@ export const originalFormCOA = (
         border: [false, false, false, false],
       },
       {
-        text: `${valuesChem.Histamine}`,
+        text: `${valuesChem.Histamine} `,
         style: "RefBoxValue",
         alignment: "left",
         margin: [0, 0, 0, 5],
