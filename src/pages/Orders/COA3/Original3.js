@@ -231,7 +231,7 @@ export const originalFormCOA3 = (
                 columns: [
                   {
                     text:
-                      "8/4 Samutjadee Rd. Paknum Mueang , Rayong 21000 Thailand",
+                      "8/4 Samutjadee Rd. Paknum Mueang Rayong, Rayong 21000 Thailand",
                     // 89 Moo 4, Makamku, Nikom Phattana, Rayong 21180
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
