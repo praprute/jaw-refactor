@@ -281,7 +281,7 @@ const ModalTestReport = props => {
             EColi: null,
             Coliform: null,
             Saureus: null,
-            TempPH: null,
+            TempPH: 25,
             TempAW: null,
             TempTSS: null,
             TempSPG: null,

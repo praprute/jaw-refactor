@@ -1,3 +1,4 @@
+import { Company } from "../../../configAPI"
 export const originalFormCOA3 = (
   logo,
   halal,
@@ -11,7 +12,6 @@ export const originalFormCOA3 = (
   valuesLot,
   valuesAplove
 ) => {
- 
   let dataAnaly = [
     [
       {
@@ -188,9 +188,7 @@ export const originalFormCOA3 = (
           border: [true, true, true, true],
         },
         {
-          text: `${
-            setDescriptionVeitOrderformTableVeit[i].Aw
-          }/\n${setDescriptionVeitOrderformTableVeit[i].tempAW}\u00B0C`,
+          text: `${setDescriptionVeitOrderformTableVeit[i].Aw}/\n${setDescriptionVeitOrderformTableVeit[i].tempAW}\u00B0C`,
           fontSize: "8",
           alignment: "center",
           margin: [0, 10, 0, 10],
@@ -220,7 +218,7 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "RUNGROJ FISH SAUCE CO., LTD.",
+                    text: `${Company.Name}`,
                     // VIET HUONG CO.,LTD
                     style: "invoiceTitle",
                     width: "*",
@@ -230,8 +228,7 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text:
-                      "8/4 Samutjadee Rd. Paknum Mueang Rayong, Rayong 21000 Thailand",
+                    text: `${Company.Address}`,
                     // 89 Moo 4, Makamku, Nikom Phattana, Rayong 21180
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
@@ -241,7 +238,7 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "Tel: 66-38-940388 Fax: 66-38-940086",
+                    text: `${Company.Phone}`,
                     // Tel: 66-38-624432 Fax: 66-38-940086
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
@@ -251,7 +248,7 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
-                    text: "Email: fishsauce@rungrojfishsauce.com",
+                    text: `${Company.Email}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                     margin: [0, 0, 0, 5],
@@ -521,7 +518,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN \u2265 20 gm/Liter minimum\n28.65 - 29.25%\n200ppm maximum\n\n5.0 - 5.2 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
+                text: `TN \u2265 20 gm/Liter minimum\n28.65 - 29.25%\n200ppm maximum\n\n5.2 - 5.3 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,

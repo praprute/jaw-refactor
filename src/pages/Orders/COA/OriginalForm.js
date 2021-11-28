@@ -1,6 +1,7 @@
 import pdfMake from "pdfmake/build/pdfmake"
 // import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
+import {Company} from '../../../configAPI'
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
   Roboto: {
@@ -1274,7 +1275,8 @@ export const originalFormCOA = (
               {
                 columns: [
                   {
-                    text: "RUNGROJ FISH SAUCE CO., LTD.",
+                    text: `${Company.Name}`,
+                    // text: "RUNGROJ FISH SAUCE CO., LTD.",
                     style: "invoiceTitle",
                     width: "*",
                   },
@@ -1283,8 +1285,7 @@ export const originalFormCOA = (
               {
                 columns: [
                   {
-                    text:
-                      "8/4 Samutjadee Rd. Paknum Mueang Rayong, Rayong 21000 Thailand",
+                    text: `${Company.Address}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1293,7 +1294,7 @@ export const originalFormCOA = (
               {
                 columns: [
                   {
-                    text: "Tel: 66-38-940388 Fax: 66-38-940086",
+                    text: `${Company.Phone}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1302,7 +1303,7 @@ export const originalFormCOA = (
               {
                 columns: [
                   {
-                    text: "Email: fishsauce@rungrojfishsauce.com",
+                    text: `${Company.Email}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1323,7 +1324,7 @@ export const originalFormCOA = (
             text: "FM-LA-23-02",
             // style: "codeDoc",
             fontSize: "8",
-            bold:true,
+            bold: true,
             width: 60,
           },
         ],

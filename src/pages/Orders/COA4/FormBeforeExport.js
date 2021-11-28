@@ -19,6 +19,9 @@ import {
 } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
+
+import { Company } from "../../../configAPI"
+
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
 import { UpdatexportCOA, UpdateDatailOrder } from "../api"
@@ -273,7 +276,7 @@ const FormBeforeExport4 = props => {
           scpSPG: `\u2265 1.20/20 \u00B0C`,
           scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
           scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
-          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+          scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
         })
@@ -599,10 +602,10 @@ const FormBeforeExport4 = props => {
             flexDirection: "column",
           }}
         >
-          <h4 style={{ margin: 0 }}>RUNGROJ FISH SAUCE CO., LTD.</h4>
-          <span>8/4 Samutjadee Rd. Paknum Mueang Rayong 21000 Thailand</span>
-          <span>Tel: 66-38-940388 Fax: 66-38-940086</span>
-          <span>Email: fishsauce@rungrojfishsauce.com</span>
+          <h4 style={{ margin: 0 }}>{Company.Name}</h4>
+          <span>{Company.Address}</span>
+          <span>{Company.Phone}</span>
+          <span>{Company.Email}</span>
           <h4 style={{ margin: 0 }}>CERTIFICATE OF ANALYSIS</h4>
         </Col>
         <Col

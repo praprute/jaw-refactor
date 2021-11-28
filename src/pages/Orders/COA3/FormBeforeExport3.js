@@ -19,6 +19,8 @@ import {
 } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
+import { Company } from "../../../configAPI"
+
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
 import { UpdatexportCOA, loadHalalLogo, UpdateDatailOrder } from "../api"
@@ -569,9 +571,14 @@ const FormBeforeExport3 = props => {
               flexDirection: "column",
             }}
           >
-            <h4 style={{ margin: 0 }}>RUNGROJ FISH SAUCE CO., LTD.</h4>
+            {/* <h4 style={{ margin: 0 }}>RUNGROJ FISH SAUCE CO., LTD.</h4>
             <span>8/4 Samutjadee Rd. Paknum Mueang Rayong 21000 Thailand</span>
-            <span>Tel: 66-38-940388 Fax: 66-38-940086</span>
+            <span>Tel: 66-38-940388 Fax: 66-38-940086</span> */}
+
+            <h4 style={{ margin: 0 }}>{Company.Name}</h4>
+            <span>{Company.Address}</span>
+            <span>{Company.Phone}</span>
+            <span>{Company.Email}</span>
 
             {/* <h4 style={{ margin: 0 }}>VIET HUONG CO., LTD.</h4>
             <span>89 Moo 4, Makamku, Nikom Phattana, Rayoung 21180</span>
@@ -1054,7 +1061,7 @@ const FormBeforeExport3 = props => {
             <span>TN {"\u2265"} 20 gm/Liter minimum</span>
             <span>28.65 - 29.25%</span>
             <span>200ppm maximum</span>
-            <span>5.0 - 5.2 at 25 {"\u00B0C"}</span>
+            <span>5.2 - 5.3 at 25 {"\u00B0C"}</span>
             <span>0.85 maximum</span>
             <span>1.20 g/mL minimum</span>
             <span>500 cfu/g maximum</span>

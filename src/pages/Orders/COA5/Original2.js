@@ -1,3 +1,4 @@
+import { Company } from "../../../configAPI"
 export const originalFormCOA2 = (
   logo,
   halal,
@@ -897,86 +898,83 @@ export const originalFormCOA2 = (
     }
   }
 
- 
   if (ScoreLevel) {
-     sensory1.push(
-       [
-         {
-           columns: [
-             {
-               margin: [0, 20, 0, 0],
-               text: `Taste : ${valScoreLevel.Taste}`,
-               style: "RefBoxValue",
-               alignment: "left",
-               bold: true,
-             },
-           ],
-           border: [true, false, true, false],
-         },
-       ],
-       [
-         {
-           columns: [
-             {
-               text: `Odor : ${valScoreLevel.Odor}`,
-               style: "RefBoxValue",
-               alignment: "left",
-               bold: true,
-             },
-           ],
-           border: [true, false, true, false],
-         },
-       ],
-       [
-         {
-           columns: [
-             {
-               text: `Color : ${valScoreLevel.Color}`,
-               style: "RefBoxValue",
-               alignment: "left",
-               bold: true,
-             },
-           ],
-           border: [true, false, true, false],
-         },
-       ],
-       [
-         {
-           columns: [
-             {
-               margin: [0, 0, 0, 20],
-               text: `Appearance : ${valScoreLevel.Appearance}`,
-               style: "RefBoxValue",
-               alignment: "left",
-               bold: true,
-             },
-           ],
-           border: [true, false, true, false],
-         },
-       ]
-     )
-    sensory.push(
+    sensory1.push(
       [
         {
-          text: `Test Date ${valScoreLevel.testDate}`,
-          style: "RefBoxValue",
-          alignment: "left",
-          // fontSize: 12,
-          // italics: true, ตัวเอียง
-          bold: true,
-          margin: [0, 3, 0, 2],
-          border: [true, false, false, true],
+          columns: [
+            {
+              margin: [0, 20, 0, 0],
+              text: `Taste : ${valScoreLevel.Taste}`,
+              style: "RefBoxValue",
+              alignment: "left",
+              bold: true,
+            },
+          ],
+          border: [true, false, true, false],
         },
+      ],
+      [
         {
-          text: `Completion date ${valScoreLevel.CompletionDate}`,
-          style: "RefBoxValue",
-          alignment: "right",
-          margin: [0, 3, 15, 2],
-          bold: true,
-          border: [false, false, true, true],
+          columns: [
+            {
+              text: `Odor : ${valScoreLevel.Odor}`,
+              style: "RefBoxValue",
+              alignment: "left",
+              bold: true,
+            },
+          ],
+          border: [true, false, true, false],
+        },
+      ],
+      [
+        {
+          columns: [
+            {
+              text: `Color : ${valScoreLevel.Color}`,
+              style: "RefBoxValue",
+              alignment: "left",
+              bold: true,
+            },
+          ],
+          border: [true, false, true, false],
+        },
+      ],
+      [
+        {
+          columns: [
+            {
+              margin: [0, 0, 0, 20],
+              text: `Appearance : ${valScoreLevel.Appearance}`,
+              style: "RefBoxValue",
+              alignment: "left",
+              bold: true,
+            },
+          ],
+          border: [true, false, true, false],
         },
       ]
     )
+    sensory.push([
+      {
+        text: `Test Date ${valScoreLevel.testDate}`,
+        style: "RefBoxValue",
+        alignment: "left",
+        // fontSize: 12,
+        // italics: true, ตัวเอียง
+        bold: true,
+        margin: [0, 3, 0, 2],
+        border: [true, false, false, true],
+      },
+      {
+        text: `Completion date ${valScoreLevel.CompletionDate}`,
+        style: "RefBoxValue",
+        alignment: "right",
+        margin: [0, 3, 15, 2],
+        bold: true,
+        border: [false, false, true, true],
+      },
+    ])
   }
 
   if (tankNo.Tank !== "") {
@@ -1105,7 +1103,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text: "RUNGROJ FISH SAUCE CO., LTD.",
+                    text: `${Company.Name}`,
                     style: "invoiceTitle",
                     width: "*",
                   },
@@ -1114,8 +1112,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text:
-                      "8/4 Samutjadee Rd. Paknum Mueang Rayong, Rayong 21000 Thailand",
+                    text: `${Company.Address}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1124,7 +1121,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text: "Tel: 66-38-940388 Fax: 66-38-940086",
+                    text: `${Company.Phone}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1133,7 +1130,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text: "Email: fishsauce@rungrojfishsauce.com",
+                    text: `${Company.Email}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1289,9 +1286,7 @@ export const originalFormCOA2 = (
         table: {
           widths: ["*"],
           body: sensory1,
-          
         },
-        
       },
       {
         margin: [0, 0, 0, 0],

@@ -1,3 +1,5 @@
+import { Company } from "../../../configAPI"
+
 export const originalFormCOA2 = (
   logo,
   halal,
@@ -1214,7 +1216,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text: "RUNGROJ FISH SAUCE CO., LTD.",
+                    text: `${Company.Name}`,
                     style: "invoiceTitle",
                     width: "*",
                   },
@@ -1223,8 +1225,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text:
-                      "8/4 Samutjadee Rd. Paknum Mueang Rayong, Rayong 21000 Thailand",
+                    text: `${Company.Address}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1233,7 +1234,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text: "Tel: 66-38-940388 Fax: 66-38-940086",
+                    text: `${Company.Phone}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1242,7 +1243,7 @@ export const originalFormCOA2 = (
               {
                 columns: [
                   {
-                    text: "Email: fishsauce@rungrojfishsauce.com",
+                    text: `${Company.Email}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
                   },
@@ -1266,7 +1267,7 @@ export const originalFormCOA2 = (
                 fontSize: "6",
                 bold: true,
                 width: 60,
-                margin: [0,0,0,3]
+                margin: [0, 0, 0, 3],
               },
               {
                 image: `data:image/png;base64,${halal}`,
