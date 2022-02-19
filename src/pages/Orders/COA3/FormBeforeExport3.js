@@ -1061,7 +1061,7 @@ const FormBeforeExport3 = props => {
             <span>TN {"\u2265"} 20 gm/Liter minimum</span>
             <span>28.65 - 29.25%</span>
             <span>200ppm maximum</span>
-            <span>5.2 - 5.3 at 25 {"\u00B0C"}</span>
+            <span>5.2 - 5.4 at 25 {"\u00B0C"}</span>
             <span>0.85 maximum</span>
             <span>1.20 g/mL minimum</span>
             <span>500 cfu/g maximum</span>

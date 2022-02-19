@@ -21,7 +21,6 @@ import Moment from "moment"
 //get api
 import { getAllOrder, readOrderById, exportCOA, loadHalalLogo } from "./api"
 import { map, result } from "lodash"
-import { orders } from "common/data"
 import { isAuthenticated } from "./../Authentication/api"
 
 //store

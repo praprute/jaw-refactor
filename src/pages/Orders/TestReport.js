@@ -31,7 +31,6 @@ import {
   UpdateStatusPassToCheck,
 } from "./api"
 import { map, result } from "lodash"
-import { orders } from "common/data"
 import { isAuthenticated } from "../Authentication/api"
 
 //SweetAlert

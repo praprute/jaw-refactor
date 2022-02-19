@@ -518,7 +518,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN \u2265 20 gm/Liter minimum\n28.65 - 29.25%\n200ppm maximum\n\n5.2 - 5.3 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
+                text: `TN \u2265 20 gm/Liter minimum\n28.65 - 29.25%\n200ppm maximum\n\n5.2 - 5.4 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,

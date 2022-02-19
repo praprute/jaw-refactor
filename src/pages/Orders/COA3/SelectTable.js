@@ -38,7 +38,6 @@ import {
   queryDetailMulti,
 } from "./../../Orders/api"
 import { map } from "lodash"
-import { orders } from "common/data"
 import { isAuthenticated } from "./../../Authentication/api"
 
 //store
