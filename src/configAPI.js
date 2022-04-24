@@ -1,7 +1,7 @@
 export const API = process.env.REACT_APP_APIKEY;
 export const Company = {
-  Name: `VIET HUONG CO., LTD.`,
-  Address: `89 Moo 4, Makamku, Nikhom Phatthana, Rayong 21180`,
-  Phone: `Tel: 66-38-624432 Fax: 66-38-940086`,
-  Email: ` `,
+  Name: `RUNGROJFISHSAUCE CO., LTD.`,
+  Address: `8/4 Samutjadee Rd., PaknumMaung Rayong 21000`,
+  Phone: `Tel: 66-3880-4617, 3880-4799 Fax: 66-3880-4615`,
+  Email: `Email: fishsauce@rungrojfishsauce.com`,
 }
