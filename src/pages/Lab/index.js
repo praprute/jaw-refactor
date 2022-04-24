@@ -104,12 +104,8 @@ const Labatorypage = props => {
       
       const date_now = moment(new Date(), "Asia/Bangkok").format("YYYY-MM-DD")
       // .add(1, "y")
-      console.log(date_now)
+      // console.log(date_now)
       return dailyReport(logo, date_now)
-    // const date_now = moment(new Date(), "Asia/Bangkok")
-    //   .add(1, "y")
-    //   .format("YYYY-MM-DD h:mm:ss")
-    // dailyReport(date_now)
   }
   const handleRedi = () => {
     setRedirect(!redirect)

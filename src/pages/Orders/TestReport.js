@@ -152,6 +152,7 @@ const ModalTestReport = props => {
       temp: true,
     },
   ])
+
   const [resultMicro, setresultMicro] = useState([
     { int: false, coa: false, val: "", key: "APC" },
     { int: false, coa: false, val: "", key: "Yeasts & Molds" },
@@ -165,8 +166,10 @@ const ModalTestReport = props => {
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
   }
+
   const [focusAfterClose, setFocusAfterClose] = useState(true)
   const [meanScore, setMeanScore] = useState(0)
+
   const [description, setDescription] = useState("")
   const countingScore = async index => {
     // console.log("counting Score", index)
@@ -543,6 +546,11 @@ const ModalTestReport = props => {
   }, [orders, bio, tr])
 
   useEffect(() => {}, [isOpenTR])
+
+
+  const refreshPage = () => {
+    window.location.reload(false);
+  }
 
   useEffect(() => {
     if (tr[0] != undefined) {
@@ -1466,7 +1474,8 @@ const ModalTestReport = props => {
                   toggleTR()
                   setOptionTR(false)
                   handleRedirect()
-                  // window.location.reload()
+                  // refreshPage()
+                  window.location.reload()
                 }}
               >
                 Cancel

@@ -276,23 +276,6 @@ const Labatorypage = props => {
                         SAVE
                       </Button>
                     </TabContent>
-                    {/* <Row>
-                      <Col sm="9"></Col>
-                      <Col sm="3">
-                        <Button
-                          color="warning"
-                          size="lg"
-                          style={{ width: "100%", marginTop: "15px" }}
-                          onClick={() => {
-                            // Exportdaily()
-                            // handleExportPDF()
-                            // handleUpdateStatusCoa()
-                          }}
-                        >
-                          SAVE
-                        </Button>
-                      </Col>
-                    </Row> */}
                   </CardBody>
                 </Card>
               </Col>
