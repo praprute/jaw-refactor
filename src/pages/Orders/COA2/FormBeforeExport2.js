@@ -1,18 +1,12 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
 import MetaTags from "react-meta-tags"
-import {
-  Button,
-  Col,
- 
-  Row,
-  Input,
-} from "reactstrap"
+import { Button, Col, Row, Input } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA,loadHalalLogo,UpdateDatailOrder } from "../api"
+import { UpdatexportCOA, loadHalalLogo, UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -171,7 +165,7 @@ const FormBeforeExport2 = props => {
     Quantity: "",
     TestDate: "",
   })
-const [uid, setUid] = useState(null)
+  const [uid, setUid] = useState(null)
   const [method, setMethod] = useState({
     TN: "Kjeldahl method",
     AN: "TIS 3-2526",
@@ -179,7 +173,7 @@ const [uid, setUid] = useState(null)
     PH: "pH meter",
     Nacl: "Volumetric method",
     Histamine: "Enzymatic Biosensor method",
-    spg: "SPG meter",
+    spg: "Hydrometer",
     AW: "Aw meter",
     TSS: "TSS meter",
     Acidity: "Potentiometric method",
@@ -192,8 +186,8 @@ const [uid, setUid] = useState(null)
     Odor: 0,
     Color: 0,
     Appearance: 0,
-    testDate:"",
-    CompletionDate:""
+    testDate: "",
+    CompletionDate: "",
   })
 
   const handleChangeScoreLevel = name => event => {
@@ -227,7 +221,7 @@ const [uid, setUid] = useState(null)
         CollectedDate: "",
         productName: "",
       })
-setUid(paresIndex.Orders.idOrders)
+      setUid(paresIndex.Orders.idOrders)
       setValuesExportPNandPS({
         ExpirationDate: paresIndex.Orders.ED,
         // ProductName: paresIndex.Orders.ProductName,
@@ -439,7 +433,6 @@ setUid(paresIndex.Orders.idOrders)
       console.error
     }
   }
-
 
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
@@ -1165,8 +1158,10 @@ setUid(paresIndex.Orders.idOrders)
                 </tr>
               </table>
             </Col>
-            <Col xs={6} style={{paddingLeft:'10px'}}>
-              <table style={{position:'absolute', bottom:'0', left:'20px'}}>
+            <Col xs={6} style={{ paddingLeft: "10px" }}>
+              <table
+                style={{ position: "absolute", bottom: "0", left: "20px" }}
+              >
                 <tr>
                   <td>Remark:</td>
                   <td>Score level</td>
@@ -1186,94 +1181,94 @@ setUid(paresIndex.Orders.idOrders)
               </table>
             </Col>
           </Row>
-          <br/>
+          <br />
           <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
             style={{
               display: "flex",
-              justifyContent: "flex-start",
+              justifyContent: "center",
               alignItems: "center",
+              width: "100%",
+              height: "100%",
+              marginBottom: "5px",
             }}
           >
             <Col
-              sm="2"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
               }}
             >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Test date:
-              </span>
-            </Col>
-            <Col
-              sm="10"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div
+              <Col
+                sm="2"
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
                 }}
               >
-                <Input
-                  name="testDate"
-                  onChange={handleChangeScoreLevel("testDate")}
-                  value={valScoreLevel.testDate}
-                />
-              </div>
+                <span style={{ margin: 0, fontWeight: "bold" }}>
+                  Test date:
+                </span>
+              </Col>
+              <Col
+                sm="10"
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Input
+                    name="testDate"
+                    onChange={handleChangeScoreLevel("testDate")}
+                    value={valScoreLevel.testDate}
+                  />
+                </div>
+              </Col>
             </Col>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
             <Col
-              sm="3"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
-                paddingLeft: "15px"
               }}
             >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Completion date:
-              </span>
-            </Col>
-            <Col sm="9">
-              <div
+              <Col
+                sm="3"
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  paddingLeft: "15px",
                 }}
               >
-                <Input
-                  name="CompletionDate"
-                  onChange={handleChangeScoreLevel("CompletionDate")}
-                  value={valScoreLevel.CompletionDate}
-                />
-              </div>
+                <span style={{ margin: 0, fontWeight: "bold" }}>
+                  Completion date:
+                </span>
+              </Col>
+              <Col sm="9">
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Input
+                    name="CompletionDate"
+                    onChange={handleChangeScoreLevel("CompletionDate")}
+                    value={valScoreLevel.CompletionDate}
+                  />
+                </div>
+              </Col>
             </Col>
-          </Col>
-        </div>
+          </div>
         </React.Fragment>
       </React.Fragment>
     )
@@ -2582,7 +2577,7 @@ setUid(paresIndex.Orders.idOrders)
         </SweetAlert>
       ) : null}
       {/* <div className="page-content"> */}
-      
+
       <div style={{ width: "100%", height: "100%", background: "" }}>
         {headerForm()}
         <br />

@@ -197,7 +197,7 @@ const FormBeforeExport3 = props => {
     PH: "pH meter",
     Nacl: "Volumetric method",
     Histamine: "Enzymatic Biosensor method",
-    spg: "SPG meter",
+    spg: "Hydrometer",
     AW: "Aw meter",
     TSS: "TSS meter",
     Acidity: "Potentiometric method",
@@ -481,11 +481,7 @@ const FormBeforeExport3 = props => {
     }
 
     let ScoreLevel = true
-
-    console.log("OrderformTableVeit", OrderformTableVeit)
-    console.log("valuesBagNo", valuesBagNo)
-    console.log("valuesLot", valuesLot)
-    // valuesContainer
+    
     // OrderformTableVeit
     const contain = await json2array(valuesContainer)
     const bag = await json2array(valuesBagNo)
@@ -497,7 +493,7 @@ const FormBeforeExport3 = props => {
       customerNameSelect,
       ApproveValue,
       ReportValue,
-     
+
       descriptionVeit,
       OrderformTableVeit,
       contain,
@@ -1152,8 +1148,6 @@ const FormBeforeExport3 = props => {
             marginTop: "20px",
           }}
         >
-          
-        
           <Col sm="12" style={{ textAlign: "right", paddingRight: "0px" }}>
             <Button
               color="primary"

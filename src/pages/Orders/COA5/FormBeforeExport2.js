@@ -1,18 +1,12 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
 import MetaTags from "react-meta-tags"
-import {
-  Button,
-  Col,
- 
-  Row,
-  Input,
-} from "reactstrap"
+import { Button, Col, Row, Input } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA,loadHalalLogo,UpdateDatailOrder } from "../api"
+import { UpdatexportCOA, loadHalalLogo, UpdateDatailOrder } from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -171,7 +165,7 @@ const FormBeforeExport5 = props => {
     Quantity: "",
     TestDate: "",
   })
-const [uid, setUid] = useState(null)
+  const [uid, setUid] = useState(null)
   const [method, setMethod] = useState({
     TN: "Kjeldahl method",
     AN: "TIS 3-2526",
@@ -179,7 +173,7 @@ const [uid, setUid] = useState(null)
     PH: "pH meter",
     Nacl: "Volumetric method",
     Histamine: "Enzymatic Biosensor method",
-    spg: "SPG meter",
+    spg: "Hydrometer",
     AW: "Aw meter",
     TSS: "TSS meter",
     Acidity: "Potentiometric method",
@@ -191,7 +185,8 @@ const [uid, setUid] = useState(null)
     Taste: "Typical Fresh fish sauce taste, No itchy after-taste, No off-taste",
     Odor: "Typical fresh fish sauce odor/aroma, No off-odor",
     Color: "Clear rockfish brown thin liquid",
-    Appearance: "Clear light brown thin liquid, fishy flavor, first pressing extra virgin No sedimentation",
+    Appearance:
+      "Clear light brown thin liquid, fishy flavor, first pressing extra virgin No sedimentation",
     testDate: "",
     CompletionDate: "",
   })
@@ -227,7 +222,7 @@ const [uid, setUid] = useState(null)
         CollectedDate: "",
         productName: "",
       })
-setUid(paresIndex.Orders.idOrders)
+      setUid(paresIndex.Orders.idOrders)
       setValuesExportPNandPS({
         ExpirationDate: paresIndex.Orders.ED,
         // ProductName: paresIndex.Orders.ProductName,
@@ -439,7 +434,6 @@ setUid(paresIndex.Orders.idOrders)
       console.error
     }
   }
-
 
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
@@ -1103,7 +1097,6 @@ setUid(paresIndex.Orders.idOrders)
           >
             <Col xs={12} style={{ padding: "0" }}>
               <table id="score-level">
-               
                 <tr>
                   <td>Taste</td>
                   <td>
@@ -2563,7 +2556,7 @@ setUid(paresIndex.Orders.idOrders)
         </SweetAlert>
       ) : null}
       {/* <div className="page-content"> */}
-      
+
       <div style={{ width: "100%", height: "100%", background: "" }}>
         {headerForm()}
         <br />
