@@ -396,8 +396,8 @@ const ModalTestReport = props => {
     })
   }
 
-  const handleTest = async () => {
-    // event.preventDefault()
+  const handleTest = async (event) => {
+    event.preventDefault()
     // console.log('values test : ' , values)
     // console.log('values tr : ' , tr)
     try {
@@ -433,7 +433,7 @@ const ModalTestReport = props => {
       //  let fetchTestresult = await readTestResultlasted(token , index.idOrders)
       if (data) {
         countDailyFinishgood()
-        fetchTestResultlasted(token, index.idOrders)
+        fetchTestResultlasted(token,  values.idOrders)
       }
       // console.log('fetchTestresult', fetchTestresult)
     } catch (err) {
