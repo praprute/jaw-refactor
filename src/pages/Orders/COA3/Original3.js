@@ -248,6 +248,15 @@ export const originalFormCOA3 = (
               {
                 columns: [
                   {
+                    text: `${Company.Web}`,
+                    style: "invoiceTitleHeaderDetail",
+                    width: "*",
+                  },
+                ],
+              },
+              {
+                columns: [
+                  {
                     text: `${Company.Email}`,
                     style: "invoiceTitleHeaderDetail",
                     width: "*",
