@@ -100,7 +100,7 @@ const ModalDetail = props => {
 
   const [scoreTested, setscoreTested] = useState("")
   useEffect(() => {
-    // console.log('tr l',tr)
+    
     setdetailById(orders)
     setMicrorender(orders.Micro)
 
@@ -109,13 +109,13 @@ const ModalDetail = props => {
       for (let i = 0; i < tr[0].length; i++) {
         if (tr[0][i].render == 1) {
           countChem = countChem + 1
-          // console.log('countChem : ', countChem) 
+          
         } else {
           countChem = countChem
         }
       }
 
-      // setScore(countChem)
+     
 
       if (orders.Micro == 1) {
         setScore(countChem + 5)
@@ -132,9 +132,7 @@ const ModalDetail = props => {
         }
       }
 
-      console.log("testedScore : ", testedScore)
-      //   setscoreTested(testedScore)
-
+      
       var countMicro = 0
       for (let i = 0; i < tr[1].length; i++) {
         if (tr[1][i].coa == true ) {
@@ -148,8 +146,7 @@ const ModalDetail = props => {
   }, [orders, bio, tr])
 
   const handleExport = async () => {
-    // console.log('count : ', score)
-    console.log("orders : ", orders)
+  
     let image = {}
     let halalLogo = {}
     try {
@@ -165,6 +162,8 @@ const ModalDetail = props => {
           img: halal.message,
         }
       }
+
+      console.log('scoreTested : ', scoreTested, score)
       if (scoreTested != 0 && score != 0) {
         if (scoreTested == score) {
           let index = {
@@ -183,11 +182,11 @@ const ModalDetail = props => {
             Orders: orders,
             timeStamp: tr[2],
           }
-          // console.log("tr : ", tr)
+         
           if (typeof window !== "undefined") {
             localStorage.setItem("JawIndexExport", JSON.stringify(index))
           }
-          console.log("index : ", index)
+         
         } else {
           setconfirm_alert(true)
         }
