@@ -56,6 +56,7 @@ import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "../../assets/custom-fonts"
 
 import { dailyReport } from "./../Orders/Report/DailyReport"
+
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -138,18 +139,7 @@ const Labatorypage = props => {
       setActiveTab(tab)
     }
   }
-  useEffect(() => {
-    // if(user){
-    //   if(user.role == "1"){
-    //   history.push('/Orders')
-    // }
-    // if(user.role == "2"){
-    //   history.push('/labatory')
-    // }
-    // }else{
-    //   history.push('/login')
-    // }
-  }, [])
+ 
   return (
     <React.Fragment>
       <div className="page-content">
@@ -278,18 +268,7 @@ const Labatorypage = props => {
                           </NavLink>
                         </NavItem>
 
-                        {/* <NavItem>
-                            <NavLink
-                              className={classnames({
-                                active: activeTab === "5",
-                              })}
-                              onClick={() => {
-                                toggleTab("5")
-                              }}
-                            >
-                              Pass Orders
-                            </NavLink>
-                          </NavItem> */}
+                     
                       </ul>
                     </Col>
                   </Row>
@@ -386,20 +365,7 @@ const Labatorypage = props => {
                       </div>
                     </TabPane>
 
-                    {/* <TabPane tabId="5" id="pass">
-                        <div>
-                          <TableCompleteCheck
-                            page={"lab"}
-                            redirect={redirect}
-                            handleRedirect={handleRedi}
-                            tricker={"pass"}
-                            toggleCOA={toggleModalCOA}
-                            toggle={toggleModal}
-                            toggleEdit={toggleModalEdit}
-                            toggleTR={toggleModalTestReport}
-                          />
-                        </div>
-                      </TabPane> */}
+                  
                   </TabContent>
                 </CardBody>
               </Card>

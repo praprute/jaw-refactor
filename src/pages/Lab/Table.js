@@ -44,9 +44,11 @@ import {
 
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-// import ModalDetail from './../Orders/ModalDetail'
+//useHistury
+import { useHistory } from "react-router-dom"
 
 const OrderTable = props => {
+  const history = useHistory()
   const { user, token } = isAuthenticated()
   const {
     orders,
@@ -115,7 +117,6 @@ const OrderTable = props => {
     readOrderById(token, idOrders).then(data => {
       if (data) {
         if (data.success == "success") {
-          // console.log("onAddDetail : ", data.message[0])
           setdetail(data.message[0])
           onAddDetail(data.message[0])
         }
@@ -127,7 +128,6 @@ const OrderTable = props => {
 
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
-      // console.log(' readTestResultlasted :',data)
       if (data) {
         if (data.success == "success") {
           if (!data.message) {
@@ -198,8 +198,10 @@ const OrderTable = props => {
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <span
                       onClick={() => {
-                        fetchDetail(token, data.message[i].idOrders)
-                        fetchTestResultlasted(token, data.message[i].idOrders)
+                        window.open(
+                          `/TestSample?idOrders=${data.message[i].idOrders}`,
+                          "_blank"
+                        )
                       }}
                     >
                       <button
@@ -215,14 +217,13 @@ const OrderTable = props => {
                   </div>
                 ),
               }
-              //   index.push(rd)
+
               if (props.tricker == "allOrder") {
                 if (
                   data.message[i].Status == 0 ||
                   data.message[i].Status == 3 ||
                   data.message[i].Status == 5
                 ) {
-                  // console.log('rd : ', rd)
                   index.push(rd)
                 }
               }
@@ -263,7 +264,6 @@ const OrderTable = props => {
                   index.push(rd)
                 }
               }
-              // TablePassCheckAndPass
             }
             const status = {
               1: (
@@ -295,7 +295,7 @@ const OrderTable = props => {
               1: <span className="badge bg-warning font-size-10">rush</span>,
               2: <span className="badge bg-danger font-size-10">urgent</span>,
             }
-            // console.log('index ', index)
+
             setDataMerch({
               columns: columnTable,
               rows: map(index, order => ({

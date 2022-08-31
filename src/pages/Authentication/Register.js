@@ -45,28 +45,24 @@ const Register = props => {
   const handleValidSubmit = event => {
     event.preventDefault();
     Signup(values).then(response => {
-      // console.log(response)
+     
       if(response.success == "success"){
-        // console.log(response)
+      
         setregisSuc(true)
         settextResponse(response.message_th)
         setValues({ ...values, username:"" , password:""})
       }else{
-        // console.log(response)
+       
         setregisFail(true)
         settextResponse(response.message_th)
       }
     })
-    // console.log(props.registerUser(values))
+   
   }
 
   const {user, token} = isAuthenticated()
 
-  useEffect(() => {
-    // if(user || token){
-    //   history.push("/")
-    // }
-  }, []);
+
 
   return (
     <React.Fragment>

@@ -1,498 +1,515 @@
 import { API } from "./../../configAPI"
 
-export const getAllOrder = token => {
-  return fetch(`${API}/readAllOrder`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    //   body : JSON.stringify({id : farmer})
-  })
-    .then(response => {
-      return response.json()
+export const getAllOrder = async token => {
+  try {
+    const response = await fetch(`${API}/readAllOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const getAllOrderLab = token => {
-  return fetch(`${API}/readOrdertoCheck`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then(response => {
-      return response.json()
+export const getAllOrderLab = async token => {
+  try {
+    const response = await fetch(`${API}/readOrdertoCheck`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const getRecheckOrder = token => {
-  return fetch(`${API}/readRecheckOrder`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    //   body : JSON.stringify({id : farmer})
-  })
-    .then(response => {
-      return response.json()
+export const getRecheckOrder = async token => {
+  try {
+    const response = await fetch(`${API}/readRecheckOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const readOrderById = (token, idOrders) => {
-  var id = {
+export const readOrderById = async (token, idOrders) => {
+  const id = {
     idOrders: idOrders,
   }
-  //   console.log(id)
-
-  return fetch(`${API}/readOrderById`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(id),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/readOrderById`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(id),
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const updateDetail = (token, index) => {
+export const updateDetail = async (token, index) => {
   // console.log("edit : ", index)
-  return fetch(`${API}/updateOrder`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/updateOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const reSend = (token, idOrders) => {
-  return fetch(`${API}/reSend`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(idOrders),
-  })
-    .then(response => {
-      return response.json()
+export const reSend = async (token, idOrders) => {
+  try {
+    const response = await fetch(`${API}/reSend`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(idOrders)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const deleteOrder = (token, idOrders) => {
+export const deleteOrder = async (token, idOrders) => {
   // console.log('deleteOrder id : ' , idOrders)
-  return fetch(`${API}/deleteOrder`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(idOrders),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/deleteOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(idOrders)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const readAllSpecificChemById = (token, idPdSpecificChem) => {
+export const readAllSpecificChemById = async (token, idPdSpecificChem) => {
   var id = {
     idPdSpecificChem: idPdSpecificChem,
   }
 
-  return fetch(`${API}/readAllSpecificChemById`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(id),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/readAllSpecificChemById`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(id)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const readAllSpecificBioById = (token, idPdSpecificMicro) => {
+export const readAllSpecificBioById = async (token, idPdSpecificMicro) => {
   var id = {
     idPdSpecificMicro: idPdSpecificMicro,
   }
 
-  return fetch(`${API}/readAllSpecificBioById`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(id),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/readAllSpecificBioById`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(id)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const readTestResultlasted = (token, idOrders) => {
-  var id = {
+export const readTestResultlasted = async (token, idOrders) => {
+  const id = {
     idOrders: idOrders,
   }
-  //   console.log(id)
-
-  return fetch(`${API}/readTestReportlasted`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(id),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/readTestReportlasted`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(id)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const readIdChemCheckbox = token => {
-  return fetch(`${API}/readIdChemCheckbox`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    //   body : JSON.stringify(id)
-  })
-    .then(response => {
-      return response.json()
+export const readIdChemCheckbox = async token => {
+  try {
+    const response = await fetch(`${API}/readIdChemCheckbox`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const readIdMicroCheckbox = token => {
-  return fetch(`${API}/readIdMicroCheckbox`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    //   body : JSON.stringify(id)
-  })
-    .then(response => {
-      return response.json()
+export const readIdMicroCheckbox = async token => {
+  try {
+    const response = await fetch(`${API}/readIdMicroCheckbox`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const addOrder = (token, index) => {
-  return fetch(`${API}/addOrder`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const addOrder = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/addOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
 //Test Values
-export const Addtestreport = (token, index) => {
-  return fetch(`${API}/Addtestreport`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const Addtestreport = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/Addtestreport`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
 //Recheck
-export const Recheck = (token, index) => {
+export const Recheck = async (token, index) => {
   // console.log('index recheck : ', index)
   // let data = {
   //     idOrders : index,
   //     ProductName : ProductName
   // }
-  return fetch(`${API}/Recheck`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/Recheck`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
 //WaitMicro
-export const WaitMicro = (token, index) => {
+export const WaitMicro = async (token, index) => {
   // console.log('index recheck : ', index)
-  return fetch(`${API}/WaitMicro`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/WaitMicro`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
 //readFG
-export const readFG = (token, index) => {
+export const readFG = async (token, index) => {
   // console.log('index recheck : ', index)
-  return fetch(`${API}/readFG`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/readFG`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
 //updateFG
-export const updateFG = (token, index) => {
+export const updateFG = async (token, index) => {
   // console.log('index recheck : ', index)
-  return fetch(`${API}/updateFGadFG`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/updateFGadFG`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const addRealtimeOrder = (token, index) => {
-  return fetch(`${API}/addRealTimeOrder`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const addRealtimeOrder = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/addRealTimeOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 //daily Report
-export const dailyReportFetch = (token, index) => {
-  return fetch(`${API}/dailyReport`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const dailyReportFetch = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/dailyReport`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const dailyReportBioFetch = (token, index) => {
-  return fetch(`${API}/dailyReportBio`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const dailyReportBioFetch = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/dailyReportBio`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
 // exportCOA
-export const exportCOA = token => {
-  return fetch(`${API}/exportCOA`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    //   body : JSON.stringify(index)
-  })
-    .then(response => {
-      return response.json()
+export const exportCOA = async token => {
+  try {
+    const response = await fetch(`${API}/exportCOA`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const loadHalalLogo = token => {
-  return fetch(`${API}/loadHalalLogo`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    //   body : JSON.stringify(index)
-  })
-    .then(response => {
-      return response.json()
+export const loadHalalLogo = async token => {
+  try {
+    const response = await fetch(`${API}/loadHalalLogo`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const UpdatexportCOA = (token, index) => {
-  return fetch(`${API}/UpdatexportCOA`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const UpdatexportCOA = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/UpdatexportCOA`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const UpdatexportPASS = (token, index) => {
-  return fetch(`${API}/UpdatexportPASS`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const UpdatexportPASS = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/UpdatexportPASS`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const UpdateStatusPassToCheck = (token, index, ProductName) => {
+export const UpdateStatusPassToCheck = async (token, index, ProductName) => {
   let data = {
     idOrders: index,
     ProductName: ProductName,
   }
-  return fetch(`${API}/UpdateStatus/PassToCheck`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  })
-    .then(response => {
-      return response.json()
+  try {
+    const response = await fetch(`${API}/UpdateStatus/PassToCheck`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const getCustomers = token => {
-  return fetch(`${API}/getCustomers`, {
-    method: "GET",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then(response => {
-      return response.json()
+export const getCustomers = async token => {
+  try {
+    const response = await fetch(`${API}/getCustomers`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 // const fetchDetail = (token, idOrders) => {
 //   readTestResultlasted(token, idOrders).then(data => {
@@ -512,54 +529,57 @@ export const getCustomers = token => {
 //   })
 // }UpdatexportCOA
 
-export const Reprocess = (token, index) => {
-  return fetch(`${API}/Reprocess`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const Reprocess = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/Reprocess`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
-export const UpdateDatailOrder = (token, index) => {
-  return fetch(`${API}/UpdateDatailOrder`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const UpdateDatailOrder = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/UpdateDatailOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }
 
 // queryDetailMulti
-export const queryDetailMulti = (token, index) => {
-  return fetch(`${API}/queryDetailMulti`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(index),
-  })
-    .then(response => {
-      return response.json()
+export const queryDetailMulti = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/queryDetailMulti`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(index)
     })
-    .catch(err => console.log(err))
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
 }

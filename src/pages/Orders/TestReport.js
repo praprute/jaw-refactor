@@ -59,6 +59,8 @@ const ModalTestReport = props => {
     redirect,
     handleRedirect,
   } = props
+
+
   const { user, token } = isAuthenticated()
   const [success_msg, setsuccess_msg] = useState(false)
   const [success_recheck, setsuccess_recheck] = useState(false)
@@ -171,6 +173,7 @@ const ModalTestReport = props => {
   const [meanScore, setMeanScore] = useState(0)
 
   const [description, setDescription] = useState("")
+
   const countingScore = async index => {
     // console.log("counting Score", index)
     let resulted = index.resulted
@@ -244,10 +247,6 @@ const ModalTestReport = props => {
       }
     }
 
-    // var index = {
-    //   idOrders: values.idOrders,
-    // }
-    // WaitMicro(token, index)
   }
 
   const fetchTestResultlasted = (token, idOrders) => {
@@ -319,7 +318,6 @@ const ModalTestReport = props => {
     let AN = 0
     let Acidity = 0
     let Viscosity = 0
-    // console.log('ch function : ' , oldValues.AN + "---" + values.AN)
 
     if (oldValues.AN == values.AN) {
       AN = AN
@@ -396,7 +394,7 @@ const ModalTestReport = props => {
     })
   }
 
-  const handleTest = async (event) => {
+  const handleTest = async event => {
     event.preventDefault()
     // console.log('values test : ' , values)
     // console.log('values tr : ' , tr)
@@ -433,7 +431,7 @@ const ModalTestReport = props => {
       //  let fetchTestresult = await readTestResultlasted(token , index.idOrders)
       if (data) {
         countDailyFinishgood()
-        fetchTestResultlasted(token,  values.idOrders)
+        fetchTestResultlasted(token, values.idOrders)
       }
       // console.log('fetchTestresult', fetchTestresult)
     } catch (err) {
@@ -455,11 +453,9 @@ const ModalTestReport = props => {
     let indexRecheck = []
     resultChem.forEach(data => {
       if (data.render > 0 && data.coa == false) {
-        // console.log('data  : ', data.key)
         indexRecheck.push(data.key)
       }
     })
-    // console.log('resultChem.Recheck : ',resultChem)
     var index = {
       idOrders: values.idOrders,
       Recheck: values.Recheck,
@@ -487,7 +483,6 @@ const ModalTestReport = props => {
 
   const handleWaitMicro = event => {
     event.preventDefault()
-    // console.log('values.Recheck : ',values.Recheck)
     var index = {
       idOrders: values.idOrders,
     }
@@ -520,8 +515,7 @@ const ModalTestReport = props => {
       (current_datetime.getMonth() + 1) +
       "-" +
       current_datetime.getDate()
-    //let formatted_DateTime_now = current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + (current_datetime.getDate())+"T"+current_datetime.getHours()+":"+current_datetime.getMinutes()+":"+current_datetime.getSeconds()
-    // console.log('formatted_date_now : ' , formatted_date_now)
+
     readFG(token).then(data => {
       if (data) {
         // console.log('readFG : ', data)
@@ -545,20 +539,12 @@ const ModalTestReport = props => {
     setMicrorender(orders.Micro)
   }, [orders, bio, tr])
 
-  useEffect(() => {}, [isOpenTR])
-
-
-  const refreshPage = () => {
-    window.location.reload(false);
-  }
-
   useEffect(() => {
     if (tr[0] != undefined) {
-      // console.log("test report tr[0]", tr)
       if (tr[3][0].Description) {
         setDescription(tr[3][0].Description)
         const usingSplit = tr[3][0].Description.split(",")
-        console.log("usingSplit : ", usingSplit)
+
         usingSplit.forEach(data => {
           if (data == "TN") {
             setDisable({ ...disable, TN: true })
@@ -1432,19 +1418,7 @@ const ModalTestReport = props => {
               >
                 Recheck
               </Button>
-              &nbsp;&nbsp;
-              {/* <Button
-                color="primary"
-                className="w-lg"
-                onClick={event => {
-                  // toggleTR()
-                  // handleRecheck(event)
-                  handleWaitMicro(event)
-                }}
-              >
-                Wait to microbiological
-              </Button> */}
-              &nbsp;&nbsp;
+              &nbsp;&nbsp; &nbsp;&nbsp;
             </Col>
             <Col
               xs="12"
@@ -1455,17 +1429,7 @@ const ModalTestReport = props => {
                 justifyContent: "flex-end",
               }}
             >
-              {/* <Button
-                color="primary"
-                className="w-lg"
-                onClick={() => {
-                  toggleTR()
-                  setOptionTR(false)
-                  window.location.reload()
-                }}
-              >
-                Save
-              </Button> */}
+              
               &nbsp;&nbsp;
               <Button
                 color="danger"
