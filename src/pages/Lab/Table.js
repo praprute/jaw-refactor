@@ -208,7 +208,7 @@ const OrderTable = props => {
                         type="button"
                         color="primary"
                         className="btn btn-primary waves-effect waves-light .w-xs"
-                        onClick={props.toggleTR}
+              
                       >
                         <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
                         TEST
