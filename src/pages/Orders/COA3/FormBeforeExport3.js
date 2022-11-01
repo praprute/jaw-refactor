@@ -267,7 +267,6 @@ const FormBeforeExport3 = props => {
   const handleChangeDesVeit = name => event => {
     // descriptionVeit, setDescriptionVeit
     setDescriptionVeit({ ...descriptionVeit, [name]: event.target.value })
-    console.log("descriptionVeit: ", descriptionVeit)
   }
 
   const handleChangeValuesApplove = name => event => {
@@ -276,26 +275,21 @@ const FormBeforeExport3 = props => {
 
   const handleChangeValuesContainer = name => event => {
     setValuesContainer({ ...valuesContainer, [name]: event.target.value })
-    // console.log("valuesContainer : ", valuesContainer)
   }
 
   const handleChangeValuesBagNo = name => event => {
     setValuesBagNo({ ...valuesBagNo, [name]: event.target.value })
-    // console.log("valuesBagNo : ", valuesBagNo)
   }
 
   const handleChangeValuesLot = name => event => {
     setValuesLot({ ...valuesLot, [name]: event.target.value })
-    // console.log("valuesLot : ", valuesLot)
   }
 
   useEffect(async () => {
     try {
       let customerName = await getCustomers(token)
-      // console.log("customerName : ", customerName.message)
       let index = []
       for (let i = 0; i < customerName.message.length; i++) {
-        // console.log("sdfsd ", customerName.message[i])
         let detail = {
           label: customerName.message[i].Name,
           value: customerName.message[i].Name,
@@ -309,7 +303,6 @@ const FormBeforeExport3 = props => {
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      console.log("index : ", paresIndex)
 
       setValuesExportRow2({
         CollectedDate: "",
@@ -342,14 +335,14 @@ const FormBeforeExport3 = props => {
       setDisPH(paresIndex.chem[3].render)
       setDisSalt(paresIndex.chem[1].render)
       setDisHistamine(paresIndex.chem[2].render)
-      // setDisSPG(paresIndex.chem[6].render)
+     
       setDisSPG(true)
       setDisAW(paresIndex.chem[4].render)
       setDisTss(paresIndex.chem[5].render)
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[8].render)
       setDisViscosity(paresIndex.chem[9].render)
-      // setDisSaltMeter(paresIndex.chem[10].render)
+      
       setDisSaltMeter(true)
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
@@ -448,8 +441,7 @@ const FormBeforeExport3 = props => {
   }
 
   const handleExportPDF = async () => {
-    // console.log("valScoreLevel : ", valScoreLevel)
-
+   
     let dataRow2 = [
       { values: valuesExportRow2.CollectedDate },
       { values: valuesExportRow2.productName },
@@ -482,7 +474,7 @@ const FormBeforeExport3 = props => {
 
     let ScoreLevel = true
     
-    console.log('OrderformTableVeit : ', OrderformTableVeit)
+  
     // OrderformTableVeit
     const contain = await json2array(valuesContainer)
     const bag = await json2array(valuesBagNo)
@@ -518,15 +510,15 @@ const FormBeforeExport3 = props => {
 
   const handleChangeValueCustomer = e => {
     setCustomerNameSelect(e)
-    // console.log(e)
+  
   }
   const handleChangeApproveValue = e => {
     setApproveValue(e)
-    // console.log(e)
+   
   }
   const handleChangeReportValue = e => {
     setReportValue(e)
-    // console.log(e)
+  
   }
 
   // ApproveSelect, setApproveSelect
@@ -749,7 +741,7 @@ const FormBeforeExport3 = props => {
 
   const toggleModalReprocess = () => {
     setModalAddSamples(!modalAddSamples)
-    // console.log("bug modalReprocess: ", modalReprocess)
+    
   }
 
   const offReprocess = () => {
@@ -770,7 +762,6 @@ const FormBeforeExport3 = props => {
   useEffect(async () => {
     try {
       // if (modalAddSamples == false) {
-      //   console.log("OderVeit : ", OderVeit)
       setOrderformTableVeit(OderVeit)
       // }
     } catch (e) {
