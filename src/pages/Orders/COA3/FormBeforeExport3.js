@@ -482,6 +482,7 @@ const FormBeforeExport3 = props => {
 
     let ScoreLevel = true
     
+    console.log('OrderformTableVeit : ', OrderformTableVeit)
     // OrderformTableVeit
     const contain = await json2array(valuesContainer)
     const bag = await json2array(valuesBagNo)
@@ -567,20 +568,13 @@ const FormBeforeExport3 = props => {
               flexDirection: "column",
             }}
           >
-            {/* <h4 style={{ margin: 0 }}>RUNGROJ FISH SAUCE CO., LTD.</h4>
-            <span>8/4 Samutjadee Rd. Paknum Mueang Rayong 21000 Thailand</span>
-            <span>Tel: 66-38-940388 Fax: 66-38-940086</span> */}
+         
 
             <h4 style={{ margin: 0 }}>{Company.Name}</h4>
             <span>{Company.Address}</span>
             <span>{Company.Phone}</span>
             <span>{Company.Email}</span>
 
-            {/* <h4 style={{ margin: 0 }}>VIET HUONG CO., LTD.</h4>
-            <span>89 Moo 4, Makamku, Nikom Phattana, Rayoung 21180</span>
-            <span>Tel: 66-38-624432 Fax: 66-38-940086</span> */}
-
-            {/* <h4 style={{ margin: 0 }}>CERTIFICATE OF ANALYSIS</h4> */}
           </Col>
           <Col
             sm="3"
@@ -763,13 +757,13 @@ const FormBeforeExport3 = props => {
   }
 
   const SelectAddValues = async index => {
-    console.log("select index : ", index)
+   
     let i = index
     let oo = []
     i.forEach(async data => {
       oo.push(data)
     })
-    console.log("select oo : ", oo)
+   
     setOrderAdded(oo)
   }
 

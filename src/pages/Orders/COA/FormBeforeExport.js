@@ -391,6 +391,7 @@ const FormBeforeExport = props => {
         Saureus: Saureus,
         Salmonella: Salmonella,
       })
+
       return JSON.parse(localStorage.getItem("JawIndexExport"))
     } else {
       return false

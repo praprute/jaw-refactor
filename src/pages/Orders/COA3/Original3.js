@@ -15,21 +15,7 @@ export const originalFormCOA3 = (
   let dataAnaly = [
     [
       {
-        text: `Container No.`,
-        fontSize: "8",
-        alignment: "center",
-        margin: [0, 0, 0, 5],
-        border: [true, true, true, true],
-      },
-      {
-        text: `BAG No.`,
-        alignment: "center",
-        fontSize: "8",
-        margin: [0, 0, 0, 5],
-        border: [true, true, true, true],
-      },
-      {
-        text: `LOT No.`,
+        text: `Container No.\nBAG No.\nLOT No.`,
         fontSize: "8",
         alignment: "center",
         margin: [0, 0, 0, 5],
@@ -43,21 +29,21 @@ export const originalFormCOA3 = (
         border: [true, true, true, true],
       },
       {
-        text: `Histamine (ppm.)`,
+        text: `Histamine\n(ppm.)`,
         alignment: "center",
         fontSize: "8",
         margin: [0, 0, 0, 5],
         border: [true, true, true, true],
       },
       {
-        text: `Salt (g/l)`,
+        text: `Salt\n(g/l)`,
         alignment: "center",
         fontSize: "8",
         margin: [0, 0, 0, 5],
         border: [true, true, true, true],
       },
       {
-        text: `Salt Meter`,
+        text: `Salt\nMeter`,
         alignment: "center",
         fontSize: "8",
         margin: [0, 0, 0, 5],
@@ -71,21 +57,35 @@ export const originalFormCOA3 = (
         border: [true, true, true, true],
       },
       {
-        text: `Specific Gravity`,
+        text: `Specific\nGravity\n(g/ml)`,
         fontSize: "8",
         alignment: "center",
         margin: [0, 0, 0, 5],
         border: [true, true, true, true],
       },
       {
-        text: `APC cfu/g`,
+        text: `APC\ncfu/g`,
         fontSize: "8",
         alignment: "center",
         margin: [0, 0, 0, 5],
         border: [true, true, true, true],
       },
       {
-        text: `E.coli & Coliform`,
+        text: `Yeasts\n&\nMolds\n(cfu/g)`,
+        fontSize: "8",
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `S.\naureus\n(ND)`,
+        fontSize: "8",
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+        border: [true, true, true, true],
+      },
+      {
+        text: `E.coli &\nColiform\n(ND)`,
         fontSize: "8",
         alignment: "center",
         margin: [0, 0, 0, 5],
@@ -100,26 +100,12 @@ export const originalFormCOA3 = (
       },
     ],
   ]
+
   if (setDescriptionVeitOrderformTableVeit) {
     for (let i = 0; i < setDescriptionVeitOrderformTableVeit.length; i++) {
-      console.log("container.i : ", valuesContainer.i)
       dataAnaly.push([
         {
-          text: `${valuesContainer[i]}`,
-          fontSize: "8",
-          alignment: "center",
-          margin: [0, 10, 0, 10],
-          border: [true, true, true, true],
-        },
-        {
-          text: `${valuesBagNo[i]}`,
-          alignment: "center",
-          fontSize: "8",
-          margin: [0, 10, 0, 10],
-          border: [true, true, true, true],
-        },
-        {
-          text: `${valuesLot[i]}`,
+          text: `${valuesContainer[i]}\n${valuesBagNo[i]}\n${valuesLot[i]}`,
           fontSize: "8",
           alignment: "center",
           margin: [0, 10, 0, 10],
@@ -172,6 +158,24 @@ export const originalFormCOA3 = (
             setDescriptionVeitOrderformTableVeit[i].APC
               ? setDescriptionVeitOrderformTableVeit[i].APC
               : "ND"
+          }`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${
+            setDescriptionVeitOrderformTableVeit[i].Yeasts ? "ND" : "ND"
+          }`,
+          fontSize: "8",
+          alignment: "center",
+          margin: [0, 10, 0, 10],
+          border: [true, true, true, true],
+        },
+        {
+          text: `${
+            setDescriptionVeitOrderformTableVeit[i].Saureus ? "ND" : "ND"
           }`,
           fontSize: "8",
           alignment: "center",
@@ -381,18 +385,18 @@ export const originalFormCOA3 = (
         margin: [0, 10, 0, 0],
         table: {
           widths: [
-            "12.3%",
-            "12.3%",
-            "10%",
-            "7%",
-            "9%",
-            "7%",
-            "7%",
-            "7%",
-            "7%",
-            "7%",
-            "7%",
-            "7%",
+            "12.5%",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*",
           ],
           body: dataAnaly,
         },
@@ -510,7 +514,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `Total Nitrogen gm/liter, %\nSodium Chloride\nHistamine\n\npH\nWater Activity\nSpecific Gravity\nAPC\nE.coli & Coliform`,
+                text: `Total Nitrogen gm/liter, %\nSodium Chloride\nHistamine\n\npH\nWater Activity\nSpecific Gravity\nAPC\nYeast & Mold\nE.coli & Coliform\nS. aureus`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
@@ -527,7 +531,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN \u2265 20 gm/Liter minimum\n28.65 - 29.25%\n200ppm maximum\n\n5.2 - 5.4 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<3.0 (None Detected)`,
+                text: `TN \u2265 20 gm/Liter minimum\n28.94 - 30.11%\n200ppm maximum\n\n5.2 - 5.4 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<10 cfu/g maximum\n<3.0 (None Detected)\n<3.0 (None Detected)`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
@@ -544,7 +548,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\nUsing pH meter\nUsing Water Activity analyzer\nHydrometer method\nPour Plate Technique\nMPN Method`,
+                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\nUsing pH meter\nUsing Water Activity analyzer\nHydrometer method\nPour Plate Technique\nPour Plate Technique\nMPN Method\nMPN Method`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
