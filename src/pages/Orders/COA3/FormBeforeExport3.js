@@ -23,7 +23,12 @@ import { Company } from "../../../configAPI"
 
 // import { Link } from "react-router-dom"
 import classnames from "classnames"
-import { UpdatexportCOA, loadHalalLogo, UpdateDatailOrder } from "../api"
+import {
+  UpdatexportCOA,
+  loadHalalLogo,
+  UpdateDatailOrder,
+  queryDetailMulti,
+} from "../api"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
@@ -65,12 +70,10 @@ pdfMake.fonts = {
 }
 const FormBeforeExport3 = props => {
   const history = useHistory()
-  const { user, token } = isAuthenticated()
+  const { token } = isAuthenticated()
   const { orders, spc, tr, bio, OderVeit, onAddOrderVeit } = props
-  const [detailById, setdetailById] = useState([])
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
-  const [salmon, setSalmon] = useState(false)
   const [valuesMicro, setvaluesMicro] = useState({
     TPC: "",
     YeaseandMold: "",
@@ -83,15 +86,9 @@ const FormBeforeExport3 = props => {
     protein: "",
   })
   const [spcChem, setSpcChem] = useState({})
-  const [spcMicro, setSpcMicro] = useState({})
   const [modalAddSamples, setModalAddSamples] = useState(false)
   const [MicroRender, setMicroRender] = useState(false)
   const [MicroAnalysis, setMicroAnalysis] = useState(true)
-
-  const [DisProductDate, setDisProductDate] = useState(false)
-  const [DisExpiration, setDisExpiration] = useState(false)
-  const [DisTank, setDisTank] = useState(false)
-  const [disCollectedDate, setdisCollectedDate] = useState(false)
 
   const [DisTN, setDisTN] = useState(true)
   const [DisProtein, setDisProtein] = useState(false)
@@ -167,19 +164,16 @@ const FormBeforeExport3 = props => {
     To: customerNameSelect,
     DCL1: "00/00/00",
   })
+
   const [valuesExportRow2, setValuesExportRow2] = useState({
     CollectedDate: "",
     productName: "",
-    // ProductionDate: "",
-    // DaliveryDate: "",
   })
   const [valuesExportRow3, setValuesExportRow3] = useState({
     productionDate: "",
     TankNo: "",
   })
   const [valuesExportPNandPS, setValuesExportPNandPS] = useState({
-    // CollectedDate: "",
-    // productName: "",
     ExpirationDate: "",
   })
   const [TankNumber, setTankNumber] = useState({
@@ -214,17 +208,13 @@ const FormBeforeExport3 = props => {
     CompletionDate: "",
   })
 
-  const [orderAdded, setOrderAdded] = useState([{}])
+  const [orderAdded, setOrderAdded] = useState([])
   const [valuesAplove, setValuesAplove] = useState({
     nameLeft: "",
     nameRight: "",
     dateLeft: "",
     dateRight: "",
   })
-
-  // TWCU2053022
-  // GB180823361
-  // 0209321
 
   const [valuesContainer, setValuesContainer] = useState({
     0: null,
@@ -311,8 +301,6 @@ const FormBeforeExport3 = props => {
       setUid(paresIndex.Orders.idOrders)
       setValuesExportPNandPS({
         ExpirationDate: paresIndex.Orders.ED,
-        // ProductName: paresIndex.Orders.ProductName,
-        // PackSize: paresIndex.Orders.Size,
       })
 
       setValuesExportRow3({
@@ -335,14 +323,14 @@ const FormBeforeExport3 = props => {
       setDisPH(paresIndex.chem[3].render)
       setDisSalt(paresIndex.chem[1].render)
       setDisHistamine(paresIndex.chem[2].render)
-     
+
       setDisSPG(true)
       setDisAW(paresIndex.chem[4].render)
       setDisTss(paresIndex.chem[5].render)
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[8].render)
       setDisViscosity(paresIndex.chem[9].render)
-      
+
       setDisSaltMeter(true)
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
@@ -425,7 +413,7 @@ const FormBeforeExport3 = props => {
 
   const handleUpdateStatusCoa = async () => {
     try {
-      let update = await UpdatexportCOA(token)
+      await UpdatexportCOA(token)
     } catch (err) {
       console.log(err)
     }
@@ -441,7 +429,6 @@ const FormBeforeExport3 = props => {
   }
 
   const handleExportPDF = async () => {
-   
     let dataRow2 = [
       { values: valuesExportRow2.CollectedDate },
       { values: valuesExportRow2.productName },
@@ -473,8 +460,7 @@ const FormBeforeExport3 = props => {
     }
 
     let ScoreLevel = true
-    
-  
+
     // OrderformTableVeit
     const contain = await json2array(valuesContainer)
     const bag = await json2array(valuesBagNo)
@@ -510,21 +496,14 @@ const FormBeforeExport3 = props => {
 
   const handleChangeValueCustomer = e => {
     setCustomerNameSelect(e)
-  
   }
   const handleChangeApproveValue = e => {
     setApproveValue(e)
-   
   }
   const handleChangeReportValue = e => {
     setReportValue(e)
-  
   }
 
-  // ApproveSelect, setApproveSelect
-
-  // const [ApproveValue, setApproveValue] = useState(null)
-  // const [ReportValue, setReportValue] = useState(null)
   const headerForm = () => {
     return (
       <React.Fragment>
@@ -560,13 +539,10 @@ const FormBeforeExport3 = props => {
               flexDirection: "column",
             }}
           >
-         
-
             <h4 style={{ margin: 0 }}>{Company.Name}</h4>
             <span>{Company.Address}</span>
             <span>{Company.Phone}</span>
             <span>{Company.Email}</span>
-
           </Col>
           <Col
             sm="3"
@@ -728,14 +704,12 @@ const FormBeforeExport3 = props => {
     )
   }
 
-
   const handleRedi = () => {
     setRedirect(!redirect)
   }
 
   const toggleModalReprocess = () => {
     setModalAddSamples(!modalAddSamples)
-    
   }
 
   const offReprocess = () => {
@@ -743,21 +717,19 @@ const FormBeforeExport3 = props => {
   }
 
   const SelectAddValues = async index => {
-   
-    let i = index
-    let oo = []
-    i.forEach(async data => {
-      oo.push(data)
-    })
-   
-    setOrderAdded(oo)
+    for (const element of index) {
+      const response = await queryDetailMulti(token, {
+        id: element,
+      })
+      if (response.success === "success") {
+        setOrderAdded(item => [...item, response.message[0]])
+      }
+    }
   }
 
   useEffect(async () => {
     try {
-      // if (modalAddSamples == false) {
       setOrderformTableVeit(OderVeit)
-      // }
     } catch (e) {
       console.log(e)
     }
@@ -775,20 +747,18 @@ const FormBeforeExport3 = props => {
             marginBottom: "10px",
           }}
         >
-          
           <Col>
             <Button color="primary" onClick={toggleModalReprocess}>
-              {" "}
               + Add
-            </Button>{" "}
+            </Button>
             <Button
               color="danger"
               onClick={() => {
                 onAddOrderVeit([])
+                setOrderAdded([])
               }}
             >
-              {" "}
-              - Clear
+              Clear
             </Button>
           </Col>
         </Row>
@@ -818,81 +788,81 @@ const FormBeforeExport3 = props => {
             {/* {DisAW ? <th>Aw/{`\u00B0C`}</th> : null} */}
             {/* <th>LOT No.</th> */}
           </tr>
-          {/* {JSON.stringify(OderVeit.Name)} */}
-          {OrderformTableVeit.map((data, i) => (
-            <tr>
-              {/* {JSON.stringify(i)} */}
-              <td>{data.ProductName}</td>
-              <td>
-                <Input
-                  name={i}
-                  onChange={handleChangeValuesContainer(`${i}`)}
-                  // value={valuesContainer.refNo}
-                />
-              </td>
-              <td>
-                <Input
-                  name={i}
-                  onChange={handleChangeValuesBagNo(`${i}`)}
-                  // value={valuesContainer.refNo}
-                />
-              </td>
-              <td>
-                <Input
-                  name={i}
-                  onChange={handleChangeValuesLot(`${i}`)}
-                  // value={valuesContainer.refNo}
-                />
-              </td>
 
-              {/* TN */}
-              <td style={{ textAlign: "center" }}>
-                {data.Tn ? data.Tn.toFixed(2) : "null"}
-              </td>
-              {/* Histamine */}
-              <td style={{ textAlign: "center" }}>
-                {data.Histamine ? data.Histamine.toFixed(2) : "null"}
-              </td>
-              {/* Salt */}
-              <td style={{ textAlign: "center" }}>
-                {data.Salt ? data.Salt.toFixed(2) : "null"}
-              </td>
-              {/* Salt Meter */}
-              <td style={{ textAlign: "center" }}>
-                {data.SaltMeter ? data.SaltMeter.toFixed(2) : "null"}
-              </td>
-              {/* pH */}
-              <td style={{ textAlign: "center" }}>
-                {data.PH ? data.PH.toFixed(2) : "null"}
-              </td>
-              {/* SPGTest */}
-              <td style={{ textAlign: "center" }}>
-                {data.SPGTest ? data.SPGTest.toFixed(2) : "null"}
-              </td>
-              {/* APC */}
-              <td style={{ textAlign: "center" }}>
-                {data.APC ? data.APC : "ND"}
-              </td>
-              {/* E.coli */}
-              <td style={{ textAlign: "center" }}>
-                {data.EColi ? "ND" : "ND"}
-              </td>
-              {/* AW */}
-              <td style={{ textAlign: "center" }}>
-                {data.Aw
-                  ? `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`
-                  : "null"}
-                {/* {() => {
+          {Boolean(orderAdded.length) &&
+            orderAdded.map((data, i) => (
+              <tr>
+                <td>{data.ProductName}</td>
+                <td>
+                  <Input
+                    name={i}
+                    onChange={handleChangeValuesContainer(`${i}`)}
+                    // value={valuesContainer.refNo}
+                  />
+                </td>
+                <td>
+                  <Input
+                    name={i}
+                    onChange={handleChangeValuesBagNo(`${i}`)}
+                    // value={valuesContainer.refNo}
+                  />
+                </td>
+                <td>
+                  <Input
+                    name={i}
+                    onChange={handleChangeValuesLot(`${i}`)}
+                    // value={valuesContainer.refNo}
+                  />
+                </td>
+
+                {/* TN */}
+                <td style={{ textAlign: "center" }}>
+                  {data.Tn ? data.Tn.toFixed(2) : "null"}
+                </td>
+                {/* Histamine */}
+                <td style={{ textAlign: "center" }}>
+                  {data.Histamine ? data.Histamine.toFixed(2) : "null"}
+                </td>
+                {/* Salt */}
+                <td style={{ textAlign: "center" }}>
+                  {data.Salt ? data.Salt.toFixed(2) : "null"}
+                </td>
+                {/* Salt Meter */}
+                <td style={{ textAlign: "center" }}>
+                  {data.SaltMeter ? data.SaltMeter.toFixed(2) : "null"}
+                </td>
+                {/* pH */}
+                <td style={{ textAlign: "center" }}>
+                  {data.PH ? data.PH.toFixed(2) : "null"}
+                </td>
+                {/* SPGTest */}
+                <td style={{ textAlign: "center" }}>
+                  {data.SPGTest ? data.SPGTest.toFixed(2) : "null"}
+                </td>
+                {/* APC */}
+                <td style={{ textAlign: "center" }}>
+                  {data.APC ? data.APC : "ND"}
+                </td>
+                {/* E.coli */}
+                <td style={{ textAlign: "center" }}>
+                  {data.EColi ? "ND" : "ND"}
+                </td>
+                {/* AW */}
+                <td style={{ textAlign: "center" }}>
+                  {data.Aw
+                    ? `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`
+                    : "null"}
+                  {/* {() => {
                   if (data.Aw != null) {
                     return `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`
                   } else {
                     return `null`
                   }
                 }} */}
-                {/* {data.Aw ? `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`: "null"} */}
-              </td>
-            </tr>
-          ))}
+                  {/* {data.Aw ? `${data.Aw}/${data.tempAW.toFixed(2)}\u00B0C`: "null"} */}
+                </td>
+              </tr>
+            ))}
         </table>
 
         <Row style={{ marginTop: "50px" }}>

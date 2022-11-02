@@ -169,30 +169,15 @@ const TableCompleteCheck = props => {
 
   const addButton = async () => {
     try {
-      let Orders = []
       setSelectRowEx(indexCheckBox)
-      let array1 = indexCheckBox.filter(val => !unCheck.includes(val))
-      array1.map(async data => {
-        const response = await queryDetailMulti(token, {
-          id: data,
-        })
-        if (response.success === "success") {
-          Orders.push(response.message[0])
-        }
-      })
-
-      await setOrders(Orders)
-      await onAddOrderVeit(Orders)
-
-      let index = {
-        Orders: Orders,
-      }
-
+      const fillterOrders = indexCheckBox.filter(val => !unCheck.includes(val))
+      await setOrders(fillterOrders)
       setconfirm_alert(true)
     } catch (err) {
       console.log(err)
     }
   }
+  
   return (
     <React.Fragment>
       {success_dlg ? (
