@@ -3,21 +3,10 @@ import { MDBDataTable } from "mdbreact"
 import BootstrapTable from "react-bootstrap-table-next"
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
 
-import MetaTags from "react-meta-tags"
 import {
   Col,
   Row,
-  Card,
-  CardBody,
   Button,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  ButtonDropdown,
-  CardTitle,
-  CardSubtitle,
-  Container,
 } from "reactstrap"
 
 //Import Breadcrumb
@@ -32,12 +21,9 @@ import paginationFactory, {
 //get api
 import {
   getAllOrder,
-  readOrderById,
-  readTestResultlasted,
   deleteOrder,
   queryDetailMulti,
 } from "./../../Orders/api"
-import { map } from "lodash"
 import { isAuthenticated } from "./../../Authentication/api"
 
 //store
@@ -49,7 +35,7 @@ import {
   AddSpecificDetail,
   AddTestResultlasted,
   AddSpecificBioDetail,
-  AddOrderVeit,                                        
+  AddOrderVeit,
 } from "store/actions"
 
 //SweetAlert
@@ -57,43 +43,30 @@ import SweetAlert from "react-bootstrap-sweetalert"
 // import ModalDetail from './../Orders/ModalDetail'
 
 const TableCompleteCheck = props => {
-  const { user, token } = isAuthenticated()
+  const { token } = isAuthenticated()
   const {
     redirect,
-    orders,
-    spc,
-    onAddDetail,
-    onAddSpcChem,
-    onAddTestResult,
-    onAddSpcBio,
-    onClose,
     setOrders,
     onAddOrderVeit,
   } = props
-  // const [redirect, setRedirect] = useState(false)
   const [selectRowEx, setSelectRowEx] = useState([])
 
   let indexCheckBox = []
   let unCheck = []
-                                       
+
   const selectRow = {
     mode: "checkbox",
     onSelect: (row, isSelect, rowIndex, e) => {
-      //   console.log("row", row.id)
-      //   console.log("isSelect", isSelect)
-
-      //   console.log("rowIndex", rowIndex)
-      //   console.log("e", e)
+    
       if (isSelect) {
         indexCheckBox.push(row.id)
       } else {
         unCheck.push(row.id)
       }
-      //   console.log("checked", checked)
+     
     },
     onSelectAll: (isSelect, rows, e) => {
-      // ...
-      console.log("rows all", rows)
+      
     },
   }
 
@@ -111,36 +84,13 @@ const TableCompleteCheck = props => {
       dataField: "Specific",
       sort: true,
     },
-    // {
-    //   label: "Status",
-    //   field: "status",
-    //   sort: "asc",
-    // },
-    // {
-    //   label: "Priority",
-    //   field: "priority",
-    //   sort: "asc",
-    // },
-    // {
-    //   label: "Recheck",
-    //   field: "Recheck",
-    //   sort: "asc",
-    // },
     {
       text: "Timestamp",
       dataField: "timeStamp",
       sort: true,
     },
-    // {
-    //   text: "Detail",
-    //   dataField: "detail",
-    //   sort: true,
-    // },
   ]
   const [dataMerch, setDataMerch] = useState({})
-  const [detail, setdetail] = useState({})
-  const [TRLasted, setTRLasted] = useState({})
-  const [info_dropup111, setInfo_dropup111] = useState(false)
   const [confirm_alert, setconfirm_alert] = useState(false)
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
@@ -158,53 +108,12 @@ const TableCompleteCheck = props => {
     },
   ])
 
-  const fetchDetail = (token, idOrders) => {
-    readOrderById(token, idOrders).then(data => {
-      if (data) {
-        if (data.success == "success") {
-          // console.log('onAddDetail : ',data.message[0])
-          setdetail(data.message[0])
-          onAddDetail(data.message[0])
-        }
-      } else {
-        return null
-      }
-    })
-  }
-
-  const fetchTestResultlasted = (token, idOrders) => {
-    readTestResultlasted(token, idOrders).then(data => {
-      // console.log(' readTestResultlasted :',data.resulted)
-      // let resulted = []
-      // data.resulted.forEach(data => {
-      //   data.forEach(children => {
-
-      //   })
-      // })
-      if (data) {
-        if (data.success == "success") {
-          if (!data.message) {
-            setTRLasted({})
-            onAddTestResult({})
-          } else {
-            setTRLasted(data.resulted)
-            onAddTestResult(data.resulted)
-          }
-        } else {
-          setTRLasted({})
-          onAddTestResult({})
-        }
-      } else {
-        return null
-      }
-    })
-  }
 
   useEffect(async () => {
     try {
       if (props.page == "lab") {
         let data = await getAllOrder(token)
-        // console.log(data)
+
         let index = []
         if (data) {
           data.message.forEach(data => {
@@ -215,7 +124,6 @@ const TableCompleteCheck = props => {
                 name: data.ProductName,
                 Specific: data.name,
                 timeStamp: data.timestamp,
-                //   detail: "11",
               })
             }
           })
@@ -258,31 +166,21 @@ const TableCompleteCheck = props => {
     totalSize: pd.length, // replace later with size(customers),
     custom: true,
   }
-  
-  const productData = [
-    {
-      id: 1,
-      name: "Airi Satou",
-      Specific: "Accountant",
-      timeStamp: "Tokyo",
-      detail: "33",
-    },
-  ]
 
   const addButton = async () => {
     try {
       let Orders = []
       setSelectRowEx(indexCheckBox)
       let array1 = indexCheckBox.filter(val => !unCheck.includes(val))
-      array1.forEach(async data => {
-        // console.log("data : ", data)
-        let index = {
+      array1.map(async data => {
+        const response = await queryDetailMulti(token, {
           id: data,
+        })
+        if (response.success === "success") {
+          Orders.push(response.message[0])
         }
-        let response = await queryDetailMulti(token, index)
-        console.log("response : ", response)
-        Orders.push(response.message[0])
       })
+
       await setOrders(Orders)
       await onAddOrderVeit(Orders)
 
@@ -290,14 +188,7 @@ const TableCompleteCheck = props => {
         Orders: Orders,
       }
 
-      // if(Orders.length > 0){
-      //   if ((typeof window !== "undefined") && index.Orders) {
-      //   localStorage.setItem("VeitIndexExport", JSON.stringify(index))
-      // }
-      // }
       setconfirm_alert(true)
-      // await props.toggle()
-      // console.log("Orders : ", Orders)
     } catch (err) {
       console.log(err)
     }
@@ -311,9 +202,6 @@ const TableCompleteCheck = props => {
           onConfirm={() => {
             setsuccess_dlg(false)
             props.toggle()
-            // const refreshPage = ()=>{
-            //     window.location.reload();
-            //  }
           }}
         >
           {dynamic_description}
@@ -444,7 +332,7 @@ const mapDispatchToProps = dispatch => ({
   onAddDetail: detail => dispatch(AddProductDetail(detail)),
   onAddSpcChem: detailSpcChem => dispatch(AddSpecificDetail(detailSpcChem)),
   onAddTestResult: detailSpcChem =>
-  dispatch(AddTestResultlasted(detailSpcChem)),
+    dispatch(AddTestResultlasted(detailSpcChem)),
   onAddSpcBio: detailSpcChem => dispatch(AddSpecificBioDetail(detailSpcChem)),
   onAddOrderVeit: detailVeit => dispatch(AddOrderVeit(detailVeit)),
 })

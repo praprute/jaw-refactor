@@ -71,7 +71,7 @@ export const originalFormCOA3 = (
         border: [true, true, true, true],
       },
       {
-        text: `Yeasts\n&\nMolds\n(cfu/g)`,
+        text: `Yeast\n&\nMold\n(cfu/g)`,
         fontSize: "8",
         alignment: "center",
         margin: [0, 0, 0, 5],
@@ -482,8 +482,8 @@ export const originalFormCOA3 = (
             ],
             [
               {
-                margin: [-5, 15, 0, 10],
-                text: `Physico-Chemical Specifications`,
+                margin: [36, 15, 0, 10],
+                text: `Physical-Chemical Specifications`,
                 // style: "invoiceTitleHeaderDetail",
                 fontSize: "10",
                 alignment: "left",
@@ -503,6 +503,7 @@ export const originalFormCOA3 = (
         },
       },
       {
+        margin: [40, 0, 0, 0],
         columns: [
           {
             stack: [
@@ -548,7 +549,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\nUsing pH meter\nUsing Water Activity analyzer\nHydrometer method\nPour Plate Technique\nPour Plate Technique\nMPN Method\nMPN Method`,
+                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\npH meter\nUsing Water Activity analyzer\nHydrometer method\nPour Plate Technique\nPour Plate Technique\nMPN Method\nMPN Method`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,

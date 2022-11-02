@@ -728,12 +728,6 @@ const FormBeforeExport3 = props => {
     )
   }
 
-  // const [valScoreLevel, setValScoreLevel] = useState({
-  //   Taste:0,
-  //   Odor:0,
-  //   Color:0,
-  //   Appearance:0
-  // })
 
   const handleRedi = () => {
     setRedirect(!redirect)
@@ -781,17 +775,7 @@ const FormBeforeExport3 = props => {
             marginBottom: "10px",
           }}
         >
-          {/* <Col>
-            <Select
-              value={selectedGroup}
-              name="To"
-              onChange={e => {
-                handleSelectGroup()
-                handleChangeValueCustomer(e.value)
-              }}
-              options={CustomersOption}
-            />
-          </Col> */}
+          
           <Col>
             <Button color="primary" onClick={toggleModalReprocess}>
               {" "}
