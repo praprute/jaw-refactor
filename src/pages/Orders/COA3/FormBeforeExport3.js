@@ -728,12 +728,8 @@ const FormBeforeExport3 = props => {
   }
 
   useEffect(async () => {
-    try {
-      setOrderformTableVeit(OderVeit)
-    } catch (e) {
-      console.log(e)
-    }
-  }, [OderVeit, modalAddSamples])
+    setOrderformTableVeit(orderAdded)
+  }, [OderVeit, modalAddSamples, orderAdded])
 
   const AnalysisVeitHong = OderVeit => {
     return (
