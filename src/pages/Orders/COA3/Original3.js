@@ -64,7 +64,7 @@ export const originalFormCOA3 = (
         border: [true, true, true, true],
       },
       {
-        text: `APC\ncfu/g`,
+        text: `APC\n(cfu/g)`,
         fontSize: "8",
         alignment: "center",
         margin: [0, 0, 0, 5],
