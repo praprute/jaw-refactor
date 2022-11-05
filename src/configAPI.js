@@ -4,5 +4,5 @@ export const Company = {
   Address: `8/4 Samutjadee Rd. Paknum Mueang Rayong, Rayong 21000 Thailand`,
   Phone: `Tel: 66-38-940388 Fax: 66-38-940086`,
   Web: `https://www.rungrojfishsauce.com`,
-  Email: `Email: fishsauce@rungrojfshsauce.com`,
+  Email: `Email: fishsauce@rungrojfishsauce.com`,
 }
