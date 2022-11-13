@@ -41,7 +41,7 @@ const Sidebar = props => {
               {process.env.REACT_APP_PROJECT_NAME === "VEIT" && (
                 <img src={LogoRFSedit2} alt="" height="50" />
               )}
-              {process.env.REACT_APP_PROJECT_NAME === "JAW" && (
+              {process.env. === "JAW" && (
                 <img src={logoDark} alt="" height="17" />
               )}
               {/*  */}
