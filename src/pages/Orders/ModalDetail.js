@@ -100,7 +100,6 @@ const ModalDetail = props => {
 
   const [scoreTested, setscoreTested] = useState("")
   useEffect(() => {
-    
     setdetailById(orders)
     setMicrorender(orders.Micro)
 
@@ -109,13 +108,10 @@ const ModalDetail = props => {
       for (let i = 0; i < tr[0].length; i++) {
         if (tr[0][i].render == 1) {
           countChem = countChem + 1
-          
         } else {
           countChem = countChem
         }
       }
-
-     
 
       if (orders.Micro == 1) {
         setScore(countChem + 5)
@@ -132,10 +128,9 @@ const ModalDetail = props => {
         }
       }
 
-      
       var countMicro = 0
       for (let i = 0; i < tr[1].length; i++) {
-        if (tr[1][i].coa == true ) {
+        if (tr[1][i].coa == true) {
           countMicro = countMicro + 1
         } else {
           countMicro = countMicro
@@ -146,7 +141,6 @@ const ModalDetail = props => {
   }, [orders, bio, tr])
 
   const handleExport = async () => {
-  
     let image = {}
     let halalLogo = {}
     try {
@@ -163,7 +157,7 @@ const ModalDetail = props => {
         }
       }
 
-      console.log('scoreTested : ', scoreTested, score)
+      console.log("scoreTested : ", scoreTested, score)
       if (scoreTested != 0 && score != 0) {
         if (scoreTested == score) {
           let index = {
@@ -182,11 +176,10 @@ const ModalDetail = props => {
             Orders: orders,
             timeStamp: tr[2],
           }
-         
+
           if (typeof window !== "undefined") {
             localStorage.setItem("JawIndexExport", JSON.stringify(index))
           }
-         
         } else {
           setconfirm_alert(true)
         }
@@ -542,7 +535,7 @@ const ModalDetail = props => {
               {
                 if (index.render > 0) {
                   return (
-                    <Row style={{ display: "flex", width: "100%" }}>
+                    <Row style={{ display: "flex", width: "100%" }} key={key}>
                       <Col xs="3">
                         <div>
                           <Col
@@ -654,7 +647,7 @@ const ModalDetail = props => {
               </Row>
 
               {resultMicro.map((index, key) => (
-                <Row style={{ display: "flex", width: "100%" }}>
+                <Row style={{ display: "flex", width: "100%" }} key={key}>
                   <Col xs="3">
                     <div>
                       <Col

@@ -60,7 +60,6 @@ const ModalTestReport = props => {
     handleRedirect,
   } = props
 
-
   const { user, token } = isAuthenticated()
   const [success_msg, setsuccess_msg] = useState(false)
   const [success_recheck, setsuccess_recheck] = useState(false)
@@ -246,7 +245,6 @@ const ModalTestReport = props => {
         console.log(err)
       }
     }
-
   }
 
   const fetchTestResultlasted = (token, idOrders) => {
@@ -1194,6 +1192,7 @@ const ModalTestReport = props => {
                         width: "100%",
                         alignItems: "center",
                       }}
+                      key={key}
                     >
                       <Col xs="3">
                         <div>
@@ -1327,8 +1326,7 @@ const ModalTestReport = props => {
                 </Col>
               </Row>
               {resultMicro.map((index, key) => (
-                // <div>{JSON.stringify(index)}</div>
-                <Row style={{ display: "flex", width: "100%" }}>
+                <Row style={{ display: "flex", width: "100%" }} key={key}>
                   <Col xs="3">
                     <div>
                       <Col
@@ -1340,7 +1338,6 @@ const ModalTestReport = props => {
                         }}
                       >
                         <h6>{index.key}</h6>
-                        {/* <div>{JSON.stringify(index)}</div> */}
                       </Col>
                     </div>
                   </Col>
@@ -1352,7 +1349,6 @@ const ModalTestReport = props => {
                           type="number"
                           name={index.keyInput}
                           onChange={handleChange(`${index.keyInput}`)}
-                          // value={index.val}
                           placeholder={index.val}
                         />
                       </div>
@@ -1429,7 +1425,6 @@ const ModalTestReport = props => {
                 justifyContent: "flex-end",
               }}
             >
-              
               &nbsp;&nbsp;
               <Button
                 color="danger"

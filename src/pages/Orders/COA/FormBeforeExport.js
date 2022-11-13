@@ -1,15 +1,10 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
-import MetaTags from "react-meta-tags"
 import {
   Button,
   Card,
   CardBody,
   Col,
-  Container,
-  Form,
-  FormGroup,
-  Label,
   NavItem,
   NavLink,
   Row,
@@ -20,7 +15,6 @@ import {
 import moment from "moment"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
-// import { Link } from "react-router-dom"
 import classnames from "classnames"
 import { withRouter, Link, Redirect } from "react-router-dom"
 import Moment from "moment"
@@ -28,7 +22,6 @@ import { connect } from "react-redux"
 import { isAuthenticated } from "../../Authentication/api"
 import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
-// import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
 import { dailyReport } from "./../Report/DailyReport"
@@ -37,8 +30,8 @@ import "./ModalFullScreen.css"
 import FormBeforeExport2 from "../COA2/FormBeforeExport2"
 import FormBeforeExport3 from "../COA3/FormBeforeExport3"
 import FormBeforeExport4 from "../COA4/FormBeforeExport"
-import FormBeforeExport5 from '../COA5/FormBeforeExport2'
-import HistoryDaily from '../Report/HistoryTest'
+import FormBeforeExport5 from "../COA5/FormBeforeExport2"
+import HistoryDaily from "../Report/HistoryTest"
 import { Company } from "../../../configAPI"
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
@@ -50,6 +43,9 @@ import {
   UpdateDatailOrder,
 } from "../api"
 import e from "cors"
+import TableHeaderCoa1 from "components/Document/TableCoaHeader1"
+import { getAllHeaderCoa1Task, saveHeaderCoa1Task } from "OpenApi/DuocumentTask"
+import { result } from "lodash"
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
@@ -189,14 +185,84 @@ const FormBeforeExport = props => {
   })
   const [uid, setUid] = useState(null)
 
+  const columnHeaderCoa1 = [
+    {
+      label: "ref_no",
+      field: "ref_no",
+      sort: "asc",
+    },
+    {
+      label: "customer_name",
+      field: "customer_name",
+      sort: "asc",
+    },
+    {
+      label: "production_date",
+      field: "production_date",
+      sort: "asc",
+    },
+    {
+      label: "dalivery_date",
+      field: "dalivery_date",
+      sort: "asc",
+    },
+    {
+      label: "tank_no",
+      field: "tank_no",
+      sort: "asc",
+    },
+    {
+      label: "test_date",
+      field: "test_date",
+      sort: "asc",
+    },
+    {
+      label: "select",
+      field: "select",
+      sort: "asc",
+    },
+  ]
+
+  const [dataListHeaderCoa1, setDataListHeaderCoa1] = useState([])
+
+  const [selectFromList, setSelectFromList] = useState(null)
+
+  const [refreshTable, setRefreshTable] = useState(false)
+
+  useEffect(async () => {
+    const response = await getAllHeaderCoa1Task(token)
+    if (response.success === "success") {
+      let list = []
+      response.message.map((data, index) => {
+        const row = {
+          ...data,
+          select: (
+            <button
+              onClick={() => {
+                handleSelectListCoa(data)
+              }}
+              type="button"
+              color="primary"
+              className="btn btn-primary waves-effect waves-light .w-xs"
+            >
+              <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
+              SELECT
+            </button>
+          ),
+        }
+        list.push(row)
+      })
+      setDataListHeaderCoa1(list)
+    }
+  }, [refreshTable])
+
   useEffect(async () => {
     try {
-      let customerName = await getCustomers(token)
-      // console.log("customerName : ", customerName.message)
+      const customerName = await getCustomers(token)
       let index = []
       for (let i = 0; i < customerName.message.length; i++) {
-        // console.log("sdfsd ", customerName.message[i])
         let detail = {
+          idCustomer: customerName.message[i].idCustomers,
           label: customerName.message[i].Name,
           value: customerName.message[i].Name,
         }
@@ -209,7 +275,6 @@ const FormBeforeExport = props => {
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      // console.log("index : ", paresIndex)
 
       setValuesExportRow2({
         ProductionDate: paresIndex.Orders.PD,
@@ -400,7 +465,7 @@ const FormBeforeExport = props => {
 
   const handleUpdateStatusCoa = async () => {
     try {
-      let update = UpdatexportCOA(token)
+      await UpdatexportCOA(token)
     } catch (err) {
       console.log(err)
     }
@@ -409,51 +474,6 @@ const FormBeforeExport = props => {
   const toggleTab = tab => {
     if (activeTab !== tab) {
       setActiveTab(tab)
-    }
-  }
-
-  const ExportdailyBio = async () => {
-    try {
-      const date_export = await moment(new Date(), "Asia/Bangkok").format(
-        "DD/MM/YYYY"
-      )
-      const date_now = await moment(new Date(), "Asia/Bangkok").format(
-        "YYYY-MM-DD"
-      )
-      const date_end = await moment(new Date(), "Asia/Bangkok")
-        .add(1, "d") //แก้ที่ตรงนี้
-        .format("YYYY-MM-DD")
-      let index = {
-        dStart: date_now,
-        dNow: date_end,
-      }
-      const data = await dailyReportBioFetch(token, index)
-      // console.log(data.message)
-      dailyReportBio(values.logo, date_export, data.message)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  const Exportdaily = async () => {
-    try {
-      const date_export = await moment(new Date(), "Asia/Bangkok").format(
-        "DD/MM/YYYY"
-      )
-      const date_now = await moment(new Date(), "Asia/Bangkok").format(
-        "YYYY-MM-DD"
-      )
-      const date_end = await moment(new Date(), "Asia/Bangkok")
-        .add(1, "d") //แก้ที่ตรงนี้
-        .format("YYYY-MM-DD")
-      let index = {
-        dStart: date_now,
-        dNow: date_end,
-      }
-      const data = await dailyReportFetch(token, index)
-      // console.log(data.message)
-      dailyReport(values.logo, date_export, data.message)
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -483,8 +503,6 @@ const FormBeforeExport = props => {
       MicroAnalysis,
     }
 
-    // console.log("AnalysisRender", AnalysisRender)
-
     originalFormCOA(
       values.logo,
       valuesExportRef,
@@ -509,59 +527,24 @@ const FormBeforeExport = props => {
     )
   }
 
-  const handleSaveIndex = async () => {
-    try {
-      let index = {
-        idOrders: uid,
-        RefNo: valuesExportRef.refNo,
-        DCL1: valuesExportRow1.DCL1,
-        DCL2: valuesExportRow1.DCL2,
-        DCL3: valuesExportRow1.DCL3,
-        PD: valuesExportRow2.ProductionDate,
-        DD: valuesExportRow2.DaliveryDate,
-        ED: valuesExportRow3.ExpirationDate,
-        Size: valuesExportPNandPS.PackSize,
-        Tank: TankNumber.Tank,
-        Quantity: valuesQuantity.Quantity,
-        testDate: valuesQuantity.TestDate,
-      }
-
-      let Udo = await UpdateDatailOrder(token, index)
-      if (Udo.success == "success") {
-        setsuccess_msg(true)
-      } else {
-        setsuccess_error(true)
-      }
-      // console.log("index save : ", index)
-    } catch (err) {
-      setsuccess_error(true)
-      console.error
-    }
-  }
-
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
-    // console.log(valuesChem)
   }
 
   const handleChange = name => event => {
     setValuesExportRef({ ...valuesExportRef, [name]: event.target.value })
-    // console.log(valuesExportRef)
   }
 
   const handleChangeDetailRow1 = name => event => {
     setValuesExportRow1({ ...valuesExportRow1, [name]: event.target.value })
-    // console.log("valuesExportRow1 : ", valuesExportRow1)
   }
 
   const handleChangeDetailRow2PD = name => event => {
     setValuesExportRow2({ ...valuesExportRow2, [name]: event.target.value })
-    // console.log("valuesExportRow2 : ", valuesExportRow2)
   }
 
   const handleChangeDetailRow3EX = name => event => {
     setValuesExportRow3({ ...valuesExportRow3, [name]: event.target.value })
-    // console.log("valuesExportRow2 : ", valuesExportRow3)
   }
 
   const handleChangeDetailPNandPS = name => event => {
@@ -569,7 +552,6 @@ const FormBeforeExport = props => {
       ...valuesExportPNandPS,
       [name]: event.target.value,
     })
-    // console.log("valuesExportPNandPS : ", valuesExportPNandPS)
   }
 
   const handleChangeTank = name => event => {
@@ -581,12 +563,11 @@ const FormBeforeExport = props => {
   }
 
   const handleChangeProtein = name => event => {
-    // setValuesProtein({ ...valuesProtein, [name]: event.target.value })
     setvaluesChem({ ...valuesChem, [name]: event.target.value })
   }
 
-  const handleSelectGroup = selectedGroup => {
-    setSelectedGroup(selectedGroup)
+  const handleSelectGroup = data => {
+    setSelectedGroup(data)
   }
 
   const handleSelectGroup2 = selectedGroup2 => {
@@ -599,21 +580,51 @@ const FormBeforeExport = props => {
 
   const handleChangeValueCustomer = e => {
     setCustomerNameSelect(e)
-    console.log(e)
+    setSelectFromList(e)
   }
+
   const handleChangeApproveValue = e => {
     setApproveValue(e)
     console.log(e)
   }
+
   const handleChangeReportValue = e => {
     setReportValue(e)
     console.log(e)
   }
 
-  // ApproveSelect, setApproveSelect
+  const handleSelectListCoa = data => {
 
-  // const [ApproveValue, setApproveValue] = useState(null)
-  // const [ReportValue, setReportValue] = useState(null)
+    setValuesExportRef(prevData => ({
+      ...prevData,
+      refNo: data.ref_no,
+      pageNo: 1,
+    }))
+
+    setSelectFromList(data.customer_name)
+
+    handleChangeValueCustomer(data.customer_name)
+    setValuesExportRow1(prevData => ({
+      ...prevData,
+      To: data.customer_name,
+      DCL1: data.date_code_list_1,
+      DCL2: Boolean(data.date_code_list_2) ? data.date_code_list_2 : "",
+      DCL3: Boolean(data.date_code_list_3) ? data.date_code_list_3 : "",
+    }))
+    setValuesExportRow2({
+      ProductionDate: data.production_date,
+      DaliveryDate: data.dalivery_date,
+    })
+    setValuesExportRow3({ ExpirationDate: data.exp_date })
+    setValuesExportPNandPS(preValuesExportPNandPS => ({
+      ...preValuesExportPNandPS,
+      PackSize: data.pack_size,
+    }))
+    setTankNumber({ Tank: data.tank_no })
+    setValuesQuantity(prevData => ({ ...prevData, Quantity: data.quantity }))
+    window.scrollTo(0, 0)
+  }
+
   const headerForm = () => {
     return (
       <Row
@@ -682,7 +693,6 @@ const FormBeforeExport = props => {
         <Col
           sm="3"
           style={{
-            // margin: "auto",
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
@@ -691,7 +701,6 @@ const FormBeforeExport = props => {
         <Col
           sm="5"
           style={{
-            // margin: "auto",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -701,7 +710,6 @@ const FormBeforeExport = props => {
         <Col
           sm="4"
           style={{
-            // margin: "auto",
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "center",
@@ -785,7 +793,7 @@ const FormBeforeExport = props => {
     )
   }
 
-  const headDetail = () => {
+  const HeadDetail = () => {
     return (
       <Row
         style={{
@@ -825,27 +833,13 @@ const FormBeforeExport = props => {
                 paddingRight: "10px",
               }}
             >
-              {/* <Input
-                name="To"
-                onChange={handleChangeDetailRow1("To")}
-                value={valuesExportRow1.To}
-              /> */}
-              {/* <select
-                name="To"
-                onChange={handleChangeDetailRow1("To")}
-                value={CustomersOption[0].Name}
-                className="form-control"
-              >
-                {CustomersOption.map((index, i) => (
-                  <option value={index.Name}>{index.Name}</option>
-                ))}
-              </select> */}
-
               <Select
-                value={selectedGroup}
+                value={CustomersOption.filter(function (option) {
+                  return option.value === selectFromList
+                })}
                 name="To"
                 onChange={e => {
-                  handleSelectGroup()
+                  handleSelectGroup(e)
                   handleChangeValueCustomer(e.value)
                 }}
                 options={CustomersOption}
@@ -919,9 +913,7 @@ const FormBeforeExport = props => {
               alignItems: "center",
             }}
           >
-            <Col sm="3">
-              {/* <h5 style={{ margin: 0 }}>Date Code List: </h5> */}
-            </Col>
+            <Col sm="3"></Col>
             <Col sm="9">
               <div
                 style={{
@@ -2808,6 +2800,38 @@ const FormBeforeExport = props => {
     )
   }
 
+  const handleSaveHeaderCoa = async () => {
+    try {
+      let payload = {
+        ref_no: valuesExportRef.refNo,
+        ref_date: valuesExportRef.date,
+        date_code_list_1: valuesExportRow1.DCL1,
+        date_code_list_2: valuesExportRow1.DCL2,
+        date_code_list_3: valuesExportRow1.DCL3,
+        production_date: valuesExportRow2.ProductionDate,
+        dalivery_date: valuesExportRow2.DaliveryDate,
+        exp_date: valuesExportRow3.ExpirationDate,
+        pack_size: valuesExportPNandPS.PackSize,
+        tank_no: TankNumber.Tank,
+        quantity: valuesQuantity.Quantity,
+        test_date: valuesQuantity.TestDate,
+      }
+      if (Boolean(selectedGroup?.idCustomer)) {
+        payload = { ...payload, customer: selectedGroup.idCustomer }
+      }
+
+      const response = await saveHeaderCoa1Task(token, payload)
+
+      if (response.success === "success") {
+        setsuccess_msg(true)
+        setRefreshTable(!refreshTable)
+      } else {
+        setsuccess_error(true)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
   return (
     <React.Fragment>
       <div className="page-content">
@@ -2815,14 +2839,9 @@ const FormBeforeExport = props => {
           <SweetAlert
             title="Add Order Success"
             success
-            //   showCancel
             confirmBtnBsStyle="success"
-            //   cancelBtnBsStyle="danger"
             onConfirm={async () => {
               setsuccess_msg(false)
-              // setInterval(() => {
-              //   window.location.reload()
-              // }, 5000)
             }}
           >
             You clicked the button!
@@ -2833,9 +2852,7 @@ const FormBeforeExport = props => {
           <SweetAlert
             title="error"
             danger
-            //   showCancel
             confirmBtnBsStyle="danger"
-            //   cancelBtnBsStyle="danger"
             onConfirm={() => {
               setsuccess_error(false)
             }}
@@ -2946,10 +2963,10 @@ const FormBeforeExport = props => {
                       {headerForm()}
                       <br />
                       {RefForm()}
-                      {headDetail()}
+                      {HeadDetail()}
                       <br />
                       {Analysis()}
-                      {/* <h1>FormBeforeExport</h1> */}
+
                       <div
                         style={{
                           display: "flex",
@@ -2991,9 +3008,7 @@ const FormBeforeExport = props => {
                             size="lg"
                             style={{ width: "100%", marginTop: "15px" }}
                             onClick={() => {
-                              handleSaveIndex()
-                              // handleExportPDF()
-                              // handleUpdateStatusCoa()
+                              handleSaveHeaderCoa()
                             }}
                           >
                             SAVE
@@ -3021,6 +3036,13 @@ const FormBeforeExport = props => {
                       <br></br>
                       <br></br>
                       <br></br>
+
+                      <TableHeaderCoa1
+                        dataTable={{
+                          columns: columnHeaderCoa1,
+                          rows: dataListHeaderCoa1,
+                        }}
+                      />
                     </div>
                   </TabPane>
 

@@ -323,34 +323,8 @@ const ModaladdSample = props => {
                       }}
                       options={nameSpcChem}
                     />
-                    {/* <select
-                      className="form-control"
-                      id="c1"
-                      value={selectChem}
-                      onChange={e => {
-                        // console.log()
-                        const changeChem = e.target.value
-                        setSelectChem(changeChem)
-                      }}
-                    >
-                      {nameSpcChem.map((index, key) => (
-                        <option
-                          value={index.idPdSpecificChem}
-                          //   onClick={selectSpcChem(index.idPdSpecificChem)}
-                        >
-                          {index.name}
-                        </option>
-                      ))}
-                    </select> */}
                   </div>
                 </Row>
-                {/* const [Tn,  setTn   ] = useState(false)
-                                            const [Salt,  setSalt   ] = useState(false)
-                                            const [PH,  setPH   ] = useState(false)
-                                            const [Histamine,  setHistamine   ] = useState(false)
-                                            const [Tss,  setTss   ] = useState(false)
-                                            const [SPG,  setSPG   ] = useState(false)
-                                            const [Aw,  setAw  ] = useState(false) */}
 
                 <Row className="mb-0">
                   <label

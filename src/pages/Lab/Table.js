@@ -1,25 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { MDBDataTable } from "mdbreact"
-import {
-  Col,
-  Row,
-  Card,
-  CardBody,
-  Button,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  ButtonDropdown,
-  CardTitle,
-  CardSubtitle,
-  Container,
-} from "reactstrap"
 
 //Import Breadcrumb
 import "../Tables/datatables.scss"
-import ModalDetail from "./../Orders/ModalDetail"
-// import ModalAddOrder from './ModalAddOrder'
 
 //get api
 import {
@@ -163,7 +146,6 @@ const OrderTable = props => {
           if (data.success == "success") {
             var index = []
             for (let i = 0; i < data.message.length; i++) {
-              // if(data.message[i].Status != 1){
               const rd = {
                 lot: (
                   <span>
@@ -208,7 +190,6 @@ const OrderTable = props => {
                         type="button"
                         color="primary"
                         className="btn btn-primary waves-effect waves-light .w-xs"
-              
                       >
                         <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
                         TEST
@@ -328,9 +309,6 @@ const OrderTable = props => {
           title={dynamic_title}
           onConfirm={() => {
             setsuccess_dlg(false)
-            // const refreshPage = ()=>{
-            //     window.location.reload();
-            //  }
           }}
         >
           {dynamic_description}

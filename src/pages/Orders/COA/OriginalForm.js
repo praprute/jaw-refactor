@@ -1,7 +1,7 @@
 import pdfMake from "pdfmake/build/pdfmake"
 // import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
-import {Company} from '../../../configAPI'
+import { Company } from "../../../configAPI"
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
   Roboto: {
@@ -1449,9 +1449,7 @@ export const originalFormCOA = (
               },
             ],
             DetailOrderRow2,
-            // DetailOrderRow2.map(data => (
-            //     data
-            // )),
+
             DetailOrderRow3,
             [
               {

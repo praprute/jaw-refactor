@@ -15,10 +15,11 @@ import {
 const INIT_STATE = {
   layoutType: "vertical",
   layoutWidth: "fluid",
-  leftSideBarTheme: "light",
+  leftSideBarTheme:
+    process.env.REACT_APP_PROJECT_NAME === "JAW" ? "dark" : "light",
   leftSideBarThemeImage: "img4",
   leftSideBarType: "default",
-  topbarTheme: "light",
+  topbarTheme: process.env.REACT_APP_PROJECT_NAME === "JAW" ? "dark" : "light",
   isPreloader: false,
   showRightSidebar: false,
   isMobile: false,

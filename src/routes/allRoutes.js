@@ -5,12 +5,6 @@ import { Redirect } from "react-router-dom"
 import UserProfile from "../pages/Authentication/user-profile"
 
 
-// //Projects
-import ProjectsGrid from "../pages/Projects/projects-grid"
-import ProjectsList from "../pages/Projects/projects-list"
-import ProjectsOverview from "../pages/Projects/ProjectOverview/projects-overview"
-import ProjectsCreate from "../pages/Projects/projects-create"
-
 // Authentication related pages
 import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
@@ -95,11 +89,11 @@ const userRoutes = [
   { path: "/profile", component: UserProfile },
 
   //Projects
-  { path: "/projects-grid", component: ProjectsGrid },
-  { path: "/projects-list", component: ProjectsList },
-  { path: "/projects-overview", component: ProjectsOverview },
-  { path: "/projects-overview/:id", component: ProjectsOverview },
-  { path: "/projects-create", component: ProjectsCreate },
+  // { path: "/projects-grid", component: ProjectsGrid },
+  // { path: "/projects-list", component: ProjectsList },
+  // { path: "/projects-overview", component: ProjectsOverview },
+  // { path: "/projects-overview/:id", component: ProjectsOverview },
+  // { path: "/projects-create", component: ProjectsCreate },
 
   // Contacts
   { path: "/contacts-grid", component: ContactsGrid },

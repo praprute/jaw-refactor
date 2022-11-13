@@ -394,10 +394,7 @@ const ModalEdit = props => {
                       }}
                     >
                       {nameSpcChem.map((index, key) => (
-                        <option
-                          value={index.idPdSpecificChem}
-                          //   onClick={selectSpcChem(index.idPdSpecificChem)}
-                        >
+                        <option value={index.idPdSpecificChem} key={key}>
                           {index.name}
                         </option>
                       ))}
@@ -419,10 +416,7 @@ const ModalEdit = props => {
                       }}
                     >
                       {nameSpcMicro.map((index, key) => (
-                        <option
-                          value={index.idPdSpecificMicro}
-                          //   onClick={selectSpcChem(index.idPdSpecificChem)}
-                        >
+                        <option value={index.idPdSpecificMicro} key={key}>
                           {index.idPdSpecificMicro}
                         </option>
                       ))}

@@ -1217,10 +1217,7 @@ export const originalFormCOA = (
                 border: [false, false, true, false],
               },
             ],
-            // DetailOrderRow2,
-            // DetailOrderRow2.map(data => (
-            //     data
-            // )),
+           
             DetailOrderRow3,
             [
               {

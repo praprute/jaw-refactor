@@ -8,8 +8,8 @@ export const getAllOrder = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return await response.json()
   } catch (err) {
@@ -25,8 +25,8 @@ export const getAllOrderLab = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return await response.json()
   } catch (err) {
@@ -42,8 +42,8 @@ export const getRecheckOrder = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return await response.json()
   } catch (err) {
@@ -73,7 +73,6 @@ export const readOrderById = async (token, idOrders) => {
 }
 
 export const updateDetail = async (token, index) => {
-  // console.log("edit : ", index)
   try {
     const response = await fetch(`${API}/updateOrder`, {
       method: "POST",
@@ -81,9 +80,9 @@ export const updateDetail = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -99,9 +98,9 @@ export const reSend = async (token, idOrders) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(idOrders)
+      body: JSON.stringify(idOrders),
     })
     return await response.json()
   } catch (err) {
@@ -118,9 +117,9 @@ export const deleteOrder = async (token, idOrders) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(idOrders)
+      body: JSON.stringify(idOrders),
     })
     return await response.json()
   } catch (err) {
@@ -140,9 +139,9 @@ export const readAllSpecificChemById = async (token, idPdSpecificChem) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(id)
+      body: JSON.stringify(id),
     })
     return await response.json()
   } catch (err) {
@@ -162,9 +161,9 @@ export const readAllSpecificBioById = async (token, idPdSpecificMicro) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(id)
+      body: JSON.stringify(id),
     })
     return await response.json()
   } catch (err) {
@@ -183,9 +182,9 @@ export const readTestResultlasted = async (token, idOrders) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(id)
+      body: JSON.stringify(id),
     })
     return await response.json()
   } catch (err) {
@@ -201,8 +200,8 @@ export const readIdChemCheckbox = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return await response.json()
   } catch (err) {
@@ -218,8 +217,8 @@ export const readIdMicroCheckbox = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return await response.json()
   } catch (err) {
@@ -235,9 +234,9 @@ export const addOrder = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -254,9 +253,9 @@ export const Addtestreport = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -278,9 +277,9 @@ export const Recheck = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -298,9 +297,9 @@ export const WaitMicro = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -318,9 +317,9 @@ export const readFG = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -338,9 +337,9 @@ export const updateFG = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -356,9 +355,9 @@ export const addRealtimeOrder = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -374,9 +373,9 @@ export const dailyReportFetch = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -392,9 +391,9 @@ export const dailyReportBioFetch = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -411,8 +410,8 @@ export const exportCOA = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return await response.json()
   } catch (err) {
@@ -428,8 +427,8 @@ export const loadHalalLogo = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return await response.json()
   } catch (err) {
@@ -445,9 +444,9 @@ export const UpdatexportCOA = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -463,9 +462,9 @@ export const UpdatexportPASS = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -485,9 +484,9 @@ export const UpdateStatusPassToCheck = async (token, index, ProductName) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
     return await response.json()
   } catch (err) {
@@ -503,31 +502,15 @@ export const getCustomers = async token => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
+
     return await response.json()
   } catch (err) {
     return console.log(err)
   }
 }
-// const fetchDetail = (token, idOrders) => {
-//   readTestResultlasted(token, idOrders).then(data => {
-//     console.log(' readTestResultlasted :',data)
-//     if(data){
-//       if(data.success == 'success'){
-//         if(!data.message){
-//           return null
-//         }else{
-//           setdetail(data.message)
-//           onAddDetail(data.message)
-//         }
-//       }
-//     }else{
-//       return null
-//     }
-//   })
-// }UpdatexportCOA
 
 export const Reprocess = async (token, index) => {
   try {
@@ -537,9 +520,9 @@ export const Reprocess = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -555,9 +538,9 @@ export const UpdateDatailOrder = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {
@@ -574,9 +557,9 @@ export const queryDetailMulti = async (token, index) => {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(index)
+      body: JSON.stringify(index),
     })
     return await response.json()
   } catch (err) {

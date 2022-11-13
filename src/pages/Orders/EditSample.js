@@ -155,7 +155,7 @@ const ModalEditSample = props => {
       Viscosity: Viscosity,
       SaltMeter: SaltMeter,
       Color: Color,
-      tricker:true
+      tricker: true,
     }
     // console.log(index)
     updateDetail(token, index).then(data => {
@@ -308,15 +308,6 @@ const ModalEditSample = props => {
                     Specific Chem
                   </label>
                   <div className="col-md-10">
-                    {/* <Select
-                          value={selectedGroup3}
-                          name="ChemSpc"
-                          onChange={e => {
-                            handleSelectGroup3()
-                            handleChangeSelectChem(e.value)
-                          }}
-                          options={nameSpcChem}
-                  /> */}
                     <select
                       className="form-control"
                       id="c1"
@@ -327,10 +318,7 @@ const ModalEditSample = props => {
                       }}
                     >
                       {nameSpcChem.map((index, key) => (
-                        <option
-                          value={index.idPdSpecificChem}
-                          //   onClick={selectSpcChem(index.idPdSpecificChem)}
-                        >
+                        <option key={key} value={index.idPdSpecificChem}>
                           {index.name}
                         </option>
                       ))}
@@ -728,19 +716,6 @@ const ModalEditSample = props => {
                         Check Micro
                       </label>
                     </div>
-                    {/* <select className="form-control"
-                                              id="c2"
-                                                value={selectMicro}
-                                                onChange={(e) => {
-                                                    const changeMicro = e.target.value;
-                                                    setSelectMicro(changeMicro)
-                                                }} 
-                                              >
-                                                  {nameSpcMicro.map((index, key) => (
-                                                      <option value={index.idPdSpecificMicro} 
-                                                      >{index.idPdSpecificMicro}</option>
-                                                  ))}
-                                              </select> */}
                   </div>
                 </Row>
 

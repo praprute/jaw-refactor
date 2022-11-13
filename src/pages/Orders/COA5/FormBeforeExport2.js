@@ -1,13 +1,11 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
-import MetaTags from "react-meta-tags"
 import { Button, Col, Row, Input } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
-// import { Link } from "react-router-dom"
-import classnames from "classnames"
-import { UpdatexportCOA, loadHalalLogo, UpdateDatailOrder } from "../api"
-import { withRouter, Link, Redirect } from "react-router-dom"
+
+import { UpdatexportCOA, UpdateDatailOrder } from "../api"
+import { withRouter } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
 import { isAuthenticated } from "../../Authentication/api"
@@ -16,13 +14,14 @@ import pdfMake from "pdfmake/build/pdfmake"
 
 import { Company } from "../../../configAPI"
 
-// import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
 import { originalFormCOA2 } from "./Original2"
 import { getCustomers } from "../api"
 import "./StyleCOA2.css"
+import { getAllHeaderCoa5Task, saveHeaderCoa5Task } from "OpenApi/DuocumentTask"
+import TableHeaderCoa1 from "components/Document/TableCoaHeader1"
 
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
@@ -146,16 +145,12 @@ const FormBeforeExport5 = props => {
   const [valuesExportRow2, setValuesExportRow2] = useState({
     CollectedDate: "",
     productName: "",
-    // ProductionDate: "",
-    // DaliveryDate: "",
   })
   const [valuesExportRow3, setValuesExportRow3] = useState({
     productionDate: "",
     TankNo: "",
   })
   const [valuesExportPNandPS, setValuesExportPNandPS] = useState({
-    // CollectedDate: "",
-    // productName: "",
     ExpirationDate: "",
   })
   const [TankNumber, setTankNumber] = useState({
@@ -191,19 +186,131 @@ const FormBeforeExport5 = props => {
     CompletionDate: "",
   })
 
+  const [refreshTable, setRefreshTable] = useState(false)
+  const [selectFromList, setSelectFromList] = useState(null)
+
+  const columnHeaderCoa1 = [
+    {
+      label: "ref_no",
+      field: "ref_no",
+      sort: "asc",
+    },
+    {
+      label: "customer_name",
+      field: "customer_name",
+      sort: "asc",
+    },
+    {
+      label: "ref_date",
+      field: "ref_date",
+      sort: "asc",
+    },
+    {
+      label: "production_date",
+      field: "production_date",
+      sort: "asc",
+    },
+    {
+      label: "lot",
+      field: "lot",
+      sort: "asc",
+    },
+    {
+      label: "tank_no",
+      field: "tank_no",
+      sort: "asc",
+    },
+    {
+      label: "select",
+      field: "select",
+      sort: "asc",
+    },
+  ]
+  const [dataListHeaderCoa1, setDataListHeaderCoa1] = useState([])
+
   const handleChangeScoreLevel = name => event => {
     setValScoreLevel({ ...valScoreLevel, [name]: event.target.value })
-    // console.log('valScoreLevel : ', valScoreLevel)
+  }
+
+  useEffect(async () => {
+    const response = await getAllHeaderCoa5Task(token)
+    if (response.success === "success") {
+      let list = []
+      response.message.map((data, index) => {
+        const row = {
+          ...data,
+          select: (
+            <button
+              onClick={() => {
+                handleSelectListCoa(data)
+              }}
+              type="button"
+              color="primary"
+              className="btn btn-primary waves-effect waves-light .w-xs"
+            >
+              <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
+              SELECT
+            </button>
+          ),
+        }
+        list.push(row)
+      })
+      setDataListHeaderCoa1(list)
+    }
+  }, [refreshTable])
+
+  const handleSelectListCoa = data => {
+    setValuesExportRef(prevData => ({
+      ...prevData,
+      refNo: data.ref_no,
+      pageNo: 1,
+    }))
+
+    setSelectFromList(data.customer_name)
+
+    handleChangeValueCustomer(data.customer_name)
+
+    setValuesExportRow1(prevData => ({
+      ...prevData,
+      To: data.customer_name,
+      DCL1: data.lot,
+    }))
+
+    setValuesExportRow2({
+      CollectedDate: data.collected_date,
+      productName: data.field_null,
+    })
+
+    setValuesExportPNandPS(prevData => ({
+      ...prevData,
+      ExpirationDate: data.exp_date,
+    }))
+
+    setTankNumber({
+      Tank: data.tank_no,
+    })
+
+    setValuesExportRow3({
+      productionDate: data.production_date,
+      TankNo: data.tank_no,
+    })
+
+    setValScoreLevel(prevData => ({
+      ...prevData,
+      testDate: data.test_date,
+      CompletionDate: data.completion_date,
+    }))
+
+    window.scrollTo(0, 0)
   }
 
   useEffect(async () => {
     try {
-      let customerName = await getCustomers(token)
-      // console.log("customerName : ", customerName.message)
+      const customerName = await getCustomers(token)
       let index = []
       for (let i = 0; i < customerName.message.length; i++) {
-        // console.log("sdfsd ", customerName.message[i])
         let detail = {
+          idCustomer: customerName.message[i].idCustomers,
           label: customerName.message[i].Name,
           value: customerName.message[i].Name,
         }
@@ -216,7 +323,6 @@ const FormBeforeExport5 = props => {
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      //   console.log("index : ", paresIndex)
 
       setValuesExportRow2({
         CollectedDate: "",
@@ -225,8 +331,6 @@ const FormBeforeExport5 = props => {
       setUid(paresIndex.Orders.idOrders)
       setValuesExportPNandPS({
         ExpirationDate: paresIndex.Orders.ED,
-        // ProductName: paresIndex.Orders.ProductName,
-        // PackSize: paresIndex.Orders.Size,
       })
 
       setValuesExportRow3({
@@ -407,28 +511,30 @@ const FormBeforeExport5 = props => {
 
   const handleSaveIndex = async () => {
     try {
-      let index = {
-        idOrders: uid,
-        RefNo: valuesExportRef.refNo,
-        DCL1: null,
-        DCL2: null,
-        DCL3: null,
-        PD: valuesExportRow3.productionDate,
-        DD: null,
-        ED: valuesExportPNandPS.ExpirationDate,
-        Size: null,
-        Tank: valuesExportRow3.TankNo,
-        Quantity: null,
-        testDate: valuesQuantity.TestDate,
+      let payload = {
+        ref_no: valuesExportRef.refNo,
+        ref_date: valuesExportRef.date,
+        lot: valuesExportRow1.DCL1,
+        collected_date: valuesExportRow2.CollectedDate,
+        field_null: valuesExportRow2.productName,
+        production_date: valuesExportRow3.productionDate,
+        tank_no: valuesExportRow3.TankNo,
+        exp_date: valuesExportPNandPS.ExpirationDate,
+        completion_date:valScoreLevel.CompletionDate,
+        test_date: valScoreLevel.testDate,
+      }
+      
+      if (Boolean(selectedGroup?.idCustomer)) {
+        payload = { ...payload, customer: selectedGroup.idCustomer }
       }
 
-      let Udo = await UpdateDatailOrder(token, index)
-      if (Udo.success == "success") {
+      const res = await saveHeaderCoa5Task(token, payload)
+      if (res.success == "success") {
         setsuccess_msg(true)
+        setRefreshTable(!refreshTable)
       } else {
         setsuccess_error(true)
       }
-      // console.log("index save : ", index)
     } catch (err) {
       setsuccess_error(true)
       console.error
@@ -437,27 +543,22 @@ const FormBeforeExport5 = props => {
 
   const handleChangeValueAnalysis = name => event => {
     setvaluesChem({ ...valuesChem, [name.val]: event.target.value })
-    // console.log(valuesChem)
   }
 
   const handleChange = name => event => {
     setValuesExportRef({ ...valuesExportRef, [name]: event.target.value })
-    // console.log(valuesExportRef)
   }
 
   const handleChangeDetailRow1 = name => event => {
     setValuesExportRow1({ ...valuesExportRow1, [name]: event.target.value })
-    // console.log("valuesExportRow1 : ", valuesExportRow1)
   }
 
   const handleChangeDetailRow2PD = name => event => {
     setValuesExportRow2({ ...valuesExportRow2, [name]: event.target.value })
-    // console.log("valuesExportRow2 : ", valuesExportRow2)
   }
 
   const handleChangeDetailRow3EX = name => event => {
     setValuesExportRow3({ ...valuesExportRow3, [name]: event.target.value })
-    // console.log("valuesExportRow2 : ", valuesExportRow3)
   }
 
   const handleChangeExpirationDate = name => event => {
@@ -465,7 +566,6 @@ const FormBeforeExport5 = props => {
       ...valuesExportPNandPS,
       [name]: event.target.value,
     })
-    // console.log("valuesExportPNandPS : ", valuesExportPNandPS)
   }
 
   const handleChangeTank = name => event => {
@@ -477,12 +577,11 @@ const FormBeforeExport5 = props => {
   }
 
   const handleChangeProtein = name => event => {
-    // setValuesProtein({ ...valuesProtein, [name]: event.target.value })
     setvaluesChem({ ...valuesChem, [name]: event.target.value })
   }
 
-  const handleSelectGroup = selectedGroup => {
-    setSelectedGroup(selectedGroup)
+  const handleSelectGroup = data => {
+    setSelectedGroup(data)
   }
 
   const handleSelectGroup2 = selectedGroup2 => {
@@ -495,8 +594,9 @@ const FormBeforeExport5 = props => {
 
   const handleChangeValueCustomer = e => {
     setCustomerNameSelect(e)
-    // console.log(e)
+    setSelectFromList(e)
   }
+
   const handleChangeApproveValue = e => {
     setApproveValue(e)
     // console.log(e)
@@ -506,10 +606,6 @@ const FormBeforeExport5 = props => {
     // console.log(e)
   }
 
-  // ApproveSelect, setApproveSelect
-
-  // const [ApproveValue, setApproveValue] = useState(null)
-  // const [ReportValue, setReportValue] = useState(null)
   const headerForm = () => {
     return (
       <Row
@@ -728,10 +824,12 @@ const FormBeforeExport5 = props => {
               }}
             >
               <Select
-                value={selectedGroup}
+                value={CustomersOption.filter(function (option) {
+                  return option.value === selectFromList
+                })}
                 name="To"
                 onChange={e => {
-                  handleSelectGroup()
+                  handleSelectGroup(e)
                   handleChangeValueCustomer(e.value)
                 }}
                 options={CustomersOption}
@@ -850,20 +948,7 @@ const FormBeforeExport5 = props => {
                 justifyContent: "flex-end",
                 alignItems: "center",
               }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div>
-              <span style={{ fontWeight: "bold" }}>Tank No. </span> */}
-            </Col>
+            ></Col>
             <Col sm="9">
               <div
                 style={{
@@ -908,17 +993,6 @@ const FormBeforeExport5 = props => {
                 alignItems: "center",
               }}
             >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckcolorTn"
-                  checked={!DisProductDate}
-                  onChange={() => {
-                    setDisProductDate(!DisProductDate)
-                  }}
-                />
-              </div> */}
               <span style={{ fontWeight: "bold" }}>Production date:</span>
             </Col>
             <Col sm="9">
@@ -952,17 +1026,6 @@ const FormBeforeExport5 = props => {
                 alignItems: "center",
               }}
             >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div> */}
               <span style={{ fontWeight: "bold" }}>Tank No. </span>
             </Col>
             <Col sm="9">
@@ -1009,17 +1072,6 @@ const FormBeforeExport5 = props => {
                 alignItems: "center",
               }}
             >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisExpiration}
-                  onChange={() => {
-                    setDisExpiration(!DisExpiration)
-                  }}
-                />
-              </div> */}
               <span style={{ fontWeight: "bold" }}>Expiration date:</span>
             </Col>
             <Col sm="9">
@@ -1078,20 +1130,14 @@ const FormBeforeExport5 = props => {
             alignItems: "center",
             marginTop: "15px",
           }}
-        >
-          {/* <h4 style={{ margin: "0", padding: "0" }}>
-            <span style={{ margin: 0, fontWeight: "bold" }}>
-              Sensory Test Results
-            </span>
-          </h4> */}
-        </Row>
+        ></Row>
         <React.Fragment>
           <Row
             style={{
               display: "flex",
               width: "100%",
               justifyContent: "flex-start",
-              // alignItems: "center",
+
               marginTop: "10px",
             }}
           >
@@ -1253,13 +1299,6 @@ const FormBeforeExport5 = props => {
     )
   }
 
-  // const [valScoreLevel, setValScoreLevel] = useState({
-  //   Taste:0,
-  //   Odor:0,
-  //   Color:0,
-  //   Appearance:0
-  // })
-
   const Analysis = () => {
     return (
       <Row
@@ -1365,7 +1404,6 @@ const FormBeforeExport5 = props => {
                 width: "100%",
                 height: "100%",
                 paddingRight: "30px",
-                // paddingLeft: "20px",
               }}
             >
               <Input disabled={!DisTN} value={spcChem.scpTN} />
@@ -1647,7 +1685,6 @@ const FormBeforeExport5 = props => {
                 width: "100%",
                 height: "100%",
                 paddingRight: "30px",
-                // paddingLeft: "20px",
               }}
             >
               <Input disabled={!DisHistamine} value={spcChem.scpHistamine} />
@@ -2463,7 +2500,6 @@ const FormBeforeExport5 = props => {
                         }}
                       />
                     </div>
-                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
                     <label
                       className="form-check-label"
                       htmlFor="customCheckSalmon2"
@@ -2527,14 +2563,9 @@ const FormBeforeExport5 = props => {
         <SweetAlert
           title="Add Order Success"
           success
-          //   showCancel
           confirmBtnBsStyle="success"
-          //   cancelBtnBsStyle="danger"
           onConfirm={async () => {
             setsuccess_msg(false)
-            // setInterval(() => {
-            //   window.location.reload()
-            // }, 5000)
           }}
         >
           You clicked the button!
@@ -2545,9 +2576,7 @@ const FormBeforeExport5 = props => {
         <SweetAlert
           title="error"
           danger
-          //   showCancel
           confirmBtnBsStyle="danger"
-          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_error(false)
           }}
@@ -2564,7 +2593,6 @@ const FormBeforeExport5 = props => {
         {headDetail()}
         <br />
         {Analysis()}
-        {/* {Sinsory()} */}
         <div
           style={{
             display: "flex",
@@ -2604,8 +2632,6 @@ const FormBeforeExport5 = props => {
               style={{ width: "100%", marginTop: "15px" }}
               onClick={() => {
                 handleSaveIndex()
-                // handleExportPDF()
-                // handleUpdateStatusCoa()
               }}
             >
               SAVE
@@ -2630,6 +2656,12 @@ const FormBeforeExport5 = props => {
         <br></br>
         <br></br>
         <br></br>
+        <TableHeaderCoa1
+          dataTable={{
+            columns: columnHeaderCoa1,
+            rows: dataListHeaderCoa1,
+          }}
+        />
       </div>
       {/* </div> */}
     </React.Fragment>
