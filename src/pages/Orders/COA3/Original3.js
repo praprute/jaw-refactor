@@ -203,7 +203,7 @@ export const originalFormCOA3 = (
   }
   var docDefinition = {
     pageSize: "A4",
-    pageMargins: [10, 10, 10, 10],
+    pageMargins: [40, 20, 40, 10],
     content: [
       {
         // alignment: "justify",
@@ -307,7 +307,7 @@ export const originalFormCOA3 = (
                 text: `: ${descriptionVeit.description}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [-180, 5, 0, 0],
+                margin: [-170, 5, 0, 0],
               },
             ],
           },
@@ -324,7 +324,7 @@ export const originalFormCOA3 = (
                 text: `: ${selectedGroupNameTo}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [-180, 5, 0, 0],
+                margin: [-170, 5, 0, 0],
               },
             ],
           },
@@ -341,7 +341,7 @@ export const originalFormCOA3 = (
                 text: `: ${descriptionVeit.Invoice}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [-180, 5, 0, 0],
+                margin: [-170, 5, 0, 0],
               },
             ],
           },
@@ -358,7 +358,7 @@ export const originalFormCOA3 = (
                 text: `: ${descriptionVeit.ETA}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [-180, 5, 0, 0],
+                margin: [-170, 5, 0, 0],
               },
             ],
           },
@@ -375,28 +375,29 @@ export const originalFormCOA3 = (
                 text: `: ${descriptionVeit.ShelfLife}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [-180, 5, 0, 0],
+                margin: [-170, 5, 0, 0],
               },
             ],
           },
         ],
       },
       {
-        margin: [0, 10, 0, 0],
+        margin: [10, 10, 0, 0],
+        alignment: "center",
         table: {
           widths: [
-            "12.5%",
-            "*",
-            "*",
-            "*",
-            "*",
-            "*",
-            "*",
-            "*",
-            "*",
-            "*",
-            "*",
-            "*",
+            "15.5%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
+            "8%",
           ],
           body: dataAnaly,
         },
@@ -482,7 +483,7 @@ export const originalFormCOA3 = (
             ],
             [
               {
-                margin: [36, 15, 0, 10],
+                margin: [10, 15, 0, 10],
                 text: `Physical-Chemical Specifications`,
                 // style: "invoiceTitleHeaderDetail",
                 fontSize: "10",
@@ -503,7 +504,7 @@ export const originalFormCOA3 = (
         },
       },
       {
-        margin: [40, 0, 0, 0],
+        margin: [15, 0, 0, 0],
         columns: [
           {
             stack: [
@@ -613,12 +614,7 @@ export const originalFormCOA3 = (
         alignment: "center",
         margin: [0, 0, 0, 0],
       },
-      // invoiceTitleHeaderDetail: {
-      //   fontSize: 10,
-      //   bold: true,
-      //   alignment: "center",
-      //   margin: [0, 0, 0, 0],
-      // },
+   
       HeaderDetail: {
         fontSize: 11,
         bold: true,

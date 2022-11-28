@@ -1194,7 +1194,7 @@ export const originalFormCOA = (
       DetailOrderRow2.push(index)
     } else if (i == 1 && row2PDandDD[i].values !== "") {
       index = {
-        text: `Dalivery Date: ${row2PDandDD[i].values}`,
+        text: `Delivery Date: ${row2PDandDD[i].values}`,
         style: "RefBoxValue",
         alignment: "left",
         border: [false, false, true, false],
