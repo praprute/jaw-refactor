@@ -88,7 +88,6 @@ const ModalEditSample = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdMicroCheckbox : ' ,data.message)
           setnameSpcMicro(data.message)
         }
       }
@@ -102,16 +101,7 @@ const ModalEditSample = props => {
       } else {
         if (data.success == "success") {
           setnameSpcChem(data.message)
-          // let spcc = []
-          // data.message.forEach(data => {
-          //   let index = {
-          //       label: data.name,
-          //       value: data.idPdSpecificChem,
-          //   }
-          //   spcc.push(index)
-          // })
-          // // setnameSpcChem(data.message)
-          // setnameSpcChem(spcc)
+          
         }
       }
     })
@@ -119,8 +109,6 @@ const ModalEditSample = props => {
 
   const handleSubmit = event => {
     event.preventDefault()
-    // var pord = Moment(values.pord).format('DD/MM/YYYY')
-    // var bbe = Moment(values.bbe).format('DD/MM/YYYY')
     var pordEdit = values.PORD
     var bbeEdit = values.BBE
     var priority = ""
@@ -157,9 +145,7 @@ const ModalEditSample = props => {
       Color: Color,
       tricker: true,
     }
-    // console.log(index)
     updateDetail(token, index).then(data => {
-      // console.log('response add order : ', data)
       if (data) {
         if (data.success == "success") {
           setsuccess_msg(true)
@@ -178,16 +164,13 @@ const ModalEditSample = props => {
       idOrders: values.idOrders,
     }
     deleteOrder(token, id).then(response => {
-      // console.log(response)
     })
   }
 
   const [Pord, SetPord] = useState("")
   const [Bbe, SetBbe] = useState("")
-  //idScfChem Priority
   useEffect(() => {
     setValues(orders)
-    // console.log(orders)
     setMicro(orders.Micro)
     setTn(orders.Tn)
     setPH(orders.PH)
@@ -213,9 +196,7 @@ const ModalEditSample = props => {
   }
 
   useEffect(() => {
-    // console.log(orders)
     setSelectChem(orders.idScfChem)
-    // setSelectedGroup3(orders.idScfChem)
     switch (orders.Priority) {
       case "0":
         return setNormal(true), setRush(false), setUrgent(false)

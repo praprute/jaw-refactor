@@ -174,7 +174,6 @@ const ModalTestReport = props => {
   const [description, setDescription] = useState("")
 
   const countingScore = async index => {
-    // console.log("counting Score", index)
     let resulted = index.resulted
     let SumMeanScore = 0
     let SumScore = 0
@@ -192,7 +191,6 @@ const ModalTestReport = props => {
     }
 
     if (index.message.MicroC == 1) {
-      // console.log("microc")
       MeanMicro = 5
       for (let i = 0; i < resulted[1].length; i++) {
         if (resulted[1][i].coa == true) {
@@ -217,9 +215,6 @@ const ModalTestReport = props => {
 
     SumScore = ScoreMicro + ScoreChem
 
-    // console.log("SumMeanScore Score", SumMeanScore)
-    // console.log("SumScore Score", SumScore)
-    // idOrderTested
     let uid = {
       idOrders: index.message.idOrderTested,
     }
@@ -384,18 +379,14 @@ const ModalTestReport = props => {
       Viscosity: Viscosity,
     }
 
-    // console.log('index update FG : ', index)
     updateFG(token, index).then(data => {
       if (data) {
-        // console.log('updateFG : ', data)
       }
     })
   }
 
   const handleTest = async event => {
     event.preventDefault()
-    // console.log('values test : ' , values)
-    // console.log('values tr : ' , tr)
     try {
       var index = {
         idOrders: values.idOrders,
@@ -426,24 +417,13 @@ const ModalTestReport = props => {
         timeStamp: require("moment")().format("YYYY-MM-DD HH:mm:ss"), //new Date().toISOString().slice(0, 19).replace('T', ' ')
       }
       let data = await Addtestreport(token, index)
-      //  let fetchTestresult = await readTestResultlasted(token , index.idOrders)
       if (data) {
         countDailyFinishgood()
         fetchTestResultlasted(token, values.idOrders)
       }
-      // console.log('fetchTestresult', fetchTestresult)
     } catch (err) {
       console.log(err)
     }
-
-    // Addtestreport(token, index).then(data => {
-    //   if(data){
-    //     console.log('test data : ', data)
-    //     console.log('test tr : ', tr[0])
-    //     fetchTestResultlasted(token , values.idOrders)
-    //     countDailyFinishgood()
-    //   }
-    // })
   }
 
   const handleRecheck = event => {
@@ -516,17 +496,8 @@ const ModalTestReport = props => {
 
     readFG(token).then(data => {
       if (data) {
-        // console.log('readFG : ', data)
         if (data.success == "success" && data.message.length > 0) {
-          // setOldValues({
-          //   Tn            :data.message[0].TN,
-          //   PH            :data.message[0].PH,
-          //   Salt          :data.message[0].SALT,
-          //   Tss           :data.message[0].TSS,
-          //   Histamine     :data.message[0].HISTAMINE,
-          //   SPG           :data.message[0].SPG,
-          //   Aw            :data.message[0].AW,
-          //   })
+         
         }
       }
     })
@@ -834,15 +805,7 @@ const ModalTestReport = props => {
         </h3>
       </div>
       <div className="modal-body">
-        {/* Header TestResult */}
-
-        {/* idOrderTested:orders.idOrders,
-          BBE:orders.BBE,
-          PORD:orders.PORD,
-          PO:orders.PO,
-          ProductName:orders.ProductName,
-          Size:orders.Size,
-          Quantity:orders.Quantity */}
+        
         <Row>
           <Col
             md="6"
@@ -1134,7 +1097,7 @@ const ModalTestReport = props => {
             </Col>
           </Row>
         ) : null}
-        {/* Chemical analysis */}
+        
         <Row>
           <Col
             xs="12"
@@ -1216,7 +1179,6 @@ const ModalTestReport = props => {
                               type="number"
                               name={index.keyInput}
                               onChange={handleChange(`${index.keyInput}`)}
-                              // value={index.val}
                               placeholder={index.val}
                             />
                           </div>
@@ -1224,9 +1186,7 @@ const ModalTestReport = props => {
                       </Col>
                       <Col xs="3">
                         {index.tkTemp ? (
-                          // <div>
-                          // <h6>{index.temp}</h6>
-                          // </div>
+                        
                           <Row className="mb-1">
                             <div className="col-md-10">
                               <input
@@ -1234,7 +1194,6 @@ const ModalTestReport = props => {
                                 type="number"
                                 name={index.keyTemp}
                                 onChange={handleChange(`${index.keyTemp}`)}
-                                // value={index.temp}
                                 placeholder={index.temp}
                               />
                             </div>
@@ -1276,7 +1235,6 @@ const ModalTestReport = props => {
         </Row>
         <br />
 
-        {/* Microbiological analysis */}
 
         {Microrender ? (
           <Row>

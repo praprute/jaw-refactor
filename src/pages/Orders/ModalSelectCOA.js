@@ -131,7 +131,6 @@ const ModalSelectCOA = props => {
   const [tpd, settpd] = useState("2")
   const handleChangeCustumer = name => event => {
     setvalueCustumer({ ...valueCustumer, [name]: event.target.value })
-    // console.log('valueCustumer : ',valueCustumer)
   }
 
   const [test, setTest] = useState([
@@ -158,7 +157,6 @@ const ModalSelectCOA = props => {
       if (data) {
         exportCOA(token).then(data => {
           if (data) {
-            // console.log(data)
             setimgbs64(data.message)
           }
         })
@@ -169,7 +167,6 @@ const ModalSelectCOA = props => {
   useEffect(() => {
     exportCOA(token).then(data => {
       if (data) {
-        // console.log(data)
         setimgbs64(data.message)
       }
     })
@@ -198,14 +195,11 @@ const ModalSelectCOA = props => {
   }, [tr])
 
   useEffect(() => {
-    // console.log('toggleCOA' , props)
     setdetailById(orders)
-    // console.log('orders Modal COA : ', orders)
   }, [orders])
 
   useEffect(() => {
     if (tr[0] != undefined) {
-      // console.log('test tr[0] COA : ', tr)
       setValues({
         idOrders: detailById.idOrders,
         PORD: detailById.PORD,
@@ -236,7 +230,6 @@ const ModalSelectCOA = props => {
         TimeToTest: tr[2].TimeTest,
       })
     } else {
-      // console.log('test tr[0] COA : ', tr)
       setValues({
         idOrders: detailById.idOrders,
         PORD: detailById.PORD,
@@ -271,12 +264,10 @@ const ModalSelectCOA = props => {
 
   function printPDF() {
     setStartExport(false)
-    // console.log('test :',test)
     let index = []
     for (let i = 0; i < test.length; i++) {
       index.push(test[i])
     }
-    // console.log('test pdf :',index)
     var docDefinition = {
      
       content: [

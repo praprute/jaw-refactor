@@ -75,7 +75,6 @@ const Orderpage = props => {
 
   const toggleModalReprocess = () => {
     setModalReprocess(!modalReprocess)
-    // console.log("bug modalReprocess: ", modalReprocess)
   }
 
   const offReprocess = () => {

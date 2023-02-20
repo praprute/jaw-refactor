@@ -108,7 +108,6 @@ const TableReprocess = props => {
     readOrderById(token, idOrders).then(data => {
       if (data) {
         if (data.success == "success") {
-          // console.log('onAddDetail : ',data.message[0])
           setdetail(data.message[0])
           onAddDetail(data.message[0])
         }
@@ -120,7 +119,6 @@ const TableReprocess = props => {
 
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
-      // console.log(' readTestResultlasted :',data)
       if (data) {
         if (data.success == "success") {
           if (!data.message) {
@@ -142,7 +140,6 @@ const TableReprocess = props => {
 
   useEffect(() => {
     getAllOrder(token).then(data => {
-      // console.log("getAllOrder: ", data)
       if (data == undefined) {
         setDataMerch({
           columns: columnTable,
@@ -210,7 +207,6 @@ const TableReprocess = props => {
                     className="btn btn-danger waves-effect waves-light .w-xs"
                     onClick={() => {
                       setconfirm_alert(true)
-                      // idDelete,
                       setidDelete(data.message[i].idOrders)
                     }}
                   >
@@ -224,7 +220,6 @@ const TableReprocess = props => {
                 index.push(rd)
               }
             }
-            // index.push(rd)
           }
           const status = {
             1: <span className="badge bg-success font-size-10">Completed</span>,
@@ -269,8 +264,6 @@ const TableReprocess = props => {
       }
     })
   }, [redirect])
-  //
-
   return (
     <React.Fragment>
       {success_dlg ? (
@@ -279,7 +272,6 @@ const TableReprocess = props => {
           title={dynamic_title}
           onConfirm={() => {
             setsuccess_dlg(false)
-            // location.reload();
             handleRedirect()
           }}
         >

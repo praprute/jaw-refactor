@@ -69,8 +69,6 @@ export const originalFormCOA2 = (
 
   let MicroComponent = []
 
-  //   console.log("prop data", AnalysisRender, spcChem, valuesChem)
-  // console.log("/method ", method)
 
   if (AnalysisRender.DisTN) {
     dataAnaly.push([
@@ -1081,22 +1079,19 @@ export const originalFormCOA2 = (
     }
   }
 
-  //   console.log("DetailOrderRow2 :", DetailOrderRow2)
-  //   console.log("dataAnalysis :", dataAnaly)
+  
   var docDefinition = {
     pageMargins: [30, 25, 15, 25],
     content: [
       {
-        // alignment: "justify",
+      
         columns: [
           {
             image: `data:image/png;base64,${logo}`,
             width: 80,
             alignment: "left",
-            // margin: ['auto'],
           },
           {
-            // margin: 'auto',
             margin: [0, 0, 20, 0],
             alignment: "center",
             stack: [

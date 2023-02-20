@@ -187,10 +187,8 @@ const HistoryDaily = props => {
   useEffect(async () => {
     try {
       let customerName = await getCustomers(token)
-      // console.log("customerName : ", customerName.message)
       let index = []
       for (let i = 0; i < customerName.message.length; i++) {
-        // console.log("sdfsd ", customerName.message[i])
         let detail = {
           label: customerName.message[i].Name,
           value: customerName.message[i].Name,
@@ -204,7 +202,6 @@ const HistoryDaily = props => {
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
       let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
-      // console.log("index : ", paresIndex)
 
       setValuesExportRow2({
         ProductionDate: paresIndex.Orders.PD,
@@ -411,11 +408,9 @@ const HistoryDaily = props => {
 
   const onChangeDateStart = name => event => {
     setDateStart({ ...dateStart, [name]: event.target.value })
-    // console.log("start : ", dateStart)
   }
   const onChangeDateEnd = name => event => {
     setDateEnd({ ...dateEnd, [name]: event.target.value })
-    // console.log("end : ", e.value)
   }
 
   const ExportdailyBio = async () => {
@@ -427,10 +422,8 @@ const HistoryDaily = props => {
       let index = {
         dStart: dateStart.date,
         dNow: dateEnd.date,
-        // dStart: date_now,
       }
       const data = await dailyReportBioFetch(token, index)
-      // console.log(data.message)
       dailyReportBio(values.logo, date_export, data.message, date_export_to)
     } catch (err) {
       console.log(err)
@@ -438,9 +431,6 @@ const HistoryDaily = props => {
   }
   const Exportdaily = async () => {
     try {
-    //   const date_export = await moment(new Date(), "Asia/Bangkok").format(
-    //     "DD/MM/YYYY"
-    //   )
       const date_export = await moment(dateStart.date).format(
         "DD/MM/YYYY"
       )
@@ -456,11 +446,9 @@ const HistoryDaily = props => {
       let index = {
         dStart: dateStart.date,
         dNow: dateEnd.date,
-        // dStart: date_now,
-        // dNow: date_end,
+        
       }
       const data = await dailyReportFetch(token, index)
-      console.log(data.message)
       dailyReport(values.logo, date_export, data.message, date_export_to)
     } catch (err) {
       console.log(err)

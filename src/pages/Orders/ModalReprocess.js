@@ -64,24 +64,10 @@ const ModalReprocess = props => {
     Viscosity: false,
     SaltMeter: false,
     Color: false,
-    // "TN(g/L)"
-    // "%Salt(w/v)"
-    // "Histamine(ppm)"
-    // "PH"
-    // "Aw"
-    // "Tss(Brix)"
-    // "SPG"
-    // "AN"
-    // "Acidity"
-    // "Viscosity"
-    // "Salt Meter"
-    // "Color"
+   
   })
 
   useEffect(() => {
-    // console.log(tr[0])
-    // setDescription([])
-    // console.log(orders)
     if (tr[0] != undefined) {
       setresultChem(tr[0])
       setdetailById(orders)
@@ -104,7 +90,6 @@ const ModalReprocess = props => {
   }, [tr, isOpenRro])
 
   useEffect(() => {
-    // console.log("orders", orders)
     setDescription({
       TN: false,
       Salt: false,
@@ -122,15 +107,6 @@ const ModalReprocess = props => {
   }, [orders.idOrders])
 
   const handleReprocess = async () => {
-    // function getAr(array) {
-    //   let uniqueArray = []
-    //   for (let i = 0; i < array.length; i++) {
-    //     if (uniqueArray.indexOf(array[i]) === -1) {
-    //       uniqueArray.push(array[i])
-    //     }
-    //   }
-    //   return uniqueArray
-    // }
     try {
       if (
         description.TN == false &&
@@ -153,14 +129,12 @@ const ModalReprocess = props => {
           Description: description,
           ProductName: orders.ProductName,
         }
-        console.log("index : ", index)
         let re = await Reprocess(token, index)
-        // console.log("re : ", re)
-
+      
         if (re.success == "success") {
           await handleRedirect()
           setsuccess_msg(true)
-          //   await props.offModal()
+         
         } else {
           setsuccess_error(true)
         }
@@ -171,14 +145,8 @@ const ModalReprocess = props => {
     }
   }
 
-  //   useEffect(() => {
-  //     console.log("isOpenRro : ", isOpenRro)
-  //   }, [isOpenRro])
-
   const TnC = () => {
-    //   console.log("resultChem Before", resultChem)
     if (tr[0] != undefined) {
-      // console.log("resultChem[0]", resultChem)
       if (resultChem[0].render > 0) {
         return (
           <Row style={{ display: "flex", width: "100%" }}>
@@ -190,7 +158,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[0].keyInput}`}
                   checked={description.TN}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({ ...description, TN: !description.TN })
                   }}
                 />
@@ -263,7 +230,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[1].keyInput}`}
                   checked={description.Salt}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       Salt: !description.Salt,
@@ -339,7 +305,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[2].keyInput}`}
                   checked={description.Histamine}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       Histamine: !description.Histamine,
@@ -415,7 +380,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[3].keyInput}`}
                   checked={description.PH}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       PH: !description.PH,
@@ -491,7 +455,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[4].keyInput}`}
                   checked={description.Aw}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       Aw: !description.Aw,
@@ -567,7 +530,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[5].keyInput}`}
                   checked={description.Tss}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({ ...description, Tss: !description.Tss })
                   }}
                 />
@@ -640,7 +602,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[6].keyInput}`}
                   checked={description.SPG}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({ ...description, SPG: !description.SPG })
                   }}
                 />
@@ -713,7 +674,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[7].keyInput}`}
                   checked={description.AN}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({ ...description, AN: !description.AN })
                   }}
                 />
@@ -786,7 +746,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[8].keyInput}`}
                   checked={description.Acidity}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       Acidity: !description.Acidity,
@@ -862,7 +821,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[9].keyInput}`}
                   checked={description.Viscosity}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       Viscosity: !description.Viscosity,
@@ -938,7 +896,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[10].keyInput}`}
                   checked={description.SaltMeter}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       SaltMeter: !description.SaltMeter,
@@ -1014,7 +971,6 @@ const ModalReprocess = props => {
                   id={`customCheckcolor${resultChem[11].keyInput}`}
                   checked={description.Color}
                   onChange={() => {
-                    //   handleAddDescription(`${tr[0][0].keyInput}`)
                     setDescription({
                       ...description,
                       Color: !description.Color,
@@ -1076,18 +1032,15 @@ const ModalReprocess = props => {
       return null
     }
   }
-  // isOpenRro = { modalReprocess }
-  // toggleRepro = { toggleModalReprocess }
+  
   return (
-    // <React.Fragment>
+    
     <Modal isOpen={isOpenRro} toggle={toggleRepro} centered={true} size="lg">
       {success_msg ? (
         <SweetAlert
           title="Add Order Success"
           success
-          //   showCancel
           confirmBtnBsStyle="success"
-          //   cancelBtnBsStyle="danger"
           onConfirm={async () => {
             setsuccess_msg(false)
             setresultChem([
@@ -1162,9 +1115,6 @@ const ModalReprocess = props => {
             })
             handleRedirect()
             toggleRepro()
-            // setInterval(() => {
-            //   window.location.reload()
-            // }, 5000)
           }}
         >
           You clicked the button!
@@ -1175,9 +1125,7 @@ const ModalReprocess = props => {
         <SweetAlert
           title="error"
           danger
-          //   showCancel
           confirmBtnBsStyle="danger"
-          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_error(false)
           }}
@@ -1333,26 +1281,6 @@ const ModalReprocess = props => {
                 </Col>
               </Col>
             </Row>
-
-            {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id={`customCheckcolor${index.keyInput}`}
-                  //   checked={false}
-                  onChange={e => {
-                    handleAddDescription(`${index.keyInput}`)
-                  }}
-                />
-
-                <label
-                  className="form-check-label"
-                  htmlFor={`customCheckcolor${index.keyInput}`}
-                >
-                  <h6>{index.key}</h6>
-                </label>
-              </div> */}
-
             {TnC()}
             {SaltC()}
             {HistamineC()}
@@ -1369,7 +1297,6 @@ const ModalReprocess = props => {
         </Row>
       </div>
       <ModalFooter>
-        {/* <Link target={"_blank"} to="/ExportForm"> */}
         <Button
           color="primary"
           onClick={() => {
@@ -1378,13 +1305,11 @@ const ModalReprocess = props => {
         >
           Reprocess
         </Button>
-        {/* </Link>{" "} */}
         <Button color="secondary" onClick={toggleRepro}>
           Cancel
         </Button>
       </ModalFooter>
     </Modal>
-    // </React.Fragment>
   )
 }
 

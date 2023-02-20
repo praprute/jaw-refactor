@@ -136,7 +136,6 @@ const OrderTable = props => {
     readOrderById(token, idOrders).then(data => {
       if (data) {
         if (data.success == "success") {
-          // console.log('onAddDetail : ',data.message[0])
           setdetail(data.message[0])
           onAddDetail(data.message[0])
         }
@@ -148,7 +147,6 @@ const OrderTable = props => {
 
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
-      // console.log(' readTestResultlasted :',data.resulted)
       if (data) {
         if (data.success == "success") {
           if (!data.message) {
@@ -170,7 +168,6 @@ const OrderTable = props => {
 
   useEffect(() => {
     getAllOrder(token).then(data => {
-      // console.log('getAllOrder: ' ,data)
       if (data == undefined) {
         setDataMerch({
           columns: columnTable,
@@ -238,7 +235,6 @@ const OrderTable = props => {
                     className="btn btn-danger waves-effect waves-light .w-xs"
                     onClick={() => {
                       setconfirm_alert(true)
-                      // idDelete,
                       setidDelete(data.message[i].idOrders)
                     }}
                   >
@@ -308,7 +304,6 @@ const OrderTable = props => {
           onConfirm={() => {
             setsuccess_dlg(false)
             handleRedirect()
-            // location.reload();
           }}
         >
           {dynamic_description}

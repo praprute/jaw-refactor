@@ -12,7 +12,6 @@ const Authmiddleware = ({
     {...rest}
     render={props => {
       if (isAuthProtected && !localStorage.getItem("JAWAuth")) {
-        // console.log("check auth : ",localStorage.getItem("JAWAuth") )
         return (
           <Redirect
             to={{ pathname: "/login", state: { from: props.location } }}

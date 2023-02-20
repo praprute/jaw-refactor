@@ -39,6 +39,7 @@ const ModalDetail = props => {
   const { orders, spc, tr, bio } = props
   const { isOpen, toggle, toggleCOA } = props
   const { user, token } = isAuthenticated()
+
   const [modal, setModal] = useState(false)
   const [score, setScore] = useState(0)
   const [confirm_alert, setconfirm_alert] = useState(false)
@@ -54,7 +55,6 @@ const ModalDetail = props => {
     },
   ])
   const [Microrender, setMicrorender] = useState(false)
-  // const toggle = () => setModal(!modal);
 
   const [resultChem, setresultChem] = useState([
     { int: false, key: "TN(g/L)", coa: false, val: "" },
@@ -75,7 +75,6 @@ const ModalDetail = props => {
 
   useEffect(() => {
     if (tr[0] != undefined) {
-      // console.log("tr :", tr)
       setresultChem(tr[0])
       setresultMicro(tr[1])
     } else {
@@ -99,6 +98,7 @@ const ModalDetail = props => {
   }, [tr])
 
   const [scoreTested, setscoreTested] = useState("")
+
   useEffect(() => {
     setdetailById(orders)
     setMicrorender(orders.Micro)
@@ -157,7 +157,6 @@ const ModalDetail = props => {
         }
       }
 
-      console.log("scoreTested : ", scoreTested, score)
       if (scoreTested != 0 && score != 0) {
         if (scoreTested == score) {
           let index = {
@@ -213,7 +212,7 @@ const ModalDetail = props => {
       ) : null}
 
       <div className="modal-header">
-        <h3 className="modal-title mt-0">Order : {detailById.PO}</h3>
+        <h3 className="modal-title mt-0">Report</h3>
         <button
           type="button"
           onClick={toggle}
@@ -299,7 +298,7 @@ const ModalDetail = props => {
                   justifyContent: "flex-start",
                 }}
               >
-                <h5 style={{ margin: "0" }}>Order Numder</h5>
+                <h5 style={{ margin: "0" }}>Sample code</h5>
               </div>
               <div
                 style={{
@@ -309,7 +308,7 @@ const ModalDetail = props => {
                   justifyContent: "flex-end",
                 }}
               >
-                <span>{detailById.PO}</span>
+                <span>{detailById.idOrders}</span>
               </div>
             </div>
           </Col>
@@ -383,7 +382,7 @@ const ModalDetail = props => {
                   justifyContent: "flex-start",
                 }}
               >
-                <h5 style={{ margin: "0" }}>Pack Size</h5>
+                <h5 style={{ margin: "0" }}>Sample character</h5>
               </div>
               <div
                 style={{
@@ -393,49 +392,7 @@ const ModalDetail = props => {
                   justifyContent: "flex-end",
                 }}
               >
-                <span>{detailById.Size}</span>
-              </div>
-            </div>
-          </Col>
-
-          <Col
-            md="6"
-            xs="12"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "10px",
-            }}
-          >
-            <div
-              style={{
-                paddingLeft: "10%",
-                paddingRight: "10%",
-                display: "flex",
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                }}
-              >
-                <h5 style={{ margin: "0" }}>Quantity</h5>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <span>{detailById.Quantity}</span>
+                <span>{detailById.sampleCharactor}</span>
               </div>
             </div>
           </Col>
@@ -477,6 +434,133 @@ const ModalDetail = props => {
                 }}
               >
                 <span>{detailById.name}</span>
+              </div>
+            </div>
+          </Col>
+          <Col
+            md="6"
+            xs="12"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <div
+              style={{
+                paddingLeft: "10%",
+                paddingRight: "10%",
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <h5 style={{ margin: "0" }}>Receiving date</h5>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <span>{detailById.timestamp}</span>
+              </div>
+            </div>
+          </Col>
+          <Col
+            md="6"
+            xs="12"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <div
+              style={{
+                paddingLeft: "10%",
+                paddingRight: "10%",
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <h5 style={{ margin: "0" }}>Test date</h5>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <span>{detailById.testDate}</span>
+              </div>
+            </div>
+          </Col>
+          <Col
+            md="6"
+            xs="12"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <div
+              style={{
+                paddingLeft: "10%",
+                paddingRight: "10%",
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <h5 style={{ margin: "0" }}>Approved</h5>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                {detailById.verify === 0 ? (
+                  <span>Non approved</span>
+                ) : (
+                  <span>Approved</span>
+                )}
               </div>
             </div>
           </Col>
@@ -564,19 +648,38 @@ const ModalDetail = props => {
                       </Col>
                       <Col xs="3" style={{ display: "flex" }}>
                         <Col xs="6">
-                          {index.int ? (
-                            <div className="badge bg-success font-size-13">
-                              <span>PASS</span>
-                            </div>
-                          ) : (
-                            <div className="badge bg-danger font-size-13">
-                              <span>FAIL</span>
-                            </div>
+                          {parseInt(user.role) !==
+                            parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                            <>
+                              {index.int ? (
+                                <div className="badge bg-success font-size-13">
+                                  <span>PASS</span>
+                                </div>
+                              ) : (
+                                <div className="badge bg-danger font-size-13">
+                                  <span>FAIL</span>
+                                </div>
+                              )}
+                            </>
                           )}
                         </Col>
 
                         <Col xs="6">
-                          {index.coa ? (
+                          {parseInt(user.role) !==
+                            parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                            <>
+                              {index.coa ? (
+                                <div className="badge bg-success font-size-13">
+                                  <span>PASS</span>
+                                </div>
+                              ) : (
+                                <div className="badge bg-danger font-size-13">
+                                  <span>FAIL</span>
+                                </div>
+                              )}
+                            </>
+                          )}
+                          {/* {index.coa ? (
                             <div className="badge bg-success font-size-13">
                               <span>PASS</span>
                             </div>
@@ -584,7 +687,7 @@ const ModalDetail = props => {
                             <div className="badge bg-danger font-size-13">
                               <span>FAIL</span>
                             </div>
-                          )}
+                          )} */}
                         </Col>
                       </Col>
                     </Row>
@@ -674,7 +777,21 @@ const ModalDetail = props => {
                   </Col>
                   <Col xs="3" style={{ display: "flex" }}>
                     <Col xs="6">
-                      {index.int ? (
+                      {parseInt(user.role) !==
+                        parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                        <>
+                          {index.int ? (
+                            <div className="badge bg-success font-size-13">
+                              <span>PASS</span>
+                            </div>
+                          ) : (
+                            <div className="badge bg-danger font-size-13">
+                              <span>FAIL</span>
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {/* {index.int ? (
                         <div className="badge bg-success font-size-13">
                           <span>PASS</span>
                         </div>
@@ -682,11 +799,25 @@ const ModalDetail = props => {
                         <div className="badge bg-danger font-size-13">
                           <span>FAIL</span>
                         </div>
-                      )}
+                      )} */}
                     </Col>
 
                     <Col xs="6">
-                      {index.coa ? (
+                      {parseInt(user.role) !==
+                        parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                        <>
+                          {index.coa ? (
+                            <div className="badge bg-success font-size-13">
+                              <span>PASS</span>
+                            </div>
+                          ) : (
+                            <div className="badge bg-danger font-size-13">
+                              <span>FAIL</span>
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {/* {index.coa ? (
                         <div className="badge bg-success font-size-13">
                           <span>PASS</span>
                         </div>
@@ -694,7 +825,7 @@ const ModalDetail = props => {
                         <div className="badge bg-danger font-size-13">
                           <span>FAIL</span>
                         </div>
-                      )}
+                      )} */}
                     </Col>
                   </Col>
                 </Row>
@@ -705,6 +836,12 @@ const ModalDetail = props => {
       </div>
 
       <ModalFooter>
+        <div style={{ width: "100%" }}>
+          <span style={{ whiteSpace: "pre-line", width: "100%" }}>
+            {`This test report shall not be reproduced except in full without the permission of testing laboratory and do not use for the advertisement.\nThis results relate only to the sample tested and apply to the sample as received.`}
+          </span>
+        </div>
+        <br />
         <Link target={"_blank"} to="/ExportForm">
           <Button
             color="primary"

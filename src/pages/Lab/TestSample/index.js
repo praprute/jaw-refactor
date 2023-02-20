@@ -7,13 +7,16 @@ import { withTranslation } from "react-i18next"
 import { useHistory } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import { isAuthenticated } from "pages/Authentication/api"
+import Select from "react-select"
 import {
   Addtestreport,
   readOrderById,
   readTestResultlasted,
   Recheck,
+  submitVerifyTask,
   updateFG,
   UpdateStatusPassToCheck,
+  updateTestDateOrderTask,
   WaitMicro,
 } from "pages/Orders/api"
 import Moment from "moment"
@@ -112,11 +115,28 @@ const TestSample = () => {
   const [success_micro, setsuccess_micro] = useState(false)
   const [success_error, setsuccess_error] = useState(false)
   const [values, setValues] = useState({})
+  const [dateOfTest, setDateOfTest] = useState(
+    Moment(new Date()).format("DD/MM/YY HH:MM:SS")
+  )
   const [oldValues, setOldValues] = useState({})
   const [description, setDescription] = useState("")
   const [optionTR, setOptionTR] = useState(false)
   const [dynamic_description, setdynamic_description] = useState("")
   const [dynamic_title, setdynamic_title] = useState("")
+  const [selectFromList, setSelectFromList] = useState(null)
+  const [selectSample, setSelectSample] = useState(null)
+
+  const optionSample = [
+    { label: "Liquid", value: "Liquid" },
+    { label: "Solid", value: "Solid" },
+    { label: "Semi-solid", value: "Semi-solid" },
+  ]
+
+  const optionCollected = [
+    { label: "Lab staff", value: "Lab staff" },
+    { label: "Lab leader", value: "Lab leader" },
+    { label: "Technical leader", value: "Technical leader" },
+  ]
 
   useEffect(() => {
     if (!!idOrderQuery && !!token) {
@@ -320,6 +340,17 @@ const TestSample = () => {
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
   }
+  const handleChangeCollected = name => event => {
+    setTestdate({ ...values, [name]: event.target.value })
+  }
+
+  const handleSelectCollected = e => {
+    setSelectFromList(e)
+  }
+
+  const handleSelectSample = e => {
+    setSelectSample(e)
+  }
 
   const countDailyFinishgood = async () => {
     try {
@@ -437,9 +468,17 @@ const TestSample = () => {
         timeStamp: require("moment")().format("YYYY-MM-DD HH:mm:ss"), //new Date().toISOString().slice(0, 19).replace('T', ' ')
       }
 
-      const res = await Addtestreport(token, index)
+      const payload = {
+        testDate: dateOfTest,
+        collected: selectFromList,
+        idOrders: parseInt(idOrderQuery),
+        sampleCharactor: selectSample,
+      }
 
-      if (res.success === "success") {
+      const res = await Addtestreport(token, index)
+      const response = await updateTestDateOrderTask(token, payload)
+
+      if (res.success === "success" && res.success === "success") {
         await countDailyFinishgood()
         const response = await readTestResultlasted(
           token,
@@ -463,6 +502,48 @@ const TestSample = () => {
       }
     } catch (e) {
       console.log(e)
+    }
+  }
+
+  const handleApproveByQA = async () => {
+    try {
+      let payload = {
+        idOrders: parseInt(idOrderQuery),
+        verify: 1,
+      }
+      const response = await submitVerifyTask(token, payload)
+      if (response.success === "success") {
+        setsuccess_msg(true)
+        setdynamic_title("Approved success")
+        setdynamic_description("")
+      } else {
+        setsuccess_error(true)
+        setdynamic_title(response.message)
+        setdynamic_description("Server has break down!")
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const handleUnApproveByQA = async () => {
+    try {
+      let payload = {
+        idOrders: parseInt(idOrderQuery),
+        verify: 0,
+      }
+      const response = await submitVerifyTask(token, payload)
+      if (response.success === "success") {
+        setsuccess_msg(true)
+        setdynamic_title("Reject success")
+        setdynamic_description("")
+      } else {
+        setsuccess_error(true)
+        setdynamic_title(response.message)
+        setdynamic_description("Server has break down!")
+      }
+    } catch (e) {
+      console.error(e)
     }
   }
   return (
@@ -719,7 +800,6 @@ const TestSample = () => {
           </div>
         </Col>
       </Row>
-
       {description && (
         <Row style={{ marginBottom: "10px", padding: "10px 0px" }}>
           <Col
@@ -860,7 +940,21 @@ const TestSample = () => {
                     </Col>
                     <Col xs="3" style={{ display: "flex" }}>
                       <Col xs="6">
-                        {index.int ? (
+                        {parseInt(user.role) !==
+                          parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                          <>
+                            {index.int ? (
+                              <div className="badge bg-success font-size-13">
+                                <span>PASS</span>
+                              </div>
+                            ) : (
+                              <div className="badge bg-danger font-size-13">
+                                <span>FAIL</span>
+                              </div>
+                            )}
+                          </>
+                        )}
+                        {/* {index.int ? (
                           <div className="badge bg-success font-size-13">
                             <span>PASS</span>
                           </div>
@@ -868,11 +962,25 @@ const TestSample = () => {
                           <div className="badge bg-danger font-size-13">
                             <span>FAIL</span>
                           </div>
-                        )}
+                        )} */}
                       </Col>
 
                       <Col xs="6">
-                        {index.coa ? (
+                        {parseInt(user.role) !==
+                          parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                          <>
+                            {index.coa ? (
+                              <div className="badge bg-success font-size-13">
+                                <span>PASS</span>
+                              </div>
+                            ) : (
+                              <div className="badge bg-danger font-size-13">
+                                <span>FAIL</span>
+                              </div>
+                            )}
+                          </>
+                        )}
+                        {/* {index.coa ? (
                           <div className="badge bg-success font-size-13">
                             <span>PASS</span>
                           </div>
@@ -880,7 +988,7 @@ const TestSample = () => {
                           <div className="badge bg-danger font-size-13">
                             <span>FAIL</span>
                           </div>
-                        )}
+                        )} */}
                       </Col>
                     </Col>
                   </Row>
@@ -892,7 +1000,6 @@ const TestSample = () => {
         </Col>
       </Row>
       <hr />
-
       {Microrender && (
         <Row>
           <Col
@@ -978,7 +1085,21 @@ const TestSample = () => {
                 </Col>
                 <Col xs="3" style={{ display: "flex" }}>
                   <Col xs="6">
-                    {index.int ? (
+                    {parseInt(user.role) !==
+                      parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                      <>
+                        {index.int ? (
+                          <div className="badge bg-success font-size-13">
+                            <span>PASS</span>
+                          </div>
+                        ) : (
+                          <div className="badge bg-danger font-size-13">
+                            <span>FAIL</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {/* {index.int ? (
                       <div className="badge bg-success font-size-13">
                         <span>PASS</span>
                       </div>
@@ -986,11 +1107,25 @@ const TestSample = () => {
                       <div className="badge bg-danger font-size-13">
                         <span>FAIL</span>
                       </div>
-                    )}
+                    )} */}
                   </Col>
 
                   <Col xs="6">
-                    {index.coa ? (
+                    {parseInt(user.role) !==
+                      parseInt(process.env.REACT_APP_LABHIDERESULT) && (
+                      <>
+                        {index.coa ? (
+                          <div className="badge bg-success font-size-13">
+                            <span>PASS</span>
+                          </div>
+                        ) : (
+                          <div className="badge bg-danger font-size-13">
+                            <span>FAIL</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {/* {index.coa ? (
                       <div className="badge bg-success font-size-13">
                         <span>PASS</span>
                       </div>
@@ -998,7 +1133,7 @@ const TestSample = () => {
                       <div className="badge bg-danger font-size-13">
                         <span>FAIL</span>
                       </div>
-                    )}
+                    )} */}
                   </Col>
                 </Col>
               </Row>
@@ -1006,9 +1141,42 @@ const TestSample = () => {
           </Col>
         </Row>
       )}
-
       <br />
-
+      <span>Sample character</span>
+      <Select
+        value={optionSample.filter(function (option) {
+          return option.value === selectSample
+        })}
+        name="selectSample"
+        onChange={e => {
+          handleSelectSample(e.value)
+        }}
+        options={optionSample}
+      />
+      <br />
+      <span>Test Date</span>
+      <input
+        className="form-control"
+        type="text"
+        name="testDate"
+        onChange={handleChangeCollected(`testDate`)}
+        value={dateOfTest}
+        placeholder="test date"
+        disabled
+      />
+      <br />
+      <span>Collected by</span>
+      <Select
+        value={optionCollected.filter(function (option) {
+          return option.value === selectFromList
+        })}
+        name="CollectedBy"
+        onChange={e => {
+          handleSelectCollected(e.value)
+        }}
+        options={optionCollected}
+      />
+      <br />
       {optionTR ? (
         <div
           style={{
@@ -1039,21 +1207,39 @@ const TestSample = () => {
               &nbsp;&nbsp; &nbsp;&nbsp;
             </Col>
           </Row>
+          <br />
         </div>
       ) : (
-        <div>
-          <Button
-            color="primary"
-            className="w-lg"
-            onClick={event => {
-              handleTest(event)
-            }}
-          >
-            TEST
-          </Button>
-        </div>
+        <>
+          {parseInt(user.role) === 2 && (
+            <div>
+              <Button
+                color="primary"
+                className="w-lg"
+                onClick={event => {
+                  handleTest(event)
+                }}
+              >
+                TEST
+              </Button>
+            </div>
+          )}
+          <br />
+        </>
       )}
-
+      <h5>Test Result Approved</h5>
+      <span>
+        Approved :{" "}
+        {detailOrder.verify === 0 ? <span>FAIL</span> : <span>PASS</span>}
+      </span>
+      <br />
+      <br />
+      <Button color="primary" className="w-lg" onClick={handleApproveByQA}>
+        verify
+      </Button>{" "}
+      <Button color="danger" className="w-lg" onClick={handleUnApproveByQA}>
+        reject
+      </Button>
       {success_recheck && (
         <SweetAlert
           title={dynamic_title}
@@ -1066,7 +1252,6 @@ const TestSample = () => {
           {dynamic_description}
         </SweetAlert>
       )}
-
       {success_micro && (
         <SweetAlert
           title={dynamic_title}
@@ -1079,7 +1264,6 @@ const TestSample = () => {
           {dynamic_description}
         </SweetAlert>
       )}
-
       {success_msg && (
         <SweetAlert
           title={dynamic_title}
@@ -1093,7 +1277,6 @@ const TestSample = () => {
           {dynamic_description}
         </SweetAlert>
       )}
-
       {success_error && (
         <SweetAlert
           title={dynamic_title}

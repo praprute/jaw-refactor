@@ -64,7 +64,6 @@ const ModalAddOrder = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdMicroCheckbox : ' ,data.message)
           setnameSpcMicro(data.message)
         }
       }
@@ -77,7 +76,6 @@ const ModalAddOrder = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdChemCheckbox : ' ,data.message)
           setnameSpcChem(data.message)
         }
       }
@@ -86,10 +84,6 @@ const ModalAddOrder = props => {
 
   const handleSubmit = event => {
     event.preventDefault()
-    // console.log('bbe : ',values.pord )
-    // console.log('pord : ',values.bbe )
-    // var pord = Moment(values.pord).format('DD/MM/YYYY')
-    // var bbe = Moment(values.bbe).format('DD/MM/YYYY')
     if (values.productname == "") {
       return setsuccess_error(true)
     }
@@ -103,13 +97,6 @@ const ModalAddOrder = props => {
     } else if (urgent) {
       priority = 2
     }
-    // console.log('pord : ', pord)
-    // console.log('bbe : ', bbe)
-    // console.log('selectChem : ', selectChem)
-    // console.log('selectMicro : ', selectMicro)
-    // console.log('values : ', values)
-    // console.log('priority : ', priority)
-
     var index = {
       PORD: pord,
       BBE: bbe,
@@ -131,17 +118,13 @@ const ModalAddOrder = props => {
     }
 
     addOrder(token, index).then(data => {
-      // console.log('response add order : ', data)
       if (data) {
-        // idAddOrder
         if (data.success == "success") {
           var index = {
             idOrders: data.idAddOrder,
           }
-          // console.log('response add order SUCCCESS: ', data)
           addRealtimeOrder(token, index).then(data => {
             if (data) {
-              // console.log('addRealtimeOrder : ', data)
               updateCardDS(token).then(data => {
                 if (data) {
                   setsuccess_msg(true)
@@ -153,7 +136,6 @@ const ModalAddOrder = props => {
             }
           })
         } else {
-          // console.log('response add order ERROR : ')
           setsuccess_error(true)
         }
       } else {
@@ -161,9 +143,6 @@ const ModalAddOrder = props => {
       }
     })
 
-    // toggleAddorder()
-    // setsuccess_msg(false)
-    // setsuccess_error(false)
   }
   return (
     <Modal
@@ -176,15 +155,11 @@ const ModalAddOrder = props => {
         <SweetAlert
           title="Add Order Success"
           success
-          //   showCancel
           confirmBtnBsStyle="success"
-          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_msg(false)
             toggleAddorder()
-            // setInterval(() => {
             location.reload()
-            // }, 5000)
           }}
         >
           You clicked the button!
@@ -195,9 +170,7 @@ const ModalAddOrder = props => {
         <SweetAlert
           title="error"
           danger
-          //   showCancel
           confirmBtnBsStyle="danger"
-          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_error(false)
           }}
@@ -259,7 +232,6 @@ const ModalAddOrder = props => {
                     <input
                       className="form-control"
                       type="date"
-                      // defaultValue="BBE:00/00/0000"
                       name="bbe"
                       onChange={handleChange("bbe")}
                       value={values.bbe}

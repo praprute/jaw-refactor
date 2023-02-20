@@ -137,7 +137,6 @@ const TablePassCheckAndPass = props => {
     readOrderById(token, idOrders).then(data => {
       if (data) {
         if (data.success == "success") {
-          // console.log('onAddDetail : ',data.message[0])
           setdetail(data.message[0])
           onAddDetail(data.message[0])
         }
@@ -149,7 +148,6 @@ const TablePassCheckAndPass = props => {
 
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
-      console.log(" readTestResultlasted :", data)
       if (data) {
         if (data.success == "success") {
           if (!data.message) {
@@ -169,13 +167,10 @@ const TablePassCheckAndPass = props => {
     })
   }
 
-  const handleReProcess = (token, uid) => {
-    console.log("token, uid", token, uid)
-  }
+  
 
   useEffect(() => {
     getAllOrder(token).then(data => {
-      // console.log('getAllOrder: ' ,data)
       if (data == undefined) {
         setDataMerch({
           columns: columnTable,
@@ -224,14 +219,7 @@ const TablePassCheckAndPass = props => {
                   onClick={() => {
                     fetchDetail(token, data.message[i].idOrders)
                     fetchTestResultlasted(token, data.message[i].idOrders)
-                    // toggleReprocess()
-                    // handleReProcess(token, data.message[i].idOrders)
-
-                    // handleReSent(
-                    //   token,
-                    //   data.message[i].idOrders,
-                    //   data.message[i]
-                    // )
+                    
                   }}
                 >
                   <button
@@ -247,35 +235,6 @@ const TablePassCheckAndPass = props => {
                   </button>
                 </span>
               ),
-              // action: <div style={{display:'flex', justifyContent: 'center'}}>
-              //   <span onClick={() => {
-              //     fetchDetail(token ,data.message[i].idOrders)
-              //   }} >
-              //     <button style={{margin:'2px'}}
-              //       type="button"
-              //       className="btn btn-warning waves-effect waves-light .w-xs"
-              //       onClick={
-              //         props.toggleEdit
-              //       }
-              //     >
-              //       <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
-              //       Edit
-              //     </button>
-              //   </span>
-
-              //     <button style={{margin:'2px'}}
-              //       type="button"
-              //       className="btn btn-danger waves-effect waves-light .w-xs"
-              //       onClick={() => {
-              //         setconfirm_alert(true)
-              //         // idDelete,
-              //         setidDelete(data.message[i].idOrders)
-              //       }}
-              //     >
-              //       <i className="bx bx-trash-alt align-middle me-2"></i>{" "}
-              //       Delete
-              //     </button>
-              // </div>
             }
             if (props.tricker == "pass") {
               if (data.message[i].Status == 1) {
@@ -288,7 +247,6 @@ const TablePassCheckAndPass = props => {
               }
             }
 
-            //index.push(rd)
           }
           const status = {
             1: <span className="badge bg-success font-size-10">Completed</span>,
@@ -337,7 +295,7 @@ const TablePassCheckAndPass = props => {
       }
     })
   }, [redirect])
-  //
+ 
 
   return (
     <React.Fragment>
@@ -347,7 +305,6 @@ const TablePassCheckAndPass = props => {
           title={dynamic_title}
           onConfirm={() => {
             setsuccess_dlg(false)
-            // location.reload()
             handleRedirect()
           }}
         >

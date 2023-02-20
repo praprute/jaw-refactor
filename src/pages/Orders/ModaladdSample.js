@@ -81,7 +81,6 @@ const ModaladdSample = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdMicroCheckbox : ' ,data.message)
           setnameSpcMicro(data.message)
         }
       }
@@ -94,7 +93,6 @@ const ModaladdSample = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdChemCheckbox : ' ,data.message)
           let spcc = []
           data.message.forEach(data => {
             let index = {
@@ -148,8 +146,7 @@ const ModaladdSample = props => {
       Color: Color,
     }
 
-    // console.log("index sample : ", index)
-
+    
     addOrder(token, index).then(data => {
       if (data) {
         if (data.success == "success") {
@@ -161,10 +158,6 @@ const ModaladdSample = props => {
               updateCardDS(token).then(data => {
                 if (data) {
                   setsuccess_msg(true)
-
-                  // setInterval(() => {
-                  //   window.location.reload()
-                  // }, 1000)
                 }
               })
             }
@@ -176,20 +169,14 @@ const ModaladdSample = props => {
         setsuccess_error(true)
       }
     })
-
-    // toggleAddorder()
-    // setsuccess_msg(false)
-    // setsuccess_error(false)
   }
 
   const handleChangeSelectChem = e => {
     setSelectChem(e)
-    console.log(e)
   }
 
   const handleSelectGroup3 = selectedGroup3 => {
     setSelectedGroup3(selectedGroup3)
-    // console.log(selectedGroup3)
   }
   return (
     <Modal
@@ -202,12 +189,9 @@ const ModaladdSample = props => {
         <SweetAlert
           title="Add Order Success"
           success
-          //   showCancel
           confirmBtnBsStyle="success"
-          //   cancelBtnBsStyle="danger"
           onConfirm={async () => {
             setsuccess_msg(false)
-            // toggleAddorder()
             handleRedirect()
             toggleSample()
 
@@ -232,9 +216,6 @@ const ModaladdSample = props => {
               size: "",
               quantity: "",
             })
-            // setInterval(() => {
-            //   window.location.reload()
-            // }, 5000)
           }}
         >
           You clicked the button!
@@ -245,9 +226,7 @@ const ModaladdSample = props => {
         <SweetAlert
           title="error"
           danger
-          //   showCancel
           confirmBtnBsStyle="danger"
-          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_error(false)
           }}
@@ -293,18 +272,7 @@ const ModaladdSample = props => {
                   </div>
                 </Row>
 
-                {/* <Col sm="4" style={{ padding: "5px" }}>
-                        Approve By ................................
-                        <Select
-                          value={selectedGroup3}
-                          name="To"
-                          onChange={e => {
-                            handleSelectGroup3()
-                            handleChangeSelectChem(e.value)
-                          }}
-                          options={ApproveSelect}
-                        />
-                      </Col> */}
+               
 
                 <Row className="mb-3">
                   <label

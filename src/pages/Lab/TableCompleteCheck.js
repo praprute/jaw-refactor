@@ -94,6 +94,10 @@ const TableCompleteCheck = props => {
       field: "detail",
       sort: "asc",
     },
+    {
+      label: "Verify",
+      field: "TestResult",
+    },
   ])
   const [dataMerch, setDataMerch] = useState({})
   const [detail, setdetail] = useState({})
@@ -110,7 +114,6 @@ const TableCompleteCheck = props => {
     readOrderById(token, idOrders).then(data => {
       if (data) {
         if (data.success == "success") {
-          // console.log('onAddDetail : ',data.message[0])
           setdetail(data.message[0])
           onAddDetail(data.message[0])
         }
@@ -122,13 +125,7 @@ const TableCompleteCheck = props => {
 
   const fetchTestResultlasted = (token, idOrders) => {
     readTestResultlasted(token, idOrders).then(data => {
-      // console.log(' readTestResultlasted :',data.resulted)
-      // let resulted = []
-      // data.resulted.forEach(data => {
-      //   data.forEach(children => {
-
-      //   })
-      // })
+     
       if (data) {
         if (data.success == "success") {
           if (!data.message) {
@@ -149,9 +146,7 @@ const TableCompleteCheck = props => {
   }
 
   useEffect(() => {
-    // console.log('props.toggleTR : ', props)
     if (props.page == "lab") {
-      // console.log('tp')
       if (props.tricker == "CompleteCheck" || props.tricker == "pass") {
         setColumnTable([
           {
@@ -182,6 +177,10 @@ const TableCompleteCheck = props => {
           {
             label: "Detail",
             field: "detail",
+          },
+          {
+            label: "Verify",
+            field: "TestResult",
           },
         ])
       } else {
@@ -217,6 +216,10 @@ const TableCompleteCheck = props => {
           },
           {
             label: "Test Result",
+            field: "TestResult",
+          },
+          {
+            label: "Verify",
             field: "TestResult",
           },
         ])
@@ -275,8 +278,10 @@ const TableCompleteCheck = props => {
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <span
                       onClick={() => {
-                        fetchDetail(token, data.message[i].idOrders)
-                        fetchTestResultlasted(token, data.message[i].idOrders)
+                        window.open(
+                          `/TestSample?idOrders=${data.message[i].idOrders}`,
+                          "_blank"
+                        )
                       }}
                     >
                       <button
@@ -286,19 +291,17 @@ const TableCompleteCheck = props => {
                         onClick={props.toggleTR}
                       >
                         <i className="bx bx-pencil font-size-16 align-middle me-2"></i>{" "}
-                        TEST
+                        verify
                       </button>
                     </span>
                   </div>
                 ),
               }
-              //   index.push(rd)
               if (props.tricker == "allOrder") {
                 if (
                   data.message[i].Status == 0 ||
                   data.message[i].Status == 3
                 ) {
-                  // console.log('rd : ', rd)
                   index.push(rd)
                 }
               }
@@ -362,7 +365,6 @@ const TableCompleteCheck = props => {
               1: <span className="badge bg-warning font-size-10">rush</span>,
               2: <span className="badge bg-danger font-size-10">urgent</span>,
             }
-            // console.log('index ', index)
             setDataMerch({
               columns: columnTable,
               rows: map(index, order => ({

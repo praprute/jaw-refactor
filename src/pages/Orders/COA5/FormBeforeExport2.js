@@ -448,14 +448,12 @@ const FormBeforeExport5 = props => {
   }
 
   const handleExportPDF = () => {
-    // console.log("valScoreLevel : ", valScoreLevel)
 
     let dataRow2 = [
       { values: valuesExportRow2.CollectedDate },
       { values: valuesExportRow2.productName },
     ]
-    // CollectedDate: "",
-    // productName: "",
+    
     let dataRow3 = [
       { values: valuesExportRow3.productionDate },
       { values: valuesExportRow3.TankNo },
@@ -482,7 +480,6 @@ const FormBeforeExport5 = props => {
 
     let ScoreLevel = true
 
-    // console.log("AnalysisRender", AnalysisRender)
 
     originalFormCOA2(
       values.logo,

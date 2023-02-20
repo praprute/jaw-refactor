@@ -185,11 +185,7 @@ export const dailyReportBio = (logo, date_export, dataImport, date_export_to) =>
       ])
     }
   }
-  //   console.log("prop data", AnalysisRender, spcChem, valuesChem)
-  //   console.log("/MicroRender ", MicroRender)
-
-  //   console.log("DetailOrderRow2 :", DetailOrderRow2)
-  //   console.log("dataAnalysis :", dataAnaly)
+ 
   var docDefinition = {
     pageMargins: [20, 20, 20, 20],
     pageOrientation: "landscape",

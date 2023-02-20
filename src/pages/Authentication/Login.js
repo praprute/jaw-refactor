@@ -52,10 +52,8 @@ const Login = props => {
     event.preventDefault()
 
     signInUser(values).then(response => {
-      // console.log(response)
       if (response) {
         if (response.success == "success") {
-          // console.log(response)
           setregisSuc(true)
           settextResponse(response.message_th)
           setValues({ ...values, username: "", password: "" })
@@ -69,9 +67,7 @@ const Login = props => {
               history.push("/dashboard")
             }
           )
-          //
         } else {
-          // console.log(response)
           setregisFail(true)
           settextResponse(response.message_th)
         }
@@ -79,7 +75,6 @@ const Login = props => {
         return null
       }
     })
-    // console.log(props.registerUser(values))
   }
 
   return (

@@ -51,12 +51,9 @@ const dountchart = props => {
     ],
   })
 
-  // const series = [FG.TN, FG.PH, FG.SALT, FG.TSS, FG.HISTAMINE, FG.SPG]
-  // const series = [0,0,0,0,0,0,0]
+  
   useEffect(() => {
-    // console.log('props FG : ', FG)
     setseries(FG)
-      // setseries([FG.TN, FG.PH, FG.SALT, FG.TSS, FG.HISTAMINE, FG.SPG, FG.AW])
   },[FG])
 
   return (

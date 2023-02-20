@@ -82,9 +82,7 @@ export const originalFormCOA = (
 
   let MicroComponent = []
 
-  //   console.log("prop data", AnalysisRender, spcChem, valuesChem)
-  //   console.log("/MicroRender ", MicroRender)
-
+ 
   if (AnalysisRender.DisTN) {
     dataAnaly.push([
       {
@@ -1258,8 +1256,7 @@ export const originalFormCOA = (
       DetailOrderRow3.push(index)
     }
   }
-  //   console.log("DetailOrderRow2 :", DetailOrderRow2)
-  //   console.log("dataAnalysis :", dataAnaly)
+
   var docDefinition = {
     pageMargins: [35, 20, 15, 20],
     content: [
@@ -1276,7 +1273,6 @@ export const originalFormCOA = (
                 columns: [
                   {
                     text: `${Company.Name}`,
-                    // text: "RUNGROJ FISH SAUCE CO., LTD.",
                     style: "invoiceTitle",
                     width: "*",
                   },

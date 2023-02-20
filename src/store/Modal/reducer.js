@@ -33,7 +33,6 @@ const DetailOrder = (state = INIT_STATE, action) => {
         }
 
       case ADD_SPECIFIC_DETAIL:
-        // console.log('spc : ', action.payload)
         return {
           ...state,
           SpecificChem: action.payload,
@@ -52,7 +51,6 @@ const DetailOrder = (state = INIT_STATE, action) => {
         return state
 
       case ADD_SPECIFIC_BIO_DETAIL:
-        // console.log('ADD_SPECIFIC_BIO_DETAIL: ',action.payload)
         return {
           ...state,
           SpecificBio: action.payload,
@@ -71,7 +69,6 @@ const DetailOrder = (state = INIT_STATE, action) => {
         return state
 
       default:
-        // console.log('test defual fredux')
         return state
     }
 }
@@ -79,5 +76,3 @@ const DetailOrder = (state = INIT_STATE, action) => {
 export default DetailOrder
 
 
-//   ADD_ORDER_VEIT,
-//   GET_ORDER_VEIT,

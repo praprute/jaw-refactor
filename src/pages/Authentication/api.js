@@ -7,7 +7,6 @@ export const Signup = (index) => {
         username:index.username,
         password:index.password
     })
-    // console.log('index:',data)
     return fetch(`${API}/signup`, {
         method: "POST",
         headers: {
@@ -26,7 +25,6 @@ export const Signup = (index) => {
 }
 
 export const signInUser = (index) => {
-    // console.log("api signin ", index)
     var data =  JSON.stringify({
         username: index.usename,
         password: index.password
@@ -50,7 +48,6 @@ export const signInUser = (index) => {
 export const authenticate = (index, next) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("JAWAuth", JSON.stringify(index));
-    // console.log(data.user.name)
     next();
   }
 }

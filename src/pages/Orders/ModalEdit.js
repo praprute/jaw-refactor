@@ -83,7 +83,6 @@ const ModalEdit = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log('readIdMicroCheckbox : ' ,data.message)
           setnameSpcMicro(data.message)
         }
       }
@@ -96,7 +95,6 @@ const ModalEdit = props => {
         return null
       } else {
         if (data.success == "success") {
-          // console.log("readIdChemCheckbox : ", data.message)
           setnameSpcChem(data.message)
         }
       }
@@ -144,7 +142,6 @@ const ModalEdit = props => {
       tricker: false,
     }
     updateDetail(token, index).then(data => {
-      // console.log('response add order : ', data)
       if (data) {
         if (data.success == "success") {
           setsuccess_msg(true)
@@ -163,15 +160,12 @@ const ModalEdit = props => {
       idOrders: values.idOrders,
     }
     deleteOrder(token, id).then(response => {
-      // console.log(response)
     })
   }
 
   const [Pord, SetPord] = useState("")
   const [Bbe, SetBbe] = useState("")
-  //idScfChem Priority
   useEffect(() => {
-    // console.log("order :", orders)
     setValues(orders)
     setMicro(orders.Micro)
     setTn(orders.Tn)
@@ -189,7 +183,6 @@ const ModalEdit = props => {
   }, [orders, bio, tr])
 
   useEffect(() => {
-    // console.log(orders)
     setSelectChem(orders.idScfChem)
     switch (orders.Priority) {
       case "0":
@@ -206,14 +199,11 @@ const ModalEdit = props => {
         <SweetAlert
           title="Add Order Success"
           success
-          //   showCancel
           confirmBtnBsStyle="success"
-          //   cancelBtnBsStyle="danger"
           onConfirm={async () => {
             setsuccess_msg(false)
             handleRedirect()
             toggleEdit()
-            // location.reload()
           }}
         >
           You clicked the button!
@@ -224,9 +214,7 @@ const ModalEdit = props => {
         <SweetAlert
           title="error"
           danger
-          //   showCancel
           confirmBtnBsStyle="danger"
-          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_error(false)
           }}
@@ -270,14 +258,12 @@ const ModalEdit = props => {
                     PORD:
                   </label>
                   <div className="col-md-4">
-                    {/* {values.PORD} */}
                     <input
                       className="form-control"
                       type="date"
                       name="pord"
                       onChange={handleChange("PORD")}
                       value={values.PORD}
-                      // placeholder="PORD:00/00/0000"
                     />
                   </div>
                   <label
@@ -291,7 +277,6 @@ const ModalEdit = props => {
                     <input
                       className="form-control"
                       type="date"
-                      // defaultValue="BBE:00/00/0000"
                       name="bbe"
                       onChange={handleChange("BBE")}
                       value={values.BBE}
@@ -522,23 +507,11 @@ const ModalEdit = props => {
 
                   <div className="col-md-1"></div>
                 </Row>
-                {/* <Row style={{display:'flex', width:'100%', alignItems:'center', margin:'0'}}>
-                                            <Col md="2">
-                                                <h5 style={{margin:'0'}}>Lot</h5>
-                                            </Col>
-                                            <Col md="5">
-                                            
-                                            </Col>
-                                            <Col md="5">
-                                            </Col>
-                                        </Row> */}
-              </CardBody>
+                </CardBody>
             </Card>
           </Col>
         </Row>
-        {/* Header TestResult */}
-
-        {/* Chemical analysis */}
+        
       </div>
       <ModalFooter>
         <Button color="primary" onClick={handleSubmit}>

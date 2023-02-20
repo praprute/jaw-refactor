@@ -96,7 +96,6 @@ const Labatorypage = props => {
   useEffect(async () => {
     const logoFetch = await exportCOA(token)
     if (logoFetch) {
-      // console.log(logoFetch.message)
       setLogo(logoFetch.message)
     }
   }, [])
@@ -104,8 +103,7 @@ const Labatorypage = props => {
   const Exportdaily = async () => {
       
       const date_now = moment(new Date(), "Asia/Bangkok").format("YYYY-MM-DD")
-      // .add(1, "y")
-      // console.log(date_now)
+    
       return dailyReport(logo, date_now)
   }
   const handleRedi = () => {

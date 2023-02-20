@@ -547,11 +547,47 @@ export const UpdateDatailOrder = async (token, index) => {
     return console.log(err)
   }
 }
-
+// updateTestDateOrder
+export const updateTestDateOrderTask = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/updateTestDateOrder`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(index),
+    })
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
+}
 // queryDetailMulti
 export const queryDetailMulti = async (token, index) => {
   try {
     const response = await fetch(`${API}/queryDetailMulti`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(index),
+    })
+    return await response.json()
+  } catch (err) {
+    return console.log(err)
+  }
+}
+
+// submitVerify
+export const submitVerifyTask = async (token, index) => {
+  try {
+    const response = await fetch(`${API}/submitVerify`, {
       method: "POST",
       mode: "cors",
       headers: {

@@ -100,6 +100,7 @@ const OrderTable = props => {
     readOrderById(token, idOrders).then(data => {
       if (data) {
         if (data.success == "success") {
+          console.log(data)
           setdetail(data.message[0])
           onAddDetail(data.message[0])
         }

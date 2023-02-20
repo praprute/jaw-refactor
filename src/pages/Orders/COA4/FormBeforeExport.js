@@ -521,7 +521,6 @@ const FormBeforeExport4 = props => {
       MicroAnalysis,
     }
 
-    // console.log("AnalysisRender", AnalysisRender)
 
     originalFormCOA(
       values.logo,
