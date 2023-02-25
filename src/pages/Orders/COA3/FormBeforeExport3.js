@@ -61,9 +61,7 @@ const FormBeforeExport3 = props => {
     Saureus: "",
     Salmonella: "",
   })
-  const [valuesProtein, setValuesProtein] = useState({
-    protein: "",
-  })
+
   const [spcChem, setSpcChem] = useState({})
   const [modalAddSamples, setModalAddSamples] = useState(false)
   const [MicroRender, setMicroRender] = useState(false)
@@ -86,7 +84,8 @@ const FormBeforeExport3 = props => {
   const [success_msg, setsuccess_msg] = useState(false)
   const [success_error, setsuccess_error] = useState(false)
   const [CustomersOption, setCustomers] = useState([])
-  const [ApproveSelect, setApproveSelect] = useState([
+  const [pageNumber, setPageNumber] = useState("1/1")
+  const ApproveSelect = [
     {
       label: "DCC",
       value: "DCC",
@@ -103,8 +102,8 @@ const FormBeforeExport3 = props => {
       label: "Production mixing",
       value: "Production mixing",
     },
-  ])
-  const [ReportSelect, setReport] = useState([
+  ]
+  const ReportSelect = [
     {
       label: "DCC",
       value: "DCC",
@@ -121,7 +120,7 @@ const FormBeforeExport3 = props => {
       label: "Qc Lab",
       value: "QMR",
     },
-  ])
+  ]
   const [valuesExportRef, setValuesExportRef] = useState({
     refNo: "",
     date: "",
@@ -139,10 +138,6 @@ const FormBeforeExport3 = props => {
   })
   const [ApproveValue, setApproveValue] = useState(null)
   const [ReportValue, setReportValue] = useState(null)
-  const [valuesExportRow1, setValuesExportRow1] = useState({
-    To: customerNameSelect,
-    DCL1: "00/00/00",
-  })
 
   const [valuesExportRow2, setValuesExportRow2] = useState({
     CollectedDate: "",
@@ -515,6 +510,7 @@ const FormBeforeExport3 = props => {
     const bag = await json2array(valuesBagNo)
     const lots = await json2array(valuesLot)
 
+    console.log("log : ", pageNumber)
     originalFormCOA3(
       values.logo,
       values.halal,
@@ -527,7 +523,8 @@ const FormBeforeExport3 = props => {
       contain,
       bag,
       lots,
-      valuesAplove
+      valuesAplove,
+      pageNumber
     )
   }
 
@@ -627,10 +624,26 @@ const FormBeforeExport3 = props => {
               alignItems: "center",
             }}
           >
-            <img
-              src={`data:image/png;base64,${values.halal}`}
-              style={{ maxWidth: 140, maxHeight: 90 }}
-            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <img
+                src={`data:image/png;base64,${values.halal}`}
+                style={{ maxWidth: 140, maxHeight: 90 }}
+              />
+              <span>Page number</span>
+              <Input
+                defaultValue={pageNumber}
+                name={"pageNumber"}
+                onChange={e => {
+                  setPageNumber(e.target.value)
+                }}
+              />
+            </div>
           </Col>
         </Row>
         <Row>
@@ -1084,14 +1097,9 @@ const FormBeforeExport3 = props => {
         <SweetAlert
           title="Add Order Success"
           success
-          //   showCancel
           confirmBtnBsStyle="success"
-          //   cancelBtnBsStyle="danger"
           onConfirm={async () => {
             setsuccess_msg(false)
-            // setInterval(() => {
-            //   window.location.reload()
-            // }, 5000)
           }}
         >
           You clicked the button!
@@ -1102,9 +1110,7 @@ const FormBeforeExport3 = props => {
         <SweetAlert
           title="error"
           danger
-          //   showCancel
           confirmBtnBsStyle="danger"
-          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_error(false)
           }}
@@ -1112,18 +1118,12 @@ const FormBeforeExport3 = props => {
           You clicked the button!
         </SweetAlert>
       ) : null}
-      {/* <div className="page-content"> */}
       <div style={{ width: "100%", height: "100%", background: "" }}>
         {headerForm()}
         <br />
-        {/* {RefForm()} */}
         {headDetail()}
         <br />
         {AnalysisVeitHong(OderVeit)}
-
-        {/* {Analysis()} */}
-        {/* {Sinsory()} */}
-
         <div
           style={{
             display: "flex",
@@ -1169,7 +1169,6 @@ const FormBeforeExport3 = props => {
           }}
         />
       </div>
-      {/* </div> */}
     </React.Fragment>
   )
 }

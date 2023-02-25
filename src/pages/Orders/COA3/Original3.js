@@ -10,7 +10,8 @@ export const originalFormCOA3 = (
   valuesContainer,
   valuesBagNo,
   valuesLot,
-  valuesAplove
+  valuesAplove,
+  pageNumber
 ) => {
   let dataAnaly = [
     [
@@ -286,6 +287,28 @@ export const originalFormCOA3 = (
             image: `data:image/png;base64,${halal}`,
             width: 60,
             alignment: "center",
+            stack: [
+              {
+                columns: [
+                  {
+                    image: `data:image/png;base64,${halal}`,
+                    width: 60,
+                    alignment: "center",
+                    margin: [0, 0, 0, 5],
+                  },
+                ],
+              },
+              {
+                columns: [
+                  {
+                    text: `Page ${pageNumber}`,
+                    style: "invoiceTitleHeaderDetail",
+                    width: "*",
+                    margin: [0, 0, 0, 5],
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -614,7 +637,7 @@ export const originalFormCOA3 = (
         alignment: "center",
         margin: [0, 0, 0, 0],
       },
-   
+
       HeaderDetail: {
         fontSize: 11,
         bold: true,
