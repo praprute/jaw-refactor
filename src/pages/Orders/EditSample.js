@@ -71,6 +71,7 @@ const ModalEditSample = props => {
   const [Aw, setAw] = useState(false)
   const [SaltMeter, setSaltMeter] = useState(false)
   const [Color, setColor] = useState(false)
+  const [Gluten, setGluten] = useState(false)
 
   const [AN, setAN] = useState(false)
   const [Acidity, setAcidity] = useState(false)
@@ -143,6 +144,7 @@ const ModalEditSample = props => {
       Viscosity: Viscosity,
       SaltMeter: SaltMeter,
       Color: Color,
+      Gluten: Gluten,
       tricker: true,
     }
     updateDetail(token, index).then(data => {
@@ -184,6 +186,7 @@ const ModalEditSample = props => {
     setViscosity(orders.Viscosity)
     setSaltMeter(orders.SaltMeter)
     setColor(orders.Color)
+    setGluten(orders.Gluten)
   }, [orders, bio, tr])
 
   const handleChangeSelectChem = e => {
@@ -660,6 +663,41 @@ const ModalEditSample = props => {
                         htmlFor="customCheckColor"
                       >
                         Color
+                      </label>
+                    </div>
+                  </div>
+                  <Row className="mb-3">
+                </Row>
+                   <label
+                    style={{ display: "flex", justifyContent: "center" }}
+                    className="col-md-2 col-form-label"
+                  >
+                    {" "}
+                  </label>
+                  <div
+                    className="col-md-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-success">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckGluten"
+                        checked={Gluten}
+                        onChange={() => {
+                          setGluten(!Gluten)
+                        }}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="customCheckGluten"
+                      >
+                       Gluten
                       </label>
                     </div>
                   </div>

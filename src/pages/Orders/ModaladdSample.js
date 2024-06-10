@@ -51,6 +51,7 @@ const ModaladdSample = props => {
   const [Micro, setMicro] = useState(false)
   const [SaltMeter, setSaltMeter] = useState(false)
   const [Color, setColor] = useState(false)
+  const [Gluten, setGluten] = useState(false)
 
   const [AN, setAN] = useState(false)
   const [Acidity, setAcidity] = useState(false)
@@ -144,9 +145,11 @@ const ModaladdSample = props => {
       Viscosity: Viscosity,
       SaltMeter: SaltMeter,
       Color: Color,
+      Gluten: Gluten,
     }
 
-    
+    console.log("token : ", index)
+
     addOrder(token, index).then(data => {
       if (data) {
         if (data.success == "success") {
@@ -208,6 +211,7 @@ const ModaladdSample = props => {
             setAN(false)
             setAcidity(false)
             setViscosity(false)
+            setGluten(false)
             setValues({
               pord: null,
               bbe: null,
@@ -271,8 +275,6 @@ const ModaladdSample = props => {
                     />
                   </div>
                 </Row>
-
-               
 
                 <Row className="mb-3">
                   <label
@@ -648,6 +650,41 @@ const ModaladdSample = props => {
                         htmlFor="customCheckColor"
                       >
                         Color
+                      </label>
+                    </div>
+                  </div>
+
+                  <Row className="mb-3"></Row>
+                  <label
+                    style={{ display: "flex", justifyContent: "center" }}
+                    className="col-md-2 col-form-label"
+                  >
+                    {" "}
+                  </label>
+                  <div
+                    className="col-md-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-success">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckGluten"
+                        checked={Gluten}
+                        onChange={() => {
+                          setGluten(!Gluten)
+                        }}
+                      />
+
+                      <label
+                        className="form-check-label"
+                        htmlFor="customCheckGluten"
+                      >
+                        Gluten
                       </label>
                     </div>
                   </div>

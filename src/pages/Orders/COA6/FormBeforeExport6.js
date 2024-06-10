@@ -1,22 +1,9 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
-import {
-  Button,
-  Card,
-  CardBody,
-  Col,
-  NavItem,
-  NavLink,
-  Row,
-  Input,
-  TabContent,
-  TabPane,
-} from "reactstrap"
-import moment from "moment"
+import { Button, Col, Row, Input } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
-import classnames from "classnames"
-import { withRouter, Link, Redirect } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
 import { isAuthenticated } from "../../Authentication/api"
@@ -24,30 +11,13 @@ import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
-import { dailyReport } from "./../Report/DailyReport"
-import { dailyReportBio } from "./../Report/DailyReportBio"
 import "./ModalFullScreen.css"
-import FormBeforeExport2 from "../COA2/FormBeforeExport2"
-import FormBeforeExport3 from "../COA3/FormBeforeExport3"
-import FormBeforeExport4 from "../COA4/FormBeforeExport"
-import FormBeforeExport5 from "../COA5/FormBeforeExport2"
-import FormBeforeExport6 from "../COA6/FormBeforeExport6"
-import HistoryDaily from "../Report/HistoryTest"
 import { Company } from "../../../configAPI"
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-import {
-  getCustomers,
-  dailyReportFetch,
-  dailyReportBioFetch,
-  UpdatexportCOA,
-  UpdateDatailOrder,
-} from "../api"
-import e from "cors"
+import { getCustomers, UpdatexportCOA } from "../api"
 import TableHeaderCoa1 from "components/Document/TableCoaHeader1"
 import { getAllHeaderCoa1Task, saveHeaderCoa1Task } from "OpenApi/DuocumentTask"
-import { result } from "lodash"
-const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
   Roboto: {
@@ -68,10 +38,8 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-const FormBeforeExport = props => {
-  const history = useHistory()
-  const { user, token } = isAuthenticated()
-  const { orders, spc, tr, bio } = props
+const FormBeforeExport = () => {
+  const { token } = isAuthenticated()
   const [detailById, setdetailById] = useState([])
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
@@ -105,6 +73,7 @@ const FormBeforeExport = props => {
   const [DisSPG, setDisSPG] = useState(true)
   const [DisAW, setDisAW] = useState(true)
   const [DisTss, setDisTss] = useState(true)
+  const [DisGluten, setDisGluten] = useState(true)
   const [DisAN, setDisAN] = useState(true)
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
@@ -233,7 +202,7 @@ const FormBeforeExport = props => {
     const response = await getAllHeaderCoa1Task(token)
     if (response.success === "success") {
       let list = []
-      response.message.map((data, index) => {
+      response.message.map(data => {
         const row = {
           ...data,
           select: (
@@ -290,7 +259,7 @@ const FormBeforeExport = props => {
       if (!paresIndex.Orders.DCL1) {
         setValuesExportRow1({
           To: customerNameSelect,
-          DCL1: "BEST If Used By:",
+          DCL1: "BEST BY:",
           DCL2: "",
           DCL3: "",
         })
@@ -323,6 +292,7 @@ const FormBeforeExport = props => {
         pageNo: "1",
       })
 
+      console.log("paresIndex : ", paresIndex)
       setDisTN(paresIndex.chem[0].render)
       setDisPH(paresIndex.chem[3].render)
       setDisSalt(paresIndex.chem[1].render)
@@ -330,12 +300,14 @@ const FormBeforeExport = props => {
       setDisSPG(paresIndex.chem[6].render)
       setDisAW(paresIndex.chem[4].render)
       setDisTss(paresIndex.chem[5].render)
+      setDisGluten(paresIndex.chem[8].render)
       setDisAN(paresIndex.chem[7].render)
-      setDisAcidity(paresIndex.chem[8].render)
-      setDisViscosity(paresIndex.chem[9].render)
+      setDisAcidity(paresIndex.chem[9].render)
+      setDisViscosity(paresIndex.chem[10].render)
 
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
+
       if (paresIndex.Orders.idScfChem == 14) {
         setSpcChem({
           scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
@@ -349,6 +321,7 @@ const FormBeforeExport = props => {
           scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+          scpGluten: `\u2264  ${paresIndex.Orders.GlutenMax} ppm`,
         })
       } else {
         setSpcChem({
@@ -363,6 +336,7 @@ const FormBeforeExport = props => {
           scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+          scpGluten: `\u2264  ${paresIndex.Orders.GlutenMax} ppm`,
         })
       }
 
@@ -404,12 +378,17 @@ const FormBeforeExport = props => {
         AN: paresIndex.chem[7].val
           ? paresIndex.chem[7].val.toFixed(2)
           : paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[8].val
-          ? paresIndex.chem[8].val.toFixed(2)
-          : paresIndex.chem[8].val,
-        Viscosity: paresIndex.chem[9].val
+        Acidity: paresIndex.chem[9].val
           ? paresIndex.chem[9].val.toFixed(2)
           : paresIndex.chem[9].val,
+        Viscosity: paresIndex.chem[10].val
+          ? paresIndex.chem[10].val.toFixed(2)
+          : paresIndex.chem[10].val,
+        Gluten: `${
+          paresIndex.chem[8].val
+            ? paresIndex.chem[8].val.toFixed(2)
+            : paresIndex.chem[8].val
+        } ppm`,
       })
       let TPC = ""
       let YeaseandMold = ""
@@ -454,7 +433,7 @@ const FormBeforeExport = props => {
         Ecoil: Ecoil,
         Coliform: Coliform,
         Saureus: Saureus,
-        Salmonella: Salmonella,
+        Salmonella: "NOT DETECTED",
       })
 
       return JSON.parse(localStorage.getItem("JawIndexExport"))
@@ -468,12 +447,6 @@ const FormBeforeExport = props => {
       await UpdatexportCOA(token)
     } catch (err) {
       console.log(err)
-    }
-  }
-
-  const toggleTab = tab => {
-    if (activeTab !== tab) {
-      setActiveTab(tab)
     }
   }
 
@@ -493,6 +466,7 @@ const FormBeforeExport = props => {
       DisSPG: DisSPG,
       DisAW: DisAW,
       DisTss: DisTss,
+      DisGluten: DisGluten,
       DisAN: DisAN,
       DisAcidity: DisAcidity,
       DisViscosity: DisViscosity,
@@ -502,6 +476,8 @@ const FormBeforeExport = props => {
       MicroRender,
       MicroAnalysis,
     }
+
+    console.log("valuesMicro : ", valuesMicro)
 
     originalFormCOA(
       values.logo,
@@ -982,7 +958,7 @@ const FormBeforeExport = props => {
           </Col>
         </div>
         {/* Production Date */}
-        <div
+        {/* <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -1068,9 +1044,9 @@ const FormBeforeExport = props => {
               </div>
             </Col>
           </Col>
-        </div>
+        </div> */}
         {/* ExpirationDate  */}
-        <div
+        {/* <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -1148,7 +1124,7 @@ const FormBeforeExport = props => {
               ></div>
             </Col>
           </Col>
-        </div>
+        </div> */}
         {/* Product Name: pank size */}
         <div
           style={{
@@ -1237,7 +1213,7 @@ const FormBeforeExport = props => {
           </Col>
         </div>
         {/* Tank No */}
-        <div
+        {/* <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -1298,7 +1274,7 @@ const FormBeforeExport = props => {
               alignItems: "center",
             }}
           ></Col>
-        </div>
+        </div> */}
         {/* Quantity  */}
         <div
           style={{
@@ -2013,6 +1989,74 @@ const FormBeforeExport = props => {
             </div>
           </Col>
         </div>
+        {/* Gluten */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            marginTop: "5px",
+            marginBottom: "5px",
+          }}
+        >
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <div className="form-check form-check-warning">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="customCheckGluten"
+                checked={DisGluten}
+                onChange={() => {
+                  setDisGluten(!DisGluten)
+                }}
+              />
+            </div>
+            <span style={{ margin: 0, fontWeight: "bold" }}>Gluten</span>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            &nbsp;
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                paddingRight: "30px",
+              }}
+            >
+              <Input disabled={!DisGluten} value={spcChem.scpGluten} />
+            </div>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                paddingRight: "30px",
+              }}
+            >
+              <Input disabled={!DisGluten} value={valuesChem.Gluten} />
+            </div>
+          </Col>
+        </div>
         {/* AN */}
         <div
           style={{
@@ -2580,26 +2624,9 @@ const FormBeforeExport = props => {
                       alignItems: "center",
                     }}
                   >
-                    <div className="form-check form-check-warning">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="customCheckSalmon"
-                        checked={salmon}
-                        onChange={() => {
-                          setSalmon(!salmon)
-                        }}
-                      />
-                    </div>
-                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
-                    <label
-                      className="form-check-label"
-                      htmlFor="customCheckSalmon"
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        Salmonella spp.
-                      </span>
-                    </label>
+                    <span style={{ margin: 0, fontWeight: "bold" }}>
+                      Salmonella spp.
+                    </span>
                   </Col>
                   <Col
                     style={{
@@ -2635,11 +2662,10 @@ const FormBeforeExport = props => {
                         paddingRight: "30px",
                       }}
                     >
-                      <Input value={valuesMicro.Salmonella} />
+                      <Input value={valuesMicro.Saureus} />
                     </div>
                   </Col>
                 </div>
-
                 <div
                   style={{
                     display: "flex",
@@ -2833,255 +2859,110 @@ const FormBeforeExport = props => {
   }
   return (
     <React.Fragment>
-      <div className="page-content">
-        {success_msg ? (
-          <SweetAlert
-            title="Add Order Success"
-            success
-            confirmBtnBsStyle="success"
-            onConfirm={async () => {
-              setsuccess_msg(false)
-            }}
-          >
-            You clicked the button!
-          </SweetAlert>
-        ) : null}
+      {success_msg ? (
+        <SweetAlert
+          title="Add Order Success"
+          success
+          confirmBtnBsStyle="success"
+          onConfirm={async () => {
+            setsuccess_msg(false)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
 
-        {success_error ? (
-          <SweetAlert
-            title="error"
-            danger
-            confirmBtnBsStyle="danger"
-            onConfirm={() => {
-              setsuccess_error(false)
-            }}
-          >
-            You clicked the button!
-          </SweetAlert>
-        ) : null}
-        <Row>
-          <Col className="col-12">
-            <Card>
-              <CardBody>
-                <Row>
-                  <Col md="12" xs="12">
-                    <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "1",
-                          })}
-                          onClick={() => {
-                            toggleTab("1")
-                          }}
-                        >
-                          COA FORM 1
-                        </NavLink>
-                      </NavItem>
-                      {/* FormBeforeExport3 */}
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "2",
-                          })}
-                          onClick={() => {
-                            toggleTab("2")
-                          }}
-                        >
-                          COA FORM 2
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "3",
-                          })}
-                          onClick={() => {
-                            toggleTab("3")
-                          }}
-                        >
-                          COA FORM 3
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "4",
-                          })}
-                          onClick={() => {
-                            toggleTab("4")
-                          }}
-                        >
-                          COA FORM 4
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "5",
-                          })}
-                          onClick={() => {
-                            toggleTab("5")
-                          }}
-                        >
-                          COA FORM 5
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "6",
-                          })}
-                          onClick={() => {
-                            toggleTab("6")
-                          }}
-                        >
-                          COA FORM 6
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "7",
-                          })}
-                          onClick={() => {
-                            toggleTab("7")
-                          }}
-                        >
-                          Daily Report
-                        </NavLink>
-                      </NavItem>
-                    </ul>
-                  </Col>
-                </Row>
-                <TabContent activeTab={activeTab} className="p-3">
-                  <TabPane tabId="1" id="processing">
-                    <div
-                      style={{ width: "100%", height: "100%", background: "" }}
-                    >
-                      {headerForm()}
-                      <br />
-                      {RefForm()}
-                      {HeadDetail()}
-                      <br />
-                      {Analysis()}
+      {success_error ? (
+        <SweetAlert
+          title="error"
+          danger
+          confirmBtnBsStyle="danger"
+          onConfirm={() => {
+            setsuccess_error(false)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
 
-                      <div
-                        style={{
-                          display: "flex",
-                          width: "100%",
-                          height: "100%",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Col sm="3" style={{ padding: "5px" }}>
-                          Report By ................................
-                          <Select
-                            value={selectedGroup2}
-                            name="To"
-                            onChange={e => {
-                              handleSelectGroup2()
-                              handleChangeApproveValue(e.value)
-                            }}
-                            options={ReportSelect}
-                          />
-                        </Col>
-                        <Col sm="3" style={{ padding: "5px" }}>
-                          Approve By ................................
-                          <Select
-                            value={selectedGroup3}
-                            name="To"
-                            onChange={e => {
-                              handleSelectGroup3()
-                              handleChangeReportValue(e.value)
-                            }}
-                            options={ApproveSelect}
-                          />
-                        </Col>
-                        <Col
-                          sm="3"
-                          style={{ textAlign: "right", paddingRight: "10px" }}
-                        >
-                          <Button
-                            color="warning"
-                            size="lg"
-                            style={{ width: "100%", marginTop: "15px" }}
-                            onClick={() => {
-                              handleSaveHeaderCoa()
-                            }}
-                          >
-                            SAVE
-                          </Button>
-                        </Col>
-                        <Col
-                          sm="3"
-                          style={{ textAlign: "right", paddingRight: "10px" }}
-                        >
-                          <Button
-                            color="primary"
-                            size="lg"
-                            style={{ width: "100%", marginTop: "15px" }}
-                            onClick={() => {
-                              handleExportPDF()
-                              handleUpdateStatusCoa()
-                            }}
-                          >
-                            Print COA
-                          </Button>
-                        </Col>
-                      </div>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-                      <br></br>
+      <div style={{ width: "100%", height: "100%", background: "" }}>
+        {headerForm()}
+        <br />
+        {RefForm()}
+        {HeadDetail()}
+        <br />
+        {Analysis()}
 
-                      <TableHeaderCoa1
-                        dataTable={{
-                          columns: columnHeaderCoa1,
-                          rows: dataListHeaderCoa1,
-                        }}
-                      />
-                    </div>
-                  </TabPane>
-
-                  <TabPane tabId="2" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport2 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="3" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport3 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="4" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport4 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="5" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport5 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="6" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport6 />
-                    </div>
-                  </TabPane>
-                  {/* FormBeforeExport5 */}
-                  <TabPane tabId="7" id="CompleteCheck">
-                    <div>
-                      <HistoryDaily />
-                    </div>
-                  </TabPane>
-                  {/* HistoryDaily */}
-                </TabContent>
-              </CardBody>
-            </Card>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Col sm="3" style={{ padding: "5px" }}>
+            Report By ................................
+            <Select
+              value={selectedGroup2}
+              name="To"
+              onChange={e => {
+                handleSelectGroup2()
+                handleChangeApproveValue(e.value)
+              }}
+              options={ReportSelect}
+            />
           </Col>
-        </Row>
+          <Col sm="3" style={{ padding: "5px" }}>
+            Approve By ................................
+            <Select
+              value={selectedGroup3}
+              name="To"
+              onChange={e => {
+                handleSelectGroup3()
+                handleChangeReportValue(e.value)
+              }}
+              options={ApproveSelect}
+            />
+          </Col>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
+            <Button
+              color="warning"
+              size="lg"
+              style={{ width: "100%", marginTop: "15px" }}
+              onClick={() => {
+                handleSaveHeaderCoa()
+              }}
+            >
+              SAVE
+            </Button>
+          </Col>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
+            <Button
+              color="primary"
+              size="lg"
+              style={{ width: "100%", marginTop: "15px" }}
+              onClick={() => {
+                handleExportPDF()
+                handleUpdateStatusCoa()
+              }}
+            >
+              Print COA
+            </Button>
+          </Col>
+        </div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+
+        <TableHeaderCoa1
+          dataTable={{
+            columns: columnHeaderCoa1,
+            rows: dataListHeaderCoa1,
+          }}
+        />
       </div>
     </React.Fragment>
   )

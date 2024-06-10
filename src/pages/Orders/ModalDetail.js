@@ -64,6 +64,8 @@ const ModalDetail = props => {
     { int: false, key: "Aw", coa: false, val: "" },
     { int: false, key: "Tss(Brix)", coa: false, val: "" },
     { int: false, key: "SPG", coa: false, val: "" },
+    { int: false, key: "Gluten(ppm)", coa: false, val: "" },
+
   ])
   const [resultMicro, setresultMicro] = useState([
     { int: false, coa: false, val: "", key: "APC" },
@@ -86,6 +88,7 @@ const ModalDetail = props => {
         { int: false, key: "Aw", coa: false, val: "" },
         { int: false, key: "Tss(Brix)", coa: false, val: "" },
         { int: false, key: "SPG", coa: false, val: "" },
+        { int: false, key: "Gluten(ppm)", coa: false, val: "" },
       ])
       setresultMicro([
         { int: false, coa: false, val: "", key: "APC" },

@@ -115,6 +115,7 @@ const ModalAddOrder = props => {
       Aw: false,
       Spg: false,
       Micro: false,
+      Gluten: false,
     }
 
     addOrder(token, index).then(data => {

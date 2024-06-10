@@ -72,6 +72,7 @@ const ModalEdit = props => {
 
   const [SaltMeter, setSaltMeter] = useState(false)
   const [Color, setColor] = useState(false)
+  const [Gluten, setGluten] = useState(false)
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value })
@@ -139,6 +140,7 @@ const ModalEdit = props => {
       Viscosity: Viscosity,
       SaltMeter: SaltMeter,
       Color: Color,
+      Gluten: Gluten,
       tricker: false,
     }
     updateDetail(token, index).then(data => {
@@ -180,6 +182,7 @@ const ModalEdit = props => {
     setViscosity(orders.Viscosity)
     setSaltMeter(orders.SaltMeter)
     setColor(orders.Color)
+    setGluten(orders.Gluten)
   }, [orders, bio, tr])
 
   useEffect(() => {
