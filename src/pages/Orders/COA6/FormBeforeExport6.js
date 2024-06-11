@@ -331,12 +331,14 @@ const FormBeforeExport = () => {
           scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
           scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
           scpSPG: `\u2265 1.20/20 \u00B0C`,
-          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
+          scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
           scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
-          scpGluten: `\u2264  ${paresIndex.Orders.GlutenMax} ppm`,
+          scpGluten: `\u2264  ${Number(paresIndex.Orders.GlutenMax).toFixed(
+            2
+          )} ppm`,
         })
       }
 

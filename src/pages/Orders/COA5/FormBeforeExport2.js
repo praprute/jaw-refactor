@@ -370,7 +370,7 @@ const FormBeforeExport5 = props => {
         scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
         scpSPG: `\u2265 1.20/20 \u00B0C`,
         scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-        scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+        scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
         scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
         scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
         scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
