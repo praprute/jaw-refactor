@@ -311,7 +311,7 @@ const FormBeforeExport = () => {
       if (paresIndex.Orders.idScfChem == 14) {
         setSpcChem({
           scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
-          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpPH: `${paresIndex.Orders.PHCOAMin.toFixed(1)} - ${paresIndex.Orders.PHCOAMax.toFixed(1)} at RT`,
           scpProtein: `\u2265  7.8%`,
           scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
           scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
@@ -326,7 +326,7 @@ const FormBeforeExport = () => {
       } else {
         setSpcChem({
           scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
-          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpPH: `${paresIndex.Orders.PHCOAMin.toFixed(1)} - ${paresIndex.Orders.PHCOAMax.toFixed(1)} at RT`,
           scpProtein: `2.3-3.5%`,
           scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
           scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
