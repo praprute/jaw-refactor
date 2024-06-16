@@ -318,8 +318,8 @@ const FormBeforeExport4 = props => {
       setDisAW(paresIndex.chem[4].render)
       setDisTss(paresIndex.chem[5].render)
       setDisAN(paresIndex.chem[7].render)
-      setDisAcidity(paresIndex.chem[8].render)
-      setDisViscosity(paresIndex.chem[9].render)
+      setDisAcidity(paresIndex.chem[9].render)
+      setDisViscosity(paresIndex.chem[10].render)
 
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
@@ -391,12 +391,12 @@ const FormBeforeExport4 = props => {
         AN: paresIndex.chem[7].val
           ? paresIndex.chem[7].val.toFixed(2)
           : paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[8].val
-          ? paresIndex.chem[8].val.toFixed(2)
-          : paresIndex.chem[8].val,
-        Viscosity: paresIndex.chem[9].val
+        Acidity: paresIndex.chem[9].val
           ? paresIndex.chem[9].val.toFixed(2)
           : paresIndex.chem[9].val,
+        Viscosity: paresIndex.chem[10].val
+          ? paresIndex.chem[10].val.toFixed(2)
+          : paresIndex.chem[10].val,
       })
       let TPC = ""
       let YeaseandMold = ""
