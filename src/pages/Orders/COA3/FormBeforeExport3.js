@@ -372,7 +372,7 @@ const FormBeforeExport3 = props => {
         scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
         scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
         scpSPG: `\u2265 1.20/20 \u00B0C`,
-        scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
+        scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
         scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
         scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
         scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
