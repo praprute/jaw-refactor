@@ -82,6 +82,7 @@ const FormBeforeExport = props => {
     Coliform: "",
     Saureus: "",
     Salmonella: "",
+    Cholerae: "",
   })
   const [activeTab, setActiveTab] = useState("1")
   const [valuesProtein, setValuesProtein] = useState({
@@ -110,6 +111,8 @@ const FormBeforeExport = props => {
   const [DisViscosity, setDisViscosity] = useState(true)
   const [CustomersOption, setCustomers] = useState([])
   const [salmon, setSalmon] = useState(false)
+  const [cholerae, setCholerae] = useState(false)
+  // Cholerae
   const [ApproveSelect, setApproveSelect] = useState([
     {
       label: "DCC",
@@ -418,6 +421,7 @@ const FormBeforeExport = props => {
       let Coliform = ""
       let Saureus = ""
       let Salmonella = "NOT DETECTED"
+      let Cholerae = "NOT DETECTED"
 
       if (paresIndex.micro[0].val < 250) {
         TPC = `< 250 CFU/g`
@@ -456,6 +460,7 @@ const FormBeforeExport = props => {
         Coliform: Coliform,
         Saureus: Saureus,
         Salmonella: Salmonella,
+        Cholerae: Cholerae,
       })
 
       return JSON.parse(localStorage.getItem("JawIndexExport"))
@@ -522,6 +527,7 @@ const FormBeforeExport = props => {
       ApproveValue,
       ReportValue,
       salmon,
+      cholerae,
       DisProductDate,
       DisExpiration,
       DisTank
@@ -2637,6 +2643,87 @@ const FormBeforeExport = props => {
                       }}
                     >
                       <Input value={valuesMicro.Salmonella} />
+                    </div>
+                  </Col>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-warning">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckCholerae"
+                        checked={cholerae}
+                        onChange={() => {
+                          setCholerae(!cholerae)
+                        }}
+                      />
+                    </div>
+                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
+                    <label
+                      className="form-check-label"
+                      htmlFor="customCheckCholerae"
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        V.cholerae
+                      </span>
+                    </label>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    &nbsp;
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                      }}
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        NOT DETECTED
+                      </span>
+                    </div>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                      }}
+                    >
+                      {/* <span style={{ margin: 0, fontWeight: "bold" }}>
+                        NOT DETECTED
+                      </span> */}
+                      <Input value={valuesMicro.Cholerae} />
                     </div>
                   </Col>
                 </div>

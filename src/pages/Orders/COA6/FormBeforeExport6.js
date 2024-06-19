@@ -153,6 +153,7 @@ const FormBeforeExport = () => {
     TestDate: "",
   })
   const [uid, setUid] = useState(null)
+  
 
   const columnHeaderCoa1 = [
     {
@@ -960,7 +961,7 @@ const FormBeforeExport = () => {
           </Col>
         </div>
         {/* Production Date */}
-        {/* <div
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -985,7 +986,7 @@ const FormBeforeExport = () => {
                 alignItems: "center",
               }}
             >
-              <div className="form-check form-check-warning">
+              {/* <div className="form-check form-check-warning">
                 <input
                   type="checkbox"
                   className="form-check-input"
@@ -996,10 +997,10 @@ const FormBeforeExport = () => {
                   }}
                 />
               </div>
-              <span style={{ fontWeight: "bold" }}>Production date:</span>
+              <span style={{ fontWeight: "bold" }}>Production date:</span> */}
             </Col>
             <Col sm="9">
-              <div
+              {/* <div
                 style={{
                   width: "100%",
                   height: "100%",
@@ -1011,7 +1012,7 @@ const FormBeforeExport = () => {
                   onChange={handleChangeDetailRow2PD("ProductionDate")}
                   value={valuesExportRow2.ProductionDate}
                 />
-              </div>
+              </div> */}
             </Col>
           </Col>
           <Col
@@ -1046,7 +1047,7 @@ const FormBeforeExport = () => {
               </div>
             </Col>
           </Col>
-        </div> */}
+        </div>
         {/* ExpirationDate  */}
         {/* <div
           style={{

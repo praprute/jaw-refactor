@@ -7,8 +7,7 @@ pdfMake.fonts = {
   Roboto: {
     normal:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
-    bold:
-      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
     italics:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
     bolditalics:
@@ -41,6 +40,7 @@ export const originalFormCOA = (
   ApproveValue,
   ReportValue,
   salmon,
+  cholerae,
   DisProductDate,
   DisExpiration,
   DisTank
@@ -82,7 +82,6 @@ export const originalFormCOA = (
 
   let MicroComponent = []
 
- 
   if (AnalysisRender.DisTN) {
     dataAnaly.push([
       {
@@ -642,6 +641,45 @@ export const originalFormCOA = (
         ],
         [
           {
+            text: `${cholerae ? "V.cholerae" : ""}`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `${cholerae ? "NOT DETECTED" : ""}`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${cholerae ? valuesMicro.Cholerae : ""}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `${cholerae ? "(Once a year)" : ""}`,
+                width: "auto",
+                alignment: "right",
+                style: "RefBoxValue",
+                margin: [5, 0, 0, 0],
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            // fontSize:"8",
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
             text: `Characteristics`,
             bold: true,
             fontSize: "10",
@@ -942,6 +980,45 @@ export const originalFormCOA = (
             ],
             margin: [0, 0, 0, 5],
             bold: true,
+            border: [false, false, true, false],
+          },
+        ],
+        [
+          {
+            text: `${cholerae ? "V.cholerae" : ""}`,
+            style: "RefBoxValue",
+            alignment: "left",
+            italics: true,
+            margin: [0, 0, 0, 5],
+            border: [true, false, false, false],
+          },
+          {
+            text: `${cholerae ? "NOT DETECTED" : ""}`,
+            style: "RefBoxValue",
+            alignment: "left",
+            margin: [0, 0, 0, 5],
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            columns: [
+              {
+                text: `${cholerae ? valuesMicro.Cholerae : ""}`,
+                width: "auto",
+                alignment: "left",
+                style: "RefBoxValue",
+              },
+              {
+                text: `${cholerae ? "(Once a year)" : ""}`,
+                width: "auto",
+                alignment: "right",
+                style: "RefBoxValue",
+                margin: [5, 0, 0, 0],
+              },
+            ],
+            margin: [0, 0, 0, 5],
+            bold: true,
+            // fontSize:"8",
             border: [false, false, true, false],
           },
         ],
