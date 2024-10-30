@@ -1,60 +1,37 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
-import {
-  Button,
-  Card,
-  CardBody,
-  Col,
-  NavItem,
-  NavLink,
-  Row,
-  Input,
-  TabContent,
-  TabPane,
-} from "reactstrap"
-import moment from "moment"
+import { Button, Col, Row, Input } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
-import classnames from "classnames"
-import { withRouter, Link, Redirect } from "react-router-dom"
+
+import { Company } from "../../../configAPI"
+
+import { UpdatexportCOA, UpdateDatailOrder } from "../api"
+import { withRouter } from "react-router-dom"
 import Moment from "moment"
 import { connect } from "react-redux"
 import { isAuthenticated } from "../../Authentication/api"
 import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
+// import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
 import { originalFormCOA } from "./OriginalForm"
-import { dailyReport } from "./../Report/DailyReport"
-import { dailyReportBio } from "./../Report/DailyReportBio"
 import "./ModalFullScreen.css"
-import FormBeforeExport2 from "../COA2/FormBeforeExport2"
-import FormBeforeExport3 from "../COA3/FormBeforeExport3"
-import FormBeforeExport4 from "../COA4/FormBeforeExport"
-import FormBeforeExport5 from "../COA5/FormBeforeExport2"
-import FormBeforeExport6 from "../COA6/FormBeforeExport6"
-import FormBeforeExport7 from "../COA7/FormBeforeExport"
-import HistoryDaily from "../Report/HistoryTest"
-import { Company } from "../../../configAPI"
+
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-import {
-  getCustomers,
-  dailyReportFetch,
-  dailyReportBioFetch,
-  UpdatexportCOA,
-  UpdateDatailOrder,
-} from "../api"
+import { getCustomers } from "../api"
 import e from "cors"
+import { getAllHeaderCoa4Task, saveHeaderCoa4Task } from "OpenApi/DuocumentTask"
 import TableHeaderCoa1 from "components/Document/TableCoaHeader1"
-import { getAllHeaderCoa1Task, saveHeaderCoa1Task } from "OpenApi/DuocumentTask"
-import { result } from "lodash"
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
   Roboto: {
     normal:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
-    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    bold:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
     italics:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
     bolditalics:
@@ -69,7 +46,7 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-const FormBeforeExport = props => {
+const FormBeforeExport7 = props => {
   const history = useHistory()
   const { user, token } = isAuthenticated()
   const { orders, spc, tr, bio } = props
@@ -83,7 +60,6 @@ const FormBeforeExport = props => {
     Coliform: "",
     Saureus: "",
     Salmonella: "",
-    Cholerae: "",
   })
   const [activeTab, setActiveTab] = useState("1")
   const [valuesProtein, setValuesProtein] = useState({
@@ -95,7 +71,7 @@ const FormBeforeExport = props => {
   const [MicroRender, setMicroRender] = useState(false)
   const [MicroAnalysis, setMicroAnalysis] = useState(true)
 
-  const [DisProductDate, setDisProductDate] = useState(true)
+  const [DisProductDate, setDisProductDate] = useState(false)
   const [DisExpiration, setDisExpiration] = useState(true)
   const [DisTank, setDisTank] = useState(true)
 
@@ -112,8 +88,6 @@ const FormBeforeExport = props => {
   const [DisViscosity, setDisViscosity] = useState(true)
   const [CustomersOption, setCustomers] = useState([])
   const [salmon, setSalmon] = useState(false)
-  const [cholerae, setCholerae] = useState(false)
-  // Cholerae
   const [ApproveSelect, setApproveSelect] = useState([
     {
       label: "DCC",
@@ -165,8 +139,8 @@ const FormBeforeExport = props => {
   const [success_error, setsuccess_error] = useState(false)
   const [valuesExportRow1, setValuesExportRow1] = useState({
     To: customerNameSelect,
-    DCL1: "BEST If Used By:",
-    DCL2: "",
+    DCL1: "MFG:",
+    DCL2: "BB:",
     DCL3: "",
   })
   const [valuesExportRow2, setValuesExportRow2] = useState({
@@ -186,38 +160,47 @@ const FormBeforeExport = props => {
   const [valuesQuantity, setValuesQuantity] = useState({
     Quantity: "",
     TestDate: "",
+    CompletionDate: "",
   })
   const [uid, setUid] = useState(null)
+  const [shelfLife, setShelfLife] = useState({
+    ShelfLife: "",
+  })
 
   const columnHeaderCoa1 = [
-    {
-      label: "ref_no",
-      field: "ref_no",
-      sort: "asc",
-    },
     {
       label: "customer_name",
       field: "customer_name",
       sort: "asc",
     },
     {
-      label: "production_date",
-      field: "production_date",
+      label: "lot_1",
+      field: "lot_1",
       sort: "asc",
     },
     {
-      label: "dalivery_date",
-      field: "dalivery_date",
+      label: "lot_2",
+      field: "lot_2",
       sort: "asc",
     },
     {
-      label: "tank_no",
-      field: "tank_no",
+      label: "date_of_report",
+      field: "date_of_report",
       sort: "asc",
     },
     {
-      label: "test_date",
-      field: "test_date",
+      label: "pack_size",
+      field: "pack_size",
+      sort: "asc",
+    },
+    {
+      label: "quantity",
+      field: "quantity",
+      sort: "asc",
+    },
+    {
+      label: "shelf_life",
+      field: "shelf_life",
       sort: "asc",
     },
     {
@@ -234,7 +217,7 @@ const FormBeforeExport = props => {
   const [refreshTable, setRefreshTable] = useState(false)
 
   useEffect(async () => {
-    const response = await getAllHeaderCoa1Task(token)
+    const response = await getAllHeaderCoa4Task(token)
     if (response.success === "success") {
       let list = []
       response.message.map((data, index) => {
@@ -278,7 +261,7 @@ const FormBeforeExport = props => {
 
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
-      let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
+      const paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
 
       setValuesExportRow2({
         ProductionDate: paresIndex.Orders.PD,
@@ -294,8 +277,8 @@ const FormBeforeExport = props => {
       if (!paresIndex.Orders.DCL1) {
         setValuesExportRow1({
           To: customerNameSelect,
-          DCL1: "BEST If Used By:",
-          DCL2: "",
+          DCL1: "MFG:",
+          DCL2: "BB:",
           DCL3: "",
         })
       } else {
@@ -327,7 +310,6 @@ const FormBeforeExport = props => {
         pageNo: "1",
       })
 
-      console.log("paresIndex : ", paresIndex)
       setDisTN(paresIndex.chem[0].render)
       setDisPH(paresIndex.chem[3].render)
       setDisSalt(paresIndex.chem[1].render)
@@ -351,7 +333,7 @@ const FormBeforeExport = props => {
           scpSPG: `\u2265 1.20/20 \u00B0C`,
           scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
           scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
-          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+          scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
         })
@@ -363,9 +345,9 @@ const FormBeforeExport = props => {
           scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
           scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
           scpSPG: `\u2265 1.20/20 \u00B0C`,
-          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
           scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
-          scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
+          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
         })
@@ -422,7 +404,6 @@ const FormBeforeExport = props => {
       let Coliform = ""
       let Saureus = ""
       let Salmonella = "NOT DETECTED"
-      let Cholerae = "NOT DETECTED"
 
       if (paresIndex.micro[0].val < 250) {
         TPC = `< 250 CFU/g`
@@ -461,18 +442,48 @@ const FormBeforeExport = props => {
         Coliform: Coliform,
         Saureus: Saureus,
         Salmonella: Salmonella,
-        Cholerae: Cholerae,
       })
-
       return JSON.parse(localStorage.getItem("JawIndexExport"))
     } else {
       return false
     }
   }, [])
 
+  const handleSelectListCoa = data => {
+    setSelectFromList(data.customer_name)
+    handleChangeValueCustomer(data.customer_name)
+
+    setValuesExportRow1(prevData => ({
+      ...prevData,
+      To: customerNameSelect,
+      DCL1: data.lot_1,
+      DCL2: data.lot_2,
+    }))
+
+    setValuesExportRow2(prevData => ({
+      ...prevData,
+      ProductionDate: data.date_of_report,
+    }))
+
+    setValuesExportPNandPS(prevData => ({
+      ...prevData,
+      PackSize: data.pack_size,
+    }))
+
+    setValuesQuantity(prevData => ({
+      ...prevData,
+      Quantity: data.quantity,
+      CompletionDate: data.completion_date,
+    }))
+
+    setShelfLife({ ShelfLife: data.shelf_life })
+
+    window.scrollTo(0, 0)
+  }
+
   const handleUpdateStatusCoa = async () => {
     try {
-      await UpdatexportCOA(token)
+      let update = UpdatexportCOA(token)
     } catch (err) {
       console.log(err)
     }
@@ -510,6 +521,7 @@ const FormBeforeExport = props => {
       MicroAnalysis,
     }
 
+
     originalFormCOA(
       values.logo,
       valuesExportRef,
@@ -528,11 +540,42 @@ const FormBeforeExport = props => {
       ApproveValue,
       ReportValue,
       salmon,
-      cholerae,
       DisProductDate,
       DisExpiration,
-      DisTank
+      DisTank,
+      shelfLife
     )
+  }
+
+  const handleSaveIndex = async () => {
+    try {
+      let payload = {
+        lot_1: valuesExportRow1.DCL1,
+        lot_2: valuesExportRow1.DCL2,
+        date_of_report: valuesExportRow2.ProductionDate,
+        pack_size: valuesExportPNandPS.PackSize,
+        quantity: valuesQuantity.Quantity,
+        shelf_life: shelfLife.ShelfLife,
+        completion_date: valuesQuantity.CompletionDate,
+      }
+      if (Boolean(selectedGroup?.idCustomer)) {
+        payload = { ...payload, customer: selectedGroup.idCustomer }
+      }
+      const res = await saveHeaderCoa4Task(token, payload)
+      if (res.success == "success") {
+        setsuccess_msg(true)
+        setRefreshTable(!refreshTable)
+      } else {
+        setsuccess_error(true)
+      }
+    } catch (err) {
+      setsuccess_error(true)
+      console.error
+    }
+  }
+ 
+  const handleChangeshelfLife = name => event => {
+    setShelfLife({ ...shelfLife, [name]: event.target.value })
   }
 
   const handleChangeValueAnalysis = name => event => {
@@ -590,46 +633,13 @@ const FormBeforeExport = props => {
     setCustomerNameSelect(e)
     setSelectFromList(e)
   }
-
   const handleChangeApproveValue = e => {
     setApproveValue(e)
     console.log(e)
   }
-
   const handleChangeReportValue = e => {
     setReportValue(e)
     console.log(e)
-  }
-
-  const handleSelectListCoa = data => {
-    setValuesExportRef(prevData => ({
-      ...prevData,
-      refNo: data.ref_no,
-      pageNo: 1,
-    }))
-
-    setSelectFromList(data.customer_name)
-
-    handleChangeValueCustomer(data.customer_name)
-    setValuesExportRow1(prevData => ({
-      ...prevData,
-      To: data.customer_name,
-      DCL1: data.date_code_list_1,
-      DCL2: Boolean(data.date_code_list_2) ? data.date_code_list_2 : "",
-      DCL3: Boolean(data.date_code_list_3) ? data.date_code_list_3 : "",
-    }))
-    setValuesExportRow2({
-      ProductionDate: data.production_date,
-      DaliveryDate: data.dalivery_date,
-    })
-    setValuesExportRow3({ ExpirationDate: data.exp_date })
-    setValuesExportPNandPS(preValuesExportPNandPS => ({
-      ...preValuesExportPNandPS,
-      PackSize: data.pack_size,
-    }))
-    setTankNumber({ Tank: data.tank_no })
-    setValuesQuantity(prevData => ({ ...prevData, Quantity: data.quantity }))
-    window.scrollTo(0, 0)
   }
 
   const headerForm = () => {
@@ -700,6 +710,7 @@ const FormBeforeExport = props => {
         <Col
           sm="3"
           style={{
+            // margin: "auto",
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
@@ -708,6 +719,7 @@ const FormBeforeExport = props => {
         <Col
           sm="5"
           style={{
+            // margin: "auto",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -717,6 +729,7 @@ const FormBeforeExport = props => {
         <Col
           sm="4"
           style={{
+            // margin: "auto",
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "center",
@@ -800,7 +813,7 @@ const FormBeforeExport = props => {
     )
   }
 
-  const HeadDetail = () => {
+  const headDetail = () => {
     return (
       <Row
         style={{
@@ -868,9 +881,7 @@ const FormBeforeExport = props => {
                 alignItems: "center",
               }}
             >
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Date Code List: &nbsp;
-              </span>
+              <span style={{ margin: 0, fontWeight: "bold" }}>LOT: &nbsp;</span>
             </Col>
             <Col sm="9">
               <div
@@ -920,56 +931,6 @@ const FormBeforeExport = props => {
               alignItems: "center",
             }}
           >
-            <Col sm="3"></Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  name="DCL2"
-                  onChange={handleChangeDetailRow1("DCL2")}
-                  value={valuesExportRow1.DCL2}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "10px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                paddingLeft: "10px",
-                paddingRight: "10px",
-              }}
-            ></div>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
             <Col sm="3">
               {/* <h5 style={{ margin: 0 }}>Date Code List: </h5> */}
             </Col>
@@ -981,9 +942,9 @@ const FormBeforeExport = props => {
                 }}
               >
                 <Input
-                  name="DCL3"
-                  onChange={handleChangeDetailRow1("DCL3")}
-                  value={valuesExportRow1.DCL3}
+                  name="DCL2"
+                  onChange={handleChangeDetailRow1("DCL2")}
+                  value={valuesExportRow1.DCL2}
                 />
               </div>
             </Col>
@@ -1026,7 +987,7 @@ const FormBeforeExport = props => {
                   }}
                 />
               </div>
-              <span style={{ fontWeight: "bold" }}>Production date:</span>
+              <span style={{ fontWeight: "bold" }}>Date of Report:</span>
             </Col>
             <Col sm="9">
               <div
@@ -1058,26 +1019,17 @@ const FormBeforeExport = props => {
                 justifyContent: "flex-end",
                 alignItems: "center",
               }}
-            >
-              <span style={{ fontWeight: "bold" }}>Dalivery Date: &nbsp;</span>
-            </Col>
+            ></Col>
             <Col sm="9">
               <div
                 style={{
                   width: "100%",
                   height: "100%",
                 }}
-              >
-                <Input
-                  name="DaliveryDate"
-                  onChange={handleChangeDetailRow2PD("DaliveryDate")}
-                  value={valuesExportRow2.DaliveryDate}
-                />
-              </div>
+              ></div>
             </Col>
           </Col>
         </div>
-        {/* ExpirationDate  */}
         <div
           style={{
             display: "flex",
@@ -1094,44 +1046,7 @@ const FormBeforeExport = props => {
               justifyContent: "flex-start",
               alignItems: "center",
             }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisExpiration}
-                  onChange={() => {
-                    setDisExpiration(!DisExpiration)
-                  }}
-                />
-              </div>
-              <span style={{ fontWeight: "bold" }}>Expiration date:</span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisExpiration}
-                  name="ExpirationDate"
-                  onChange={handleChangeDetailRow3EX("ExpirationDate")}
-                  value={valuesExportRow3.ExpirationDate}
-                />
-              </div>
-            </Col>
-          </Col>
+          ></Col>
           <Col
             style={{
               display: "flex",
@@ -1270,69 +1185,6 @@ const FormBeforeExport = props => {
                 alignItems: "center",
               }}
             >
-              <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckExpiration"
-                  checked={!DisTank}
-                  onChange={() => {
-                    setDisTank(!DisTank)
-                  }}
-                />
-              </div>
-              <span style={{ fontWeight: "bold" }}>Tank No. </span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisTank}
-                  name="Tank"
-                  onChange={handleChangeTank("Tank")}
-                  value={TankNumber.Tank}
-                />
-              </div>
-            </Col>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          ></Col>
-        </div>
-        {/* Quantity  */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
               <span style={{ margin: 0, fontWeight: "bold" }}>Quantity:</span>
             </Col>
             <Col
@@ -1373,6 +1225,52 @@ const FormBeforeExport = props => {
               }}
             >
               <span style={{ margin: 0, fontWeight: "bold" }}>
+                Shelf life: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="ShelfLife"
+                  onChange={handleChangeshelfLife("ShelfLife")}
+                  value={shelfLife.ShelfLife}
+                />
+              </div>
+            </Col>
+          </Col>
+        </div>
+        {/* Quantity  */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            marginBottom: "5px",
+          }}
+        >
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
                 Test Date: &nbsp;
               </span>
             </Col>
@@ -1387,6 +1285,40 @@ const FormBeforeExport = props => {
                   name="TestDate"
                   onChange={handleChangeQuantity("TestDate")}
                   value={valuesQuantity.TestDate}
+                />
+              </div>
+            </Col>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Completion Date: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="CompletionDate"
+                  onChange={handleChangeQuantity("CompletionDate")}
+                  value={valuesQuantity.CompletionDate}
                 />
               </div>
             </Col>
@@ -2652,87 +2584,6 @@ const FormBeforeExport = props => {
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: "5px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div className="form-check form-check-warning">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="customCheckCholerae"
-                        checked={cholerae}
-                        onChange={() => {
-                          setCholerae(!cholerae)
-                        }}
-                      />
-                    </div>
-                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
-                    <label
-                      className="form-check-label"
-                      htmlFor="customCheckCholerae"
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        V.cholerae
-                      </span>
-                    </label>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      <span style={{ margin: 0, fontWeight: "bold" }}>
-                        NOT DETECTED
-                      </span>
-                    </div>
-                  </Col>
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingRight: "30px",
-                      }}
-                    >
-                      {/* <span style={{ margin: 0, fontWeight: "bold" }}>
-                        NOT DETECTED
-                      </span> */}
-                      <Input value={valuesMicro.Cholerae} />
-                    </div>
-                  </Col>
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
                     // alignItems: "center",
                     width: "100%",
                     height: "100%",
@@ -2887,313 +2738,124 @@ const FormBeforeExport = props => {
       </Row>
     )
   }
-
-  const handleSaveHeaderCoa = async () => {
-    try {
-      let payload = {
-        ref_no: valuesExportRef.refNo,
-        ref_date: valuesExportRef.date,
-        date_code_list_1: valuesExportRow1.DCL1,
-        date_code_list_2: valuesExportRow1.DCL2,
-        date_code_list_3: valuesExportRow1.DCL3,
-        production_date: valuesExportRow2.ProductionDate,
-        dalivery_date: valuesExportRow2.DaliveryDate,
-        exp_date: valuesExportRow3.ExpirationDate,
-        pack_size: valuesExportPNandPS.PackSize,
-        tank_no: TankNumber.Tank,
-        quantity: valuesQuantity.Quantity,
-        test_date: valuesQuantity.TestDate,
-      }
-      if (Boolean(selectedGroup?.idCustomer)) {
-        payload = { ...payload, customer: selectedGroup.idCustomer }
-      }
-
-      const response = await saveHeaderCoa1Task(token, payload)
-
-      if (response.success === "success") {
-        setsuccess_msg(true)
-        setRefreshTable(!refreshTable)
-      } else {
-        setsuccess_error(true)
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
   return (
     <React.Fragment>
-      <div className="page-content">
-        {success_msg ? (
-          <SweetAlert
-            title="Add Order Success"
-            success
-            confirmBtnBsStyle="success"
-            onConfirm={async () => {
-              setsuccess_msg(false)
-            }}
-          >
-            You clicked the button!
-          </SweetAlert>
-        ) : null}
+      {success_msg ? (
+        <SweetAlert
+          title="Add Order Success"
+          success
+          //   showCancel
+          confirmBtnBsStyle="success"
+          //   cancelBtnBsStyle="danger"
+          onConfirm={async () => {
+            setsuccess_msg(false)
+            // setInterval(() => {
+            //   window.location.reload()
+            // }, 5000)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
 
-        {success_error ? (
-          <SweetAlert
-            title="error"
-            danger
-            confirmBtnBsStyle="danger"
-            onConfirm={() => {
-              setsuccess_error(false)
-            }}
-          >
-            You clicked the button!
-          </SweetAlert>
-        ) : null}
-        <Row>
-          <Col className="col-12">
-            <Card>
-              <CardBody>
-                <Row>
-                  <Col md="12" xs="12">
-                    <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "1",
-                          })}
-                          onClick={() => {
-                            toggleTab("1")
-                          }}
-                        >
-                          COA FORM 1
-                        </NavLink>
-                      </NavItem>
-                      {/* FormBeforeExport3 */}
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "2",
-                          })}
-                          onClick={() => {
-                            toggleTab("2")
-                          }}
-                        >
-                          COA FORM 2
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "3",
-                          })}
-                          onClick={() => {
-                            toggleTab("3")
-                          }}
-                        >
-                          COA FORM 3
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "4",
-                          })}
-                          onClick={() => {
-                            toggleTab("4")
-                          }}
-                        >
-                          COA FORM 4
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "5",
-                          })}
-                          onClick={() => {
-                            toggleTab("5")
-                          }}
-                        >
-                          COA FORM 5
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "6",
-                          })}
-                          onClick={() => {
-                            toggleTab("6")
-                          }}
-                        >
-                          COA FORM 6
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "7",
-                          })}
-                          onClick={() => {
-                            toggleTab("7")
-                          }}
-                        >
-                          COA FORM 7
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === "8",
-                          })}
-                          onClick={() => {
-                            toggleTab("8")
-                          }}
-                        >
-                          Daily Report
-                        </NavLink>
-                      </NavItem>
-                    </ul>
-                  </Col>
-                </Row>
-                <TabContent activeTab={activeTab} className="p-3">
-                  <TabPane tabId="1" id="processing">
-                    <div
-                      style={{ width: "100%", height: "100%", background: "" }}
-                    >
-                      {headerForm()}
-                      <br />
-                      {RefForm()}
-                      {HeadDetail()}
-                      <br />
-                      {Analysis()}
+      {success_error ? (
+        <SweetAlert
+          title="error"
+          danger
+          //   showCancel
+          confirmBtnBsStyle="danger"
+          //   cancelBtnBsStyle="danger"
+          onConfirm={() => {
+            setsuccess_error(false)
+          }}
+        >
+          You clicked the button!
+        </SweetAlert>
+      ) : null}
 
-                      <div
-                        style={{
-                          display: "flex",
-                          width: "100%",
-                          height: "100%",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Col sm="3" style={{ padding: "5px" }}>
-                          Report By ................................
-                          <Select
-                            value={selectedGroup2}
-                            name="To"
-                            onChange={e => {
-                              handleSelectGroup2()
-                              handleChangeApproveValue(e.value)
-                            }}
-                            options={ReportSelect}
-                          />
-                        </Col>
-                        <Col sm="3" style={{ padding: "5px" }}>
-                          Approve By ................................
-                          <Select
-                            value={selectedGroup3}
-                            name="To"
-                            onChange={e => {
-                              handleSelectGroup3()
-                              handleChangeReportValue(e.value)
-                            }}
-                            options={ApproveSelect}
-                          />
-                        </Col>
-                        <Col
-                          sm="3"
-                          style={{ textAlign: "right", paddingRight: "10px" }}
-                        >
-                          <Button
-                            color="warning"
-                            size="lg"
-                            style={{ width: "100%", marginTop: "15px" }}
-                            onClick={() => {
-                              handleSaveHeaderCoa()
-                            }}
-                          >
-                            SAVE
-                          </Button>
-                        </Col>
-                        <Col
-                          sm="3"
-                          style={{ textAlign: "right", paddingRight: "10px" }}
-                        >
-                          <Button
-                            color="primary"
-                            size="lg"
-                            style={{ width: "100%", marginTop: "15px" }}
-                            onClick={() => {
-                              handleExportPDF()
-                              handleUpdateStatusCoa()
-                            }}
-                          >
-                            Print COA
-                          </Button>
-                        </Col>
-                      </div>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-                      <br></br>
-
-                      <TableHeaderCoa1
-                        dataTable={{
-                          columns: columnHeaderCoa1,
-                          rows: dataListHeaderCoa1,
-                        }}
-                      />
-                    </div>
-                  </TabPane>
-
-                  <TabPane tabId="2" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport2 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="3" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport3 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="4" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport4 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="5" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport5 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="6" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport6 />
-                    </div>
-                  </TabPane>
-                  <TabPane tabId="7" id="CompleteCheck">
-                    <div>
-                      <FormBeforeExport7 />
-                    </div>
-                  </TabPane>
-                  {/* FormBeforeExport5 */}
-                  <TabPane tabId="8" id="CompleteCheck">
-                    <div>
-                      <HistoryDaily />
-                    </div>
-                  </TabPane>
-                  {/* HistoryDaily */}
-                </TabContent>
-              </CardBody>
-            </Card>
+      <div style={{ width: "100%", height: "100%", background: "" }}>
+        {headerForm()}
+        <br />
+        {/* {RefForm()} */}
+        {headDetail()}
+        <br />
+        {Analysis()}
+        {/* <h1>FormBeforeExport</h1> */}
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Col sm="3" style={{ padding: "5px" }}>
+            Report By ................................
+            <Select
+              value={selectedGroup2}
+              name="To"
+              onChange={e => {
+                handleSelectGroup2()
+                handleChangeApproveValue(e.value)
+              }}
+              options={ReportSelect}
+            />
           </Col>
-        </Row>
+          <Col sm="3" style={{ padding: "5px" }}>
+            Approve By ................................
+            <Select
+              value={selectedGroup3}
+              name="To"
+              onChange={e => {
+                handleSelectGroup3()
+                handleChangeReportValue(e.value)
+              }}
+              options={ApproveSelect}
+            />
+          </Col>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
+            <Button
+              color="warning"
+              size="lg"
+              style={{ width: "100%", marginTop: "15px" }}
+              onClick={() => {
+                handleSaveIndex()
+              }}
+            >
+              SAVE
+            </Button>
+          </Col>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
+            <Button
+              color="primary"
+              size="lg"
+              style={{ width: "100%", marginTop: "15px" }}
+              onClick={() => {
+                handleExportPDF()
+                handleUpdateStatusCoa()
+              }}
+            >
+              Print COA
+            </Button>
+          </Col>
+        </div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <TableHeaderCoa1
+          dataTable={{
+            columns: columnHeaderCoa1,
+            rows: dataListHeaderCoa1,
+          }}
+        />
       </div>
     </React.Fragment>
   )
 }
 
-FormBeforeExport.propTypes = {
+FormBeforeExport7.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   tr: PropTypes.array,
@@ -3207,4 +2869,4 @@ const mapStateToProps = state => ({
   bio: state.DetailOrder.SpecificBio,
 })
 
-export default connect(mapStateToProps)(withRouter(FormBeforeExport))
+export default connect(mapStateToProps)(withRouter(FormBeforeExport7))
