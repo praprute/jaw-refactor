@@ -878,7 +878,7 @@ export const originalFormCOA = (
                   columns: [
                     {
                       margin: [-30, 0, 0, 0],
-                      text: `: Typical White with Yelow - Green`,
+                      text: `: Typical White with Yellow - Green`,
                       fontSize: "10",
                       bold: true,
                       width: "*",
