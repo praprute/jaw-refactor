@@ -31,6 +31,8 @@ import FormBeforeExport2 from "../COA2/FormBeforeExport2"
 import FormBeforeExport3 from "../COA3/FormBeforeExport3"
 import FormBeforeExport4 from "../COA4/FormBeforeExport"
 import FormBeforeExport5 from "../COA5/FormBeforeExport2"
+import FormBeforeExport6 from "../COA6/FormBeforeExport6"
+import FormBeforeExport7 from "../COA7/FormBeforeExport"
 import HistoryDaily from "../Report/HistoryTest"
 import { Company } from "../../../configAPI"
 //SweetAlert
@@ -52,8 +54,7 @@ pdfMake.fonts = {
   Roboto: {
     normal:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
-    bold:
-      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
     italics:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
     bolditalics:
@@ -82,6 +83,7 @@ const FormBeforeExport = props => {
     Coliform: "",
     Saureus: "",
     Salmonella: "",
+    Cholerae: "",
   })
   const [activeTab, setActiveTab] = useState("1")
   const [valuesProtein, setValuesProtein] = useState({
@@ -110,6 +112,8 @@ const FormBeforeExport = props => {
   const [DisViscosity, setDisViscosity] = useState(true)
   const [CustomersOption, setCustomers] = useState([])
   const [salmon, setSalmon] = useState(false)
+  const [cholerae, setCholerae] = useState(false)
+  // Cholerae
   const [ApproveSelect, setApproveSelect] = useState([
     {
       label: "DCC",
@@ -323,6 +327,7 @@ const FormBeforeExport = props => {
         pageNo: "1",
       })
 
+      console.log("paresIndex : ", paresIndex)
       setDisTN(paresIndex.chem[0].render)
       setDisPH(paresIndex.chem[3].render)
       setDisSalt(paresIndex.chem[1].render)
@@ -331,8 +336,8 @@ const FormBeforeExport = props => {
       setDisAW(paresIndex.chem[4].render)
       setDisTss(paresIndex.chem[5].render)
       setDisAN(paresIndex.chem[7].render)
-      setDisAcidity(paresIndex.chem[8].render)
-      setDisViscosity(paresIndex.chem[9].render)
+      setDisAcidity(paresIndex.chem[9].render)
+      setDisViscosity(paresIndex.chem[10].render)
 
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
@@ -344,8 +349,8 @@ const FormBeforeExport = props => {
           scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
           scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
           scpSPG: `\u2265 1.20/20 \u00B0C`,
-          scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
+          scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
           scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
@@ -359,7 +364,7 @@ const FormBeforeExport = props => {
           scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
           scpSPG: `\u2265 1.20/20 \u00B0C`,
           scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-          scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+          scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
           scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
           scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
           scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
@@ -404,12 +409,12 @@ const FormBeforeExport = props => {
         AN: paresIndex.chem[7].val
           ? paresIndex.chem[7].val.toFixed(2)
           : paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[8].val
-          ? paresIndex.chem[8].val.toFixed(2)
-          : paresIndex.chem[8].val,
-        Viscosity: paresIndex.chem[9].val
+        Acidity: paresIndex.chem[9].val
           ? paresIndex.chem[9].val.toFixed(2)
           : paresIndex.chem[9].val,
+        Viscosity: paresIndex.chem[10].val
+          ? paresIndex.chem[10].val.toFixed(2)
+          : paresIndex.chem[10].val,
       })
       let TPC = ""
       let YeaseandMold = ""
@@ -417,6 +422,7 @@ const FormBeforeExport = props => {
       let Coliform = ""
       let Saureus = ""
       let Salmonella = "NOT DETECTED"
+      let Cholerae = "NOT DETECTED"
 
       if (paresIndex.micro[0].val < 250) {
         TPC = `< 250 CFU/g`
@@ -455,6 +461,7 @@ const FormBeforeExport = props => {
         Coliform: Coliform,
         Saureus: Saureus,
         Salmonella: Salmonella,
+        Cholerae: Cholerae,
       })
 
       return JSON.parse(localStorage.getItem("JawIndexExport"))
@@ -521,6 +528,7 @@ const FormBeforeExport = props => {
       ApproveValue,
       ReportValue,
       salmon,
+      cholerae,
       DisProductDate,
       DisExpiration,
       DisTank
@@ -594,7 +602,6 @@ const FormBeforeExport = props => {
   }
 
   const handleSelectListCoa = data => {
-
     setValuesExportRef(prevData => ({
       ...prevData,
       refNo: data.ref_no,
@@ -2645,6 +2652,87 @@ const FormBeforeExport = props => {
                   style={{
                     display: "flex",
                     justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="form-check form-check-warning">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="customCheckCholerae"
+                        checked={cholerae}
+                        onChange={() => {
+                          setCholerae(!cholerae)
+                        }}
+                      />
+                    </div>
+                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
+                    <label
+                      className="form-check-label"
+                      htmlFor="customCheckCholerae"
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        V.cholerae
+                      </span>
+                    </label>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    &nbsp;
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                      }}
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        NOT DETECTED
+                      </span>
+                    </div>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                      }}
+                    >
+                      {/* <span style={{ margin: 0, fontWeight: "bold" }}>
+                        NOT DETECTED
+                      </span> */}
+                      <Input value={valuesMicro.Cholerae} />
+                    </div>
+                  </Col>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
                     // alignItems: "center",
                     width: "100%",
                     height: "100%",
@@ -2949,6 +3037,18 @@ const FormBeforeExport = props => {
                             toggleTab("7")
                           }}
                         >
+                          COA FORM 7
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === "8",
+                          })}
+                          onClick={() => {
+                            toggleTab("8")
+                          }}
+                        >
                           Daily Report
                         </NavLink>
                       </NavItem>
@@ -3066,8 +3166,18 @@ const FormBeforeExport = props => {
                       <FormBeforeExport5 />
                     </div>
                   </TabPane>
-                  {/* FormBeforeExport5 */}
+                  <TabPane tabId="6" id="CompleteCheck">
+                    <div>
+                      <FormBeforeExport6 />
+                    </div>
+                  </TabPane>
                   <TabPane tabId="7" id="CompleteCheck">
+                    <div>
+                      <FormBeforeExport7 />
+                    </div>
+                  </TabPane>
+                  {/* FormBeforeExport5 */}
+                  <TabPane tabId="8" id="CompleteCheck">
                     <div>
                       <HistoryDaily />
                     </div>

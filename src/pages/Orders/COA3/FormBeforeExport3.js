@@ -31,8 +31,7 @@ pdfMake.fonts = {
   Roboto: {
     normal:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
-    bold:
-      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
     italics:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
     bolditalics:
@@ -359,8 +358,8 @@ const FormBeforeExport3 = props => {
       setDisAW(paresIndex.chem[4].render)
       setDisTss(paresIndex.chem[5].render)
       setDisAN(paresIndex.chem[7].render)
-      setDisAcidity(paresIndex.chem[8].render)
-      setDisViscosity(paresIndex.chem[9].render)
+      setDisAcidity(paresIndex.chem[9].render)
+      setDisViscosity(paresIndex.chem[10].render)
 
       setDisSaltMeter(true)
       setMicroRender(paresIndex.Orders.Micro)
@@ -372,8 +371,8 @@ const FormBeforeExport3 = props => {
         scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
         scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
         scpSPG: `\u2265 1.20/20 \u00B0C`,
-        scpAW: `\u2264  ${paresIndex.Orders.AWMax}`,
-        scpTSS: `${paresIndex.Orders.TnMain} - ${paresIndex.Orders.TnMax}`,
+        scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
+        scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
         scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
         scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
         scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
@@ -388,8 +387,8 @@ const FormBeforeExport3 = props => {
         AW: `${paresIndex.chem[4].val}/${paresIndex.chem[4].temp} \u00B0C`,
         TSS: paresIndex.chem[5].val,
         AN: paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[8].val,
-        Viscosity: paresIndex.chem[9].val,
+        Acidity: paresIndex.chem[9].val,
+        Viscosity: paresIndex.chem[10].val,
       })
       let TPC = ""
       let YeaseandMold = ""

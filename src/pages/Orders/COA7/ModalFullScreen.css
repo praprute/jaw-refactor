@@ -1,0 +1,25 @@
+@media (min-width: 992px){
+    .my-modal-lg {
+    width: auto;
+}
+}
+
+
+@media (min-width: 768px){
+    .my-modal-dialog {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+ }
+}
+
+
+@media (min-width: 768px){
+    .my-modal-content {
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    height: auto;
+    min-height: 100%;
+    border-radius: 0;
+}
+}

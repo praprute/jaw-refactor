@@ -4,6 +4,8 @@ import { Button, Col, Row, Input } from "reactstrap"
 import Select from "react-select"
 import makeAnimated from "react-select/animated"
 
+import { Company } from "../../../configAPI"
+
 import { UpdatexportCOA, UpdateDatailOrder } from "../api"
 import { withRouter } from "react-router-dom"
 import Moment from "moment"
@@ -11,18 +13,17 @@ import { connect } from "react-redux"
 import { isAuthenticated } from "../../Authentication/api"
 import { useHistory } from "react-router-dom"
 import pdfMake from "pdfmake/build/pdfmake"
-
-import { Company } from "../../../configAPI"
-
+// import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
+import { originalFormCOA } from "./OriginalForm"
+import "./ModalFullScreen.css"
+
 //SweetAlert
 import SweetAlert from "react-bootstrap-sweetalert"
-import { originalFormCOA2 } from "./Original2"
 import { getCustomers } from "../api"
-import "./StyleCOA2.css"
-import { getAllHeaderCoa5Task, saveHeaderCoa5Task } from "OpenApi/DuocumentTask"
+import e from "cors"
+import { getAllHeaderCoa4Task, saveHeaderCoa4Task } from "OpenApi/DuocumentTask"
 import TableHeaderCoa1 from "components/Document/TableCoaHeader1"
-
 const animatedComponents = makeAnimated()
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
@@ -45,14 +46,13 @@ pdfMake.fonts = {
     bolditalics: "Sarabun-MediumItalic.ttf",
   },
 }
-const FormBeforeExport5 = props => {
+const FormBeforeExport7 = props => {
   const history = useHistory()
   const { user, token } = isAuthenticated()
   const { orders, spc, tr, bio } = props
   const [detailById, setdetailById] = useState([])
   const [values, setValues] = useState([])
   const [valuesChem, setvaluesChem] = useState({})
-  const [salmon, setSalmon] = useState(false)
   const [valuesMicro, setvaluesMicro] = useState({
     TPC: "",
     YeaseandMold: "",
@@ -61,7 +61,7 @@ const FormBeforeExport5 = props => {
     Saureus: "",
     Salmonella: "",
   })
-
+  const [activeTab, setActiveTab] = useState("1")
   const [valuesProtein, setValuesProtein] = useState({
     protein: "",
   })
@@ -72,9 +72,8 @@ const FormBeforeExport5 = props => {
   const [MicroAnalysis, setMicroAnalysis] = useState(true)
 
   const [DisProductDate, setDisProductDate] = useState(false)
-  const [DisExpiration, setDisExpiration] = useState(false)
-  const [DisTank, setDisTank] = useState(false)
-  const [disCollectedDate, setdisCollectedDate] = useState(false)
+  const [DisExpiration, setDisExpiration] = useState(true)
+  const [DisTank, setDisTank] = useState(true)
 
   const [DisTN, setDisTN] = useState(true)
   const [DisProtein, setDisProtein] = useState(false)
@@ -84,13 +83,11 @@ const FormBeforeExport5 = props => {
   const [DisSPG, setDisSPG] = useState(true)
   const [DisAW, setDisAW] = useState(true)
   const [DisTss, setDisTss] = useState(true)
-  const [DisSaltMeter, setDisSaltMeter] = useState(true)
   const [DisAN, setDisAN] = useState(true)
   const [DisAcidity, setDisAcidity] = useState(true)
   const [DisViscosity, setDisViscosity] = useState(true)
-  const [success_msg, setsuccess_msg] = useState(false)
-  const [success_error, setsuccess_error] = useState(false)
   const [CustomersOption, setCustomers] = useState([])
+  const [salmon, setSalmon] = useState(false)
   const [ApproveSelect, setApproveSelect] = useState([
     {
       label: "DCC",
@@ -138,20 +135,24 @@ const FormBeforeExport5 = props => {
   const [customerNameSelect, setCustomerNameSelect] = useState(null)
   const [ApproveValue, setApproveValue] = useState(null)
   const [ReportValue, setReportValue] = useState(null)
+  const [success_msg, setsuccess_msg] = useState(false)
+  const [success_error, setsuccess_error] = useState(false)
   const [valuesExportRow1, setValuesExportRow1] = useState({
     To: customerNameSelect,
-    DCL1: "00/00/00",
+    DCL1: "MFG:",
+    DCL2: "BB:",
+    DCL3: "",
   })
   const [valuesExportRow2, setValuesExportRow2] = useState({
-    CollectedDate: "",
-    productName: "",
+    ProductionDate: "",
+    DaliveryDate: "",
   })
   const [valuesExportRow3, setValuesExportRow3] = useState({
-    productionDate: "",
-    TankNo: "",
+    ExpirationDate: "",
   })
   const [valuesExportPNandPS, setValuesExportPNandPS] = useState({
-    ExpirationDate: "",
+    ProductName: "",
+    PackSize: "",
   })
   const [TankNumber, setTankNumber] = useState({
     Tank: "",
@@ -159,65 +160,47 @@ const FormBeforeExport5 = props => {
   const [valuesQuantity, setValuesQuantity] = useState({
     Quantity: "",
     TestDate: "",
-  })
-  const [uid, setUid] = useState(null)
-  const [method, setMethod] = useState({
-    TN: "Kjeldahl method",
-    AN: "TIS 3-2526",
-    protien: " ",
-    PH: "pH meter",
-    Nacl: "Volumetric method",
-    Histamine: "Enzymatic Biosensor method",
-    spg: "Hydrometer",
-    AW: "Aw meter",
-    TSS: "TSS meter",
-    Acidity: "Potentiometric method",
-    Viscosity: "Viscometer",
-    AOA: "(AOAC 051604)",
-  })
-
-  const [valScoreLevel, setValScoreLevel] = useState({
-    Taste: "Typical Fresh fish sauce taste, No itchy after-taste, No off-taste",
-    Odor: "Typical fresh fish sauce odor/aroma, No off-odor",
-    Color: "Clear rockfish brown thin liquid",
-    Appearance:
-      "Clear light brown thin liquid, fishy flavor, first pressing extra virgin No sedimentation",
-    testDate: "",
     CompletionDate: "",
   })
-
-  const [refreshTable, setRefreshTable] = useState(false)
-  const [selectFromList, setSelectFromList] = useState(null)
+  const [uid, setUid] = useState(null)
+  const [shelfLife, setShelfLife] = useState({
+    ShelfLife: "",
+  })
 
   const columnHeaderCoa1 = [
-    {
-      label: "ref_no",
-      field: "ref_no",
-      sort: "asc",
-    },
     {
       label: "customer_name",
       field: "customer_name",
       sort: "asc",
     },
     {
-      label: "ref_date",
-      field: "ref_date",
+      label: "lot_1",
+      field: "lot_1",
       sort: "asc",
     },
     {
-      label: "production_date",
-      field: "production_date",
+      label: "lot_2",
+      field: "lot_2",
       sort: "asc",
     },
     {
-      label: "lot",
-      field: "lot",
+      label: "date_of_report",
+      field: "date_of_report",
       sort: "asc",
     },
     {
-      label: "tank_no",
-      field: "tank_no",
+      label: "pack_size",
+      field: "pack_size",
+      sort: "asc",
+    },
+    {
+      label: "quantity",
+      field: "quantity",
+      sort: "asc",
+    },
+    {
+      label: "shelf_life",
+      field: "shelf_life",
       sort: "asc",
     },
     {
@@ -226,14 +209,15 @@ const FormBeforeExport5 = props => {
       sort: "asc",
     },
   ]
+
   const [dataListHeaderCoa1, setDataListHeaderCoa1] = useState([])
 
-  const handleChangeScoreLevel = name => event => {
-    setValScoreLevel({ ...valScoreLevel, [name]: event.target.value })
-  }
+  const [selectFromList, setSelectFromList] = useState(null)
+
+  const [refreshTable, setRefreshTable] = useState(false)
 
   useEffect(async () => {
-    const response = await getAllHeaderCoa5Task(token)
+    const response = await getAllHeaderCoa4Task(token)
     if (response.success === "success") {
       let list = []
       response.message.map((data, index) => {
@@ -259,51 +243,6 @@ const FormBeforeExport5 = props => {
     }
   }, [refreshTable])
 
-  const handleSelectListCoa = data => {
-    setValuesExportRef(prevData => ({
-      ...prevData,
-      refNo: data.ref_no,
-      pageNo: 1,
-    }))
-
-    setSelectFromList(data.customer_name)
-
-    handleChangeValueCustomer(data.customer_name)
-
-    setValuesExportRow1(prevData => ({
-      ...prevData,
-      To: data.customer_name,
-      DCL1: data.lot,
-    }))
-
-    setValuesExportRow2({
-      CollectedDate: data.collected_date,
-      productName: data.field_null,
-    })
-
-    setValuesExportPNandPS(prevData => ({
-      ...prevData,
-      ExpirationDate: data.exp_date,
-    }))
-
-    setTankNumber({
-      Tank: data.tank_no,
-    })
-
-    setValuesExportRow3({
-      productionDate: data.production_date,
-      TankNo: data.tank_no,
-    })
-
-    setValScoreLevel(prevData => ({
-      ...prevData,
-      testDate: data.test_date,
-      CompletionDate: data.completion_date,
-    }))
-
-    window.scrollTo(0, 0)
-  }
-
   useEffect(async () => {
     try {
       const customerName = await getCustomers(token)
@@ -322,20 +261,42 @@ const FormBeforeExport5 = props => {
 
   useEffect(() => {
     if (localStorage.getItem("JawIndexExport")) {
-      let paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
+      const paresIndex = JSON.parse(localStorage.getItem("JawIndexExport"))
 
       setValuesExportRow2({
-        CollectedDate: "",
-        productName: "",
+        ProductionDate: paresIndex.Orders.PD,
+        DaliveryDate: paresIndex.Orders.DD,
       })
+
+      setTankNumber({
+        Tank: paresIndex.Orders.Tank,
+      })
+
       setUid(paresIndex.Orders.idOrders)
+
+      if (!paresIndex.Orders.DCL1) {
+        setValuesExportRow1({
+          To: customerNameSelect,
+          DCL1: "MFG:",
+          DCL2: "BB:",
+          DCL3: "",
+        })
+      } else {
+        setValuesExportRow1({
+          To: customerNameSelect,
+          DCL1: paresIndex.Orders.DCL1,
+          DCL2: paresIndex.Orders.DCL2,
+          DCL3: paresIndex.Orders.DCL3,
+        })
+      }
+
       setValuesExportPNandPS({
-        ExpirationDate: paresIndex.Orders.ED,
+        ProductName: `${paresIndex.Orders.ProductName}`,
+        PackSize: paresIndex.Orders.Size,
       })
 
       setValuesExportRow3({
-        productionDate: paresIndex.Orders.PD,
-        TankNo: paresIndex.Orders.Tank,
+        ExpirationDate: paresIndex.Orders.ED,
       })
 
       setValuesQuantity({
@@ -359,34 +320,83 @@ const FormBeforeExport5 = props => {
       setDisAN(paresIndex.chem[7].render)
       setDisAcidity(paresIndex.chem[9].render)
       setDisViscosity(paresIndex.chem[10].render)
-      setDisSaltMeter(paresIndex.chem[11].render)
+
       setMicroRender(paresIndex.Orders.Micro)
       setValues(paresIndex)
-      setSpcChem({
-        scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
-        scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
-        scpProtein: "",
-        scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
-        scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
-        scpSPG: `\u2265 1.20/20 \u00B0C`,
-        scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
-        scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
-        scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
-        scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
-        scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
-      })
+      if (paresIndex.Orders.idScfChem == 14) {
+        setSpcChem({
+          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
+          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpProtein: `\u2265  7.8%`,
+          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
+          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
+          scpSPG: `\u2265 1.20/20 \u00B0C`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
+          scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
+          scpAN: `\u2265 ${paresIndex.Orders.ANMin}`,
+          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
+          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+        })
+      } else {
+        setSpcChem({
+          scpTN: `\u2265 ${paresIndex.Orders.TnMain} g/L`,
+          scpPH: `${paresIndex.Orders.PHCOAMin} - ${paresIndex.Orders.PHCOAMax} at RT`,
+          scpProtein: `2.3-3.5%`,
+          scpSalt: `${paresIndex.Orders.SaltCOAMin} - ${paresIndex.Orders.SaltCOAMax}% w/v`,
+          scpHistamine: `\u2264  ${paresIndex.Orders.HistamineMax}`,
+          scpSPG: `\u2265 1.20/20 \u00B0C`,
+          scpAW: `\u2264  ${paresIndex.Orders.AWMax.toFixed(2)}`,
+          scpTSS: `${paresIndex.Orders.TSSMin} - ${paresIndex.Orders.TSSMax}`,
+          scpAN: `${paresIndex.Orders.ANMin} - ${paresIndex.Orders.ANMax}`,
+          scpAcidity: `${paresIndex.Orders.AcidityMin} - ${paresIndex.Orders.AcidityMax}`,
+          scpViscosity: `${paresIndex.Orders.ViscosityMin} - ${paresIndex.Orders.ViscosityMax}`,
+        })
+      }
+
       setvaluesChem({
-        TN: `${paresIndex.chem[0].val}  g/L`,
-        PH: `${paresIndex.chem[3].val} / ${paresIndex.chem[3].temp} \u00B0C`,
+        TN: `${
+          paresIndex.chem[0].val
+            ? paresIndex.chem[0].val.toFixed(2)
+            : paresIndex.chem[0].val
+        }  g/L`,
+        PH: `${
+          paresIndex.chem[3].val
+            ? paresIndex.chem[3].val.toFixed(2)
+            : paresIndex.chem[3].val
+        } / ${paresIndex.chem[3].temp} \u00B0C`,
         Protein: `${(paresIndex.chem[0].val * 0.625).toFixed(2)}  %`,
-        Salt: `${paresIndex.chem[1].val}% w/v`,
-        Histamine: `${paresIndex.chem[2].val} ppm`,
-        SPG: `${paresIndex.chem[6].val}/${paresIndex.chem[6].temp} \u00B0C`,
-        AW: `${paresIndex.chem[4].val}/${paresIndex.chem[4].temp} \u00B0C`,
-        TSS: paresIndex.chem[5].val,
-        AN: paresIndex.chem[7].val,
-        Acidity: paresIndex.chem[9].val,
-        Viscosity: paresIndex.chem[10].val,
+        Salt: `${
+          paresIndex.chem[1].val
+            ? paresIndex.chem[1].val.toFixed(2)
+            : paresIndex.chem[1].val
+        }% w/v`,
+        Histamine: `${
+          paresIndex.chem[2].val
+            ? paresIndex.chem[2].val.toFixed(2)
+            : paresIndex.chem[2].val
+        } ppm`,
+        SPG: `${
+          paresIndex.chem[6].val
+            ? paresIndex.chem[6].val.toFixed(2)
+            : paresIndex.chem[6].val
+        }/${paresIndex.chem[6].temp} \u00B0C`,
+        AW: `${
+          paresIndex.chem[4].val
+            ? paresIndex.chem[4].val.toFixed(3)
+            : paresIndex.chem[4].val
+        }/${paresIndex.chem[4].temp} \u00B0C`,
+        TSS: paresIndex.chem[5].val
+          ? paresIndex.chem[5].val.toFixed(2)
+          : paresIndex.chem[5].val,
+        AN: paresIndex.chem[7].val
+          ? paresIndex.chem[7].val.toFixed(2)
+          : paresIndex.chem[7].val,
+        Acidity: paresIndex.chem[9].val
+          ? paresIndex.chem[9].val.toFixed(2)
+          : paresIndex.chem[9].val,
+        Viscosity: paresIndex.chem[10].val
+          ? paresIndex.chem[10].val.toFixed(2)
+          : paresIndex.chem[10].val,
       })
       let TPC = ""
       let YeaseandMold = ""
@@ -408,7 +418,7 @@ const FormBeforeExport5 = props => {
       }
 
       if (paresIndex.micro[2].val < 3) {
-        Ecoil = `< 3.0 CFU/g`
+        Ecoil = `NOT DETECTED`
       } else {
         Ecoil = `${paresIndex.micro[2].val} MPN/g`
       }
@@ -439,25 +449,58 @@ const FormBeforeExport5 = props => {
     }
   }, [])
 
+  const handleSelectListCoa = data => {
+    setSelectFromList(data.customer_name)
+    handleChangeValueCustomer(data.customer_name)
+
+    setValuesExportRow1(prevData => ({
+      ...prevData,
+      To: customerNameSelect,
+      DCL1: data.lot_1,
+      DCL2: data.lot_2,
+    }))
+
+    setValuesExportRow2(prevData => ({
+      ...prevData,
+      ProductionDate: data.date_of_report,
+    }))
+
+    setValuesExportPNandPS(prevData => ({
+      ...prevData,
+      PackSize: data.pack_size,
+    }))
+
+    setValuesQuantity(prevData => ({
+      ...prevData,
+      Quantity: data.quantity,
+      CompletionDate: data.completion_date,
+    }))
+
+    setShelfLife({ ShelfLife: data.shelf_life })
+
+    window.scrollTo(0, 0)
+  }
+
   const handleUpdateStatusCoa = async () => {
     try {
-      let update = await UpdatexportCOA(token)
+      let update = UpdatexportCOA(token)
     } catch (err) {
       console.log(err)
     }
   }
 
-  const handleExportPDF = () => {
+  const toggleTab = tab => {
+    if (activeTab !== tab) {
+      setActiveTab(tab)
+    }
+  }
 
+  const handleExportPDF = () => {
     let dataRow2 = [
-      { values: valuesExportRow2.CollectedDate },
-      { values: valuesExportRow2.productName },
+      { values: valuesExportRow2.ProductionDate },
+      { values: valuesExportRow2.DaliveryDate },
     ]
-    
-    let dataRow3 = [
-      { values: valuesExportRow3.productionDate },
-      { values: valuesExportRow3.TankNo },
-    ]
+    let dataRow3 = [{ values: valuesExportRow3.ExpirationDate }, { values: "" }]
 
     let AnalysisRender = {
       DisTN: DisTN,
@@ -478,12 +521,9 @@ const FormBeforeExport5 = props => {
       MicroAnalysis,
     }
 
-    let ScoreLevel = true
 
-
-    originalFormCOA2(
+    originalFormCOA(
       values.logo,
-      values.halal,
       valuesExportRef,
       valuesExportRow1,
       dataRow2,
@@ -499,33 +539,29 @@ const FormBeforeExport5 = props => {
       customerNameSelect,
       ApproveValue,
       ReportValue,
-      method,
-      ScoreLevel,
-      valScoreLevel,
-      salmon
+      salmon,
+      DisProductDate,
+      DisExpiration,
+      DisTank,
+      shelfLife
     )
   }
 
   const handleSaveIndex = async () => {
     try {
       let payload = {
-        ref_no: valuesExportRef.refNo,
-        ref_date: valuesExportRef.date,
-        lot: valuesExportRow1.DCL1,
-        collected_date: valuesExportRow2.CollectedDate,
-        field_null: valuesExportRow2.productName,
-        production_date: valuesExportRow3.productionDate,
-        tank_no: valuesExportRow3.TankNo,
-        exp_date: valuesExportPNandPS.ExpirationDate,
-        completion_date:valScoreLevel.CompletionDate,
-        test_date: valScoreLevel.testDate,
+        lot_1: valuesExportRow1.DCL1,
+        lot_2: valuesExportRow1.DCL2,
+        date_of_report: valuesExportRow2.ProductionDate,
+        pack_size: valuesExportPNandPS.PackSize,
+        quantity: valuesQuantity.Quantity,
+        shelf_life: shelfLife.ShelfLife,
+        completion_date: valuesQuantity.CompletionDate,
       }
-      
       if (Boolean(selectedGroup?.idCustomer)) {
         payload = { ...payload, customer: selectedGroup.idCustomer }
       }
-
-      const res = await saveHeaderCoa5Task(token, payload)
+      const res = await saveHeaderCoa4Task(token, payload)
       if (res.success == "success") {
         setsuccess_msg(true)
         setRefreshTable(!refreshTable)
@@ -536,6 +572,10 @@ const FormBeforeExport5 = props => {
       setsuccess_error(true)
       console.error
     }
+  }
+ 
+  const handleChangeshelfLife = name => event => {
+    setShelfLife({ ...shelfLife, [name]: event.target.value })
   }
 
   const handleChangeValueAnalysis = name => event => {
@@ -558,7 +598,7 @@ const FormBeforeExport5 = props => {
     setValuesExportRow3({ ...valuesExportRow3, [name]: event.target.value })
   }
 
-  const handleChangeExpirationDate = name => event => {
+  const handleChangeDetailPNandPS = name => event => {
     setValuesExportPNandPS({
       ...valuesExportPNandPS,
       [name]: event.target.value,
@@ -593,14 +633,13 @@ const FormBeforeExport5 = props => {
     setCustomerNameSelect(e)
     setSelectFromList(e)
   }
-
   const handleChangeApproveValue = e => {
     setApproveValue(e)
-    // console.log(e)
+    console.log(e)
   }
   const handleChangeReportValue = e => {
     setReportValue(e)
-    // console.log(e)
+    console.log(e)
   }
 
   const headerForm = () => {
@@ -650,12 +689,7 @@ const FormBeforeExport5 = props => {
             justifyContent: "flex-end",
             alignItems: "center",
           }}
-        >
-          <img
-            src={`data:image/png;base64,${values.halal}`}
-            style={{ maxWidth: 140, maxHeight: 90 }}
-          />
-        </Col>
+        ></Col>
       </Row>
     )
   }
@@ -801,7 +835,6 @@ const FormBeforeExport5 = props => {
             alignItems: "center",
             width: "100%",
             height: "100%",
-            marginBottom: "10px",
           }}
         >
           <Col
@@ -848,7 +881,7 @@ const FormBeforeExport5 = props => {
                 alignItems: "center",
               }}
             >
-              <span style={{ margin: 0, fontWeight: "bold" }}>Lot: &nbsp;</span>
+              <span style={{ margin: 0, fontWeight: "bold" }}>LOT: &nbsp;</span>
             </Col>
             <Col sm="9">
               <div
@@ -866,8 +899,6 @@ const FormBeforeExport5 = props => {
             </Col>
           </Col>
         </div>
-
-        {/* Collection Date */}
         <div
           style={{
             display: "flex",
@@ -875,7 +906,6 @@ const FormBeforeExport5 = props => {
             alignItems: "center",
             width: "100%",
             height: "100%",
-            marginBottom: "5px",
           }}
         >
           <Col
@@ -885,51 +915,14 @@ const FormBeforeExport5 = props => {
               alignItems: "center",
             }}
           >
-            <Col
-              sm="3"
+            <div
               style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
+                width: "100%",
+                height: "100%",
+                paddingLeft: "10px",
+                paddingRight: "10px",
               }}
-            >
-              {/* <div className="form-check form-check-warning">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheckcolorTn"
-                  checked={!disCollectedDate}
-                  onChange={() => {
-                    setdisCollectedDate(!disCollectedDate)
-                  }}
-                />
-              </div> */}
-              <span style={{ margin: 0, fontWeight: "bold" }}>
-                Collected date:
-              </span>
-            </Col>
-            <Col
-              sm="9"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={disCollectedDate}
-                  name="CollectedDate"
-                  onChange={handleChangeDetailRow2PD("CollectedDate")}
-                  value={valuesExportRow2.CollectedDate}
-                />
-              </div>
-            </Col>
+            ></div>
           </Col>
           <Col
             style={{
@@ -938,14 +931,9 @@ const FormBeforeExport5 = props => {
               alignItems: "center",
             }}
           >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            ></Col>
+            <Col sm="3">
+              {/* <h5 style={{ margin: 0 }}>Date Code List: </h5> */}
+            </Col>
             <Col sm="9">
               <div
                 style={{
@@ -954,16 +942,14 @@ const FormBeforeExport5 = props => {
                 }}
               >
                 <Input
-                  disabled={DisTank}
-                  name="productName"
-                  onChange={handleChangeDetailRow2PD("productName")}
-                  value={valuesExportRow2.productName}
+                  name="DCL2"
+                  onChange={handleChangeDetailRow1("DCL2")}
+                  value={valuesExportRow1.DCL2}
                 />
               </div>
             </Col>
           </Col>
         </div>
-
         {/* Production Date */}
         <div
           style={{
@@ -990,7 +976,18 @@ const FormBeforeExport5 = props => {
                 alignItems: "center",
               }}
             >
-              <span style={{ fontWeight: "bold" }}>Production date:</span>
+              <div className="form-check form-check-warning">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="customCheckcolorTn"
+                  checked={!DisProductDate}
+                  onChange={() => {
+                    setDisProductDate(!DisProductDate)
+                  }}
+                />
+              </div>
+              <span style={{ fontWeight: "bold" }}>Date of Report:</span>
             </Col>
             <Col sm="9">
               <div
@@ -1001,88 +998,9 @@ const FormBeforeExport5 = props => {
               >
                 <Input
                   disabled={DisProductDate}
-                  name="productionDate"
-                  onChange={handleChangeDetailRow3EX("productionDate")}
-                  value={valuesExportRow3.productionDate}
-                />
-              </div>
-            </Col>
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontWeight: "bold" }}>Tank No. </span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisTank}
-                  name="TankNo"
-                  onChange={handleChangeDetailRow3EX("TankNo")}
-                  value={valuesExportRow3.TankNo}
-                />
-              </div>
-            </Col>
-          </Col>
-        </div>
-
-        {/* ExpirationDate  */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-            marginBottom: "5px",
-          }}
-        >
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <Col
-              sm="3"
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontWeight: "bold" }}>Expiration date:</span>
-            </Col>
-            <Col sm="9">
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Input
-                  disabled={DisExpiration}
-                  name="ExpirationDate"
-                  onChange={handleChangeExpirationDate("ExpirationDate")}
-                  value={valuesExportPNandPS.ExpirationDate}
+                  name="ProductionDate"
+                  onChange={handleChangeDetailRow2PD("ProductionDate")}
+                  value={valuesExportRow2.ProductionDate}
                 />
               </div>
             </Col>
@@ -1112,187 +1030,301 @@ const FormBeforeExport5 = props => {
             </Col>
           </Col>
         </div>
-      </Row>
-    )
-  }
-
-  const Sinsory = () => {
-    return (
-      <React.Fragment>
-        <Row
+        <div
           style={{
             display: "flex",
-            width: "100%",
-            justifyContent: "flex-start",
+            justifyContent: "center",
             alignItems: "center",
-            marginTop: "15px",
+            width: "100%",
+            height: "100%",
+            marginBottom: "5px",
           }}
-        ></Row>
-        <React.Fragment>
-          <Row
+        >
+          <Col
             style={{
               display: "flex",
-              width: "100%",
               justifyContent: "flex-start",
-
-              marginTop: "10px",
+              alignItems: "center",
             }}
-          >
-            <Col xs={12} style={{ padding: "0" }}>
-              <table id="score-level">
-                <tr>
-                  <td>Taste</td>
-                  <td>
-                    {" "}
-                    <Input
-                      disabled="true"
-                      name="Taste"
-                      type="number"
-                      min="0"
-                      max="5"
-                      placeholder={valScoreLevel.Taste}
-                      onChange={handleChangeScoreLevel("Taste")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Odor</td>
-                  <td>
-                    {" "}
-                    <Input
-                      disabled="true"
-                      min="0"
-                      max="5"
-                      name="Odor"
-                      type="number"
-                      placeholder={valScoreLevel.Odor}
-                      onChange={handleChangeScoreLevel("Odor")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Color</td>
-                  <td>
-                    {" "}
-                    <Input
-                      disabled="true"
-                      min="0"
-                      max="5"
-                      name="Color"
-                      type="number"
-                      placeholder={valScoreLevel.Color}
-                      onChange={handleChangeScoreLevel("Color")}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Appearance</td>
-                  <td>
-                    {" "}
-                    <Input
-                      disabled="true"
-                      min="0"
-                      max="5"
-                      name="Appearance"
-                      type="number"
-                      placeholder={valScoreLevel.Appearance}
-                      onChange={handleChangeScoreLevel("Appearance")}
-                    />
-                  </td>
-                </tr>
-              </table>
-            </Col>
-          </Row>
-          <br />
-          <div
+          ></Col>
+          <Col
             style={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "flex-start",
               alignItems: "center",
-              width: "100%",
-              height: "100%",
-              marginBottom: "5px",
             }}
           >
             <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            ></Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              ></div>
+            </Col>
+          </Col>
+        </div>
+        {/* Product Name: pank size */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            marginBottom: "5px",
+          }}
+        >
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
               }}
             >
-              <Col
-                sm="2"
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                }}
-              >
-                <span style={{ margin: 0, fontWeight: "bold" }}>
-                  Test date:
-                </span>
-              </Col>
-              <Col
-                sm="10"
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <Input
-                    name="testDate"
-                    onChange={handleChangeScoreLevel("testDate")}
-                    value={valScoreLevel.testDate}
-                  />
-                </div>
-              </Col>
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Product Name:
+              </span>
             </Col>
             <Col
+              sm="9"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
               }}
             >
-              <Col
-                sm="3"
+              <div
                 style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  paddingLeft: "15px",
+                  width: "100%",
+                  height: "100%",
                 }}
               >
-                <span style={{ margin: 0, fontWeight: "bold" }}>
-                  Completion date:
-                </span>
-              </Col>
-              <Col sm="9">
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <Input
-                    name="CompletionDate"
-                    onChange={handleChangeScoreLevel("CompletionDate")}
-                    value={valScoreLevel.CompletionDate}
-                  />
-                </div>
-              </Col>
+                <Input
+                  name="ProductName"
+                  onChange={handleChangeDetailPNandPS("ProductName")}
+                  value={valuesExportPNandPS.ProductName}
+                />
+              </div>
             </Col>
-          </div>
-        </React.Fragment>
-      </React.Fragment>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Pack Size: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="PackSize"
+                  onChange={handleChangeDetailPNandPS("PackSize")}
+                  value={valuesExportPNandPS.PackSize}
+                />
+              </div>
+            </Col>
+          </Col>
+        </div>
+        {/* Tank No */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            marginBottom: "5px",
+          }}
+        >
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>Quantity:</span>
+            </Col>
+            <Col
+              sm="9"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="Quantity"
+                  onChange={handleChangeQuantity("Quantity")}
+                  value={valuesQuantity.Quantity}
+                />
+              </div>
+            </Col>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Shelf life: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="ShelfLife"
+                  onChange={handleChangeshelfLife("ShelfLife")}
+                  value={shelfLife.ShelfLife}
+                />
+              </div>
+            </Col>
+          </Col>
+        </div>
+        {/* Quantity  */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            marginBottom: "5px",
+          }}
+        >
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Test Date: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="TestDate"
+                  onChange={handleChangeQuantity("TestDate")}
+                  value={valuesQuantity.TestDate}
+                />
+              </div>
+            </Col>
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Col
+              sm="3"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ margin: 0, fontWeight: "bold" }}>
+                Completion Date: &nbsp;
+              </span>
+            </Col>
+            <Col sm="9">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Input
+                  name="CompletionDate"
+                  onChange={handleChangeQuantity("CompletionDate")}
+                  value={valuesQuantity.CompletionDate}
+                />
+              </div>
+            </Col>
+          </Col>
+        </div>
+      </Row>
     )
   }
 
@@ -1401,6 +1433,7 @@ const FormBeforeExport5 = props => {
                 width: "100%",
                 height: "100%",
                 paddingRight: "30px",
+                // paddingLeft: "20px",
               }}
             >
               <Input disabled={!DisTN} value={spcChem.scpTN} />
@@ -1476,7 +1509,7 @@ const FormBeforeExport5 = props => {
                 paddingRight: "30px",
               }}
             >
-              <Input disabled={!DisProtein} />
+              <Input disabled={!DisProtein} value={spcChem.scpProtein} />
             </div>
           </Col>
           <Col
@@ -1682,6 +1715,7 @@ const FormBeforeExport5 = props => {
                 width: "100%",
                 height: "100%",
                 paddingRight: "30px",
+                // paddingLeft: "20px",
               }}
             >
               <Input disabled={!DisHistamine} value={spcChem.scpHistamine} />
@@ -2184,7 +2218,7 @@ const FormBeforeExport5 = props => {
                       }}
                     />
                   </div> */}
-                    <span style={{ margin: 0, fontWeight: "bold" }}>TPC</span>
+                    <span style={{ margin: 0, fontWeight: "bold" }}>APC</span>
                   </Col>
                   <Col
                     style={{
@@ -2490,16 +2524,17 @@ const FormBeforeExport5 = props => {
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        id="customCheckSalmon2"
+                        id="customCheckSalmon"
                         checked={salmon}
                         onChange={() => {
                           setSalmon(!salmon)
                         }}
                       />
                     </div>
+                    {/* <span style={{ margin: 0, fontWeight: "bold" }}>PH</span> */}
                     <label
                       className="form-check-label"
-                      htmlFor="customCheckSalmon2"
+                      htmlFor="customCheckSalmon"
                     >
                       <span style={{ margin: 0, fontWeight: "bold" }}>
                         Salmonella spp.
@@ -2544,25 +2579,179 @@ const FormBeforeExport5 = props => {
                     </div>
                   </Col>
                 </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    // alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                    marginTop: "20px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      //   alignItems: "center",
+                    }}
+                  >
+                    <h5 style={{ margin: 0 }}>
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        Characteristics
+                      </span>
+                    </h5>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      //   alignItems: "center",
+                    }}
+                  >
+                    &nbsp;
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                      }}
+                    >
+                      <span style={{ margin: 0, fontWeight: "bold" }}>
+                        Clear light brown <br />
+                        Thin liquid, fishy
+                        <br />
+                        flavor, First pressing,
+                        <br />
+                        Extre virgin
+                      </span>
+                    </div>
+                  </Col>
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        paddingRight: "30px",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Appearance
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            No sedimentation
+                          </span>
+                        </Col>
+                      </div>
+
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Order
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            Fresh fish sauce odor/aroma
+                          </span>
+                        </Col>
+                      </div>
+
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Taste
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            Fresh fish sauce taste
+                          </span>
+                        </Col>
+                      </div>
+
+                      <div
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          width: "100%",
+                          display: "flex",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Col sm="4">
+                          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+                            Color
+                          </h5>
+                        </Col>
+                        <Col sm="8">
+                          <span style={{ margin: 0, fontWeight: "bold" }}>
+                            Clear rockfish brown thin liquid
+                          </span>
+                        </Col>
+                      </div>
+                    </div>
+                  </Col>
+                </div>
               </React.Fragment>
             ) : null}
-            {/* {Sinsory()} */}
           </React.Fragment>
         ) : null}
-        {Sinsory()}
       </Row>
     )
   }
-
   return (
     <React.Fragment>
       {success_msg ? (
         <SweetAlert
           title="Add Order Success"
           success
+          //   showCancel
           confirmBtnBsStyle="success"
+          //   cancelBtnBsStyle="danger"
           onConfirm={async () => {
             setsuccess_msg(false)
+            // setInterval(() => {
+            //   window.location.reload()
+            // }, 5000)
           }}
         >
           You clicked the button!
@@ -2573,7 +2762,9 @@ const FormBeforeExport5 = props => {
         <SweetAlert
           title="error"
           danger
+          //   showCancel
           confirmBtnBsStyle="danger"
+          //   cancelBtnBsStyle="danger"
           onConfirm={() => {
             setsuccess_error(false)
           }}
@@ -2581,15 +2772,15 @@ const FormBeforeExport5 = props => {
           You clicked the button!
         </SweetAlert>
       ) : null}
-      {/* <div className="page-content"> */}
 
       <div style={{ width: "100%", height: "100%", background: "" }}>
         {headerForm()}
         <br />
-        {RefForm()}
+        {/* {RefForm()} */}
         {headDetail()}
         <br />
         {Analysis()}
+        {/* <h1>FormBeforeExport</h1> */}
         <div
           style={{
             display: "flex",
@@ -2634,7 +2825,7 @@ const FormBeforeExport5 = props => {
               SAVE
             </Button>
           </Col>
-          <Col sm="3" style={{ textAlign: "right", paddingRight: "0px" }}>
+          <Col sm="3" style={{ textAlign: "right", paddingRight: "10px" }}>
             <Button
               color="primary"
               size="lg"
@@ -2660,12 +2851,11 @@ const FormBeforeExport5 = props => {
           }}
         />
       </div>
-      {/* </div> */}
     </React.Fragment>
   )
 }
 
-FormBeforeExport5.propTypes = {
+FormBeforeExport7.propTypes = {
   orders: PropTypes.array,
   spc: PropTypes.array,
   tr: PropTypes.array,
@@ -2679,4 +2869,4 @@ const mapStateToProps = state => ({
   bio: state.DetailOrder.SpecificBio,
 })
 
-export default connect(mapStateToProps)(withRouter(FormBeforeExport5))
+export default connect(mapStateToProps)(withRouter(FormBeforeExport7))

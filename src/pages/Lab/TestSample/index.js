@@ -43,6 +43,7 @@ const TestSample = () => {
     Viscosity: false,
     SaltMeter: false,
     Color: false,
+    Gluten: false,
   })
   const [resultChem, setresultChem] = useState([
     {
@@ -101,6 +102,14 @@ const TestSample = () => {
       val: null,
       temp: true,
     },
+    {
+      keyInput: "Gluten",
+      int: false,
+      key: "Gluten",
+      coa: false,
+      val: null,
+      temp: true,
+    },
   ])
   const [resultMicro, setresultMicro] = useState([
     { int: false, coa: false, val: "", key: "APC" },
@@ -149,6 +158,7 @@ const TestSample = () => {
 
   useEffect(() => {
     if (!!testResult[0]) {
+      console.log("testResult : ", testResult[0][8])
       setValues({
         idOrders: detailOrder.idOrders,
         PORD: detailOrder.PORD,
@@ -180,6 +190,7 @@ const TestSample = () => {
         TempAW: testResult[0][4].temp,
         TempTSS: testResult[0][5].temp,
         TempSPG: testResult[0][6].temp,
+        Gluten: testResult[0][8].val,
       })
       setOldValues({
         Tn: testResult[0][0].val,
@@ -193,6 +204,7 @@ const TestSample = () => {
         Acidity: testResult[0][8].val,
         Viscosity: testResult[0][9].val,
         SaltMeter: testResult[0][10].val,
+        Gluten: testResult[0][8].val,
       })
       setresultChem(testResult[0])
     }
@@ -465,6 +477,7 @@ const TestSample = () => {
         TempAW: values.TempAW,
         TempTSS: values.TempTSS,
         TempSPG: values.TempSPG,
+        Gluten: values.Gluten,
         timeStamp: require("moment")().format("YYYY-MM-DD HH:mm:ss"), //new Date().toISOString().slice(0, 19).replace('T', ' ')
       }
 

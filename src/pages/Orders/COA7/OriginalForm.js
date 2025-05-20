@@ -1,13 +1,15 @@
 import pdfMake from "pdfmake/build/pdfmake"
+import { Company } from "../../../configAPI"
+
 // import pdfFonts from "pdfmake/build/vfs_fonts"
 import pdfFonts from "../../../assets/custom-fonts"
-import { Company } from "../../../configAPI"
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 pdfMake.fonts = {
   Roboto: {
     normal:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
-    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    bold:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
     italics:
       "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
     bolditalics:
@@ -40,10 +42,10 @@ export const originalFormCOA = (
   ApproveValue,
   ReportValue,
   salmon,
-  cholerae,
   DisProductDate,
   DisExpiration,
-  DisTank
+  DisTank,
+  shelfLife
 ) => {
   let DetailOrderRow1 = []
   let DetailOrderRow2 = []
@@ -81,6 +83,36 @@ export const originalFormCOA = (
   ]
 
   let MicroComponent = []
+
+ 
+  if (AnalysisRender) {
+    dataAnaly.push([
+      {
+        text: `Physical &  Chemical`,
+        alignment: "left",
+        bold: true,
+        margin: [0, 0, 0, 5],
+        border: [true, false, false, false],
+        decoration: "underline",
+      },
+      {
+        text: ``,
+        style: "RefBoxValue",
+        alignment: "left",
+        bold: true,
+        margin: [0, 0, 0, 5],
+        border: [false, false, false, false],
+      },
+      {
+        text: ``,
+        style: "RefBoxValue",
+        alignment: "left",
+        bold: true,
+        margin: [0, 0, 0, 5],
+        border: [false, false, true, false],
+      },
+    ])
+  }
 
   if (AnalysisRender.DisTN) {
     dataAnaly.push([
@@ -212,7 +244,7 @@ export const originalFormCOA = (
         border: [false, false, false, false],
       },
       {
-        text: `${valuesChem.Histamine}`,
+        text: `${valuesChem.Histamine} `,
         style: "RefBoxValue",
         alignment: "left",
         margin: [0, 0, 0, 5],
@@ -641,389 +673,6 @@ export const originalFormCOA = (
         ],
         [
           {
-            text: `${cholerae ? "V.cholerae" : ""}`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `${cholerae ? "NOT DETECTED" : ""}`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${cholerae ? valuesMicro.Cholerae : ""}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-              {
-                text: `${cholerae ? "(Once a year)" : ""}`,
-                width: "auto",
-                alignment: "right",
-                style: "RefBoxValue",
-                margin: [5, 0, 0, 0],
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            // fontSize:"8",
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `Characteristics`,
-            bold: true,
-            fontSize: "10",
-            margin: [0, 5, 0, 0],
-            border: [true, false, false, true],
-          },
-          {
-            text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
-            fontSize: "10",
-            bold: false,
-            margin: [0, 5, 0, 0],
-            border: [false, false, false, true],
-          },
-          {
-            columns: [
-              {
-                fontSize: "10",
-                stack: [
-                  {
-                    margin: [0, 0, 0, 5],
-                    columns: [
-                      {
-                        text: `Appearance`,
-                        bold: true,
-                        //   width: "auto",
-                      },
-                      {
-                        margin: [-30, 0, 0, 0],
-                        text: `No sedimentation`,
-                        fontSize: "10",
-                        bold: true,
-                        width: "*",
-                      },
-                    ],
-                  },
-                  {
-                    margin: [0, 0, 0, 5],
-                    columns: [
-                      {
-                        text: `Odor`,
-                        bold: true,
-                        //   width: "auto",
-                      },
-                      {
-                        margin: [-30, 0, 0, 0],
-                        text: `Fresh fish sauce odor/aroma`,
-                        fontSize: "10",
-                        bold: true,
-                        width: "*",
-                      },
-                    ],
-                  },
-                  {
-                    margin: [0, 0, 0, 5],
-                    columns: [
-                      {
-                        text: `Taste`,
-                        bold: true,
-                        //   width: "auto",
-                      },
-                      {
-                        margin: [-30, 0, 0, 0],
-                        text: `Fresh fish sauce taste`,
-                        fontSize: "10",
-                        bold: true,
-                        width: "*",
-                      },
-                    ],
-                  },
-                  {
-                    margin: [0, 0, 0, 5],
-                    columns: [
-                      {
-                        text: `Color`,
-                        bold: true,
-                        //   width: "auto",
-                      },
-                      {
-                        margin: [-30, 0, 0, 0],
-                        text: `Clear rockfish brown thin liquid`,
-                        fontSize: "10",
-                        bold: true,
-                        width: "*",
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-            margin: [-50, 5, 0, 0],
-            border: [false, false, true, true],
-          },
-        ]
-      )
-    } else {
-      dataAnaly.push(
-        [
-          {
-            text: `MICROBIOLOGICAL`,
-            style: "RefBoxValue",
-            alignment: "left",
-            //   fontSize: 8,
-            decoration: "underline",
-            // italics: true, ตัวเอียง
-            bold: true,
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            text: ``,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `APC`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `< 1x10\u2074 CFU/g`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.TPC}`,
-                style: "RefBoxValue",
-              },
-              {
-                text: `(Every lot)`,
-                style: "RefBoxValue",
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `Yeasts and Molds`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `\u2264 100 CFU/g`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.YeaseandMold}`,
-                style: "RefBoxValue",
-              },
-              {
-                text: `(Every lot)`,
-                style: "RefBoxValue",
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `E. coli`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `NOT DETECTED`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.Ecoil}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-              {
-                text: `(Every lot)`,
-                width: "auto",
-                alignment: "right",
-                margin: [11, 0, 0, 0],
-                style: "RefBoxValue",
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `Coliform`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `NOT DETECTED`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.Coliform}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-              {
-                text: `(Every lot)`,
-                width: "auto",
-                alignment: "right",
-                style: "RefBoxValue",
-                margin: [11, 0, 0, 0],
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `S. aureus`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `NOT DETECTED`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${valuesMicro.Saureus}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-              {
-                text: `(Every lot)`,
-                width: "auto",
-                alignment: "right",
-                style: "RefBoxValue",
-                margin: [11, 0, 0, 0],
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `${cholerae ? "V.cholerae" : ""}`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `${cholerae ? "NOT DETECTED" : ""}`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${cholerae ? valuesMicro.Cholerae : ""}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-              {
-                text: `${cholerae ? "(Once a year)" : ""}`,
-                width: "auto",
-                alignment: "right",
-                style: "RefBoxValue",
-                margin: [5, 0, 0, 0],
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            // fontSize:"8",
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
             text: `Characteristics`,
             bold: true,
             fontSize: "10",
@@ -1120,102 +769,197 @@ export const originalFormCOA = (
       )
     }
   } else {
-    dataAnaly.push([
-      {
-        text: `Characteristics`,
-        bold: true,
-        margin: [0, 10, 0, 0],
-        fontSize: "10",
-        border: [true, false, false, true],
-      },
-      {
-        text: `Clear light brown\nThin liquid, fishy\nflavor, First pressing,\nExtra virgin`,
-        fontSize: "10",
-        bold: false,
-        margin: [0, 10, 0, 0],
-        fontSize: "10",
-        border: [false, false, false, true],
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                margin: [0, 0, 0, 10],
-                columns: [
-                  {
-                    text: `Appearance`,
-                    bold: true,
-                    //   width: "auto",
-                  },
-                  {
-                    margin: [-30, 0, 0, 0],
-                    text: `No sedimentation`,
-                    fontSize: "10",
-                    bold: true,
-                    width: "*",
-                  },
-                ],
-              },
-              {
-                margin: [0, 0, 0, 10],
-                columns: [
-                  {
-                    text: `Odor`,
-                    bold: true,
-                    //   width: "auto",
-                  },
-                  {
-                    margin: [-30, 0, 0, 0],
-                    text: `Fresh fish sauce odor/aroma`,
-                    fontSize: "10",
-                    bold: true,
-                    width: "*",
-                  },
-                ],
-              },
-              {
-                margin: [0, 0, 0, 10],
-                columns: [
-                  {
-                    text: `Taste`,
-                    bold: true,
-                    //   width: "auto",
-                  },
-                  {
-                    margin: [-30, 0, 0, 0],
-                    text: `Fresh fish sauce taste`,
-                    fontSize: "10",
-                    bold: true,
-                    width: "*",
-                  },
-                ],
-              },
-              {
-                margin: [0, 0, 0, 10],
-                columns: [
-                  {
-                    text: `Color`,
-                    bold: true,
-                    //   width: "auto",
-                  },
-                  {
-                    margin: [-30, 0, 0, 0],
-                    text: `Clear rockfish brown thin liquid`,
-                    fontSize: "10",
-                    bold: true,
-                    width: "*",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        margin: [-50, 10, 0, 0],
-        border: [false, false, true, true],
-      },
-    ])
+    dataAnaly.push(
+      [
+        {
+          columns: [
+            {
+              stack: [
+                {
+                  margin: [0, 0, 0, 10],
+                  columns: [
+                    {
+                      text: `Sensory`,
+                      bold: true,
+                      //   width: "auto",
+                      decoration: "underline",
+                    },
+                    {
+                      margin: [-30, 0, 0, 0],
+                      text: ``,
+                      fontSize: "10",
+                      bold: true,
+                      width: "*",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 0, 0, 10],
+                  columns: [
+                    {
+                      text: `Appearance`,
+                      bold: true,
+                      //   width: "auto",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 0, 0, 10],
+                  columns: [
+                    {
+                      text: `Color`,
+                      bold: true,
+                      //   width: "auto",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 0, 0, 10],
+                  columns: [
+                    {
+                      text: `Odor`,
+                      bold: true,
+                      //   width: "auto",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 0, 0, 10],
+                  columns: [
+                    {
+                      text: `Taste`,
+                      bold: true,
+                      //   width: "auto",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          margin: [0, 10, 0, 0],
+          border: [true, false, false, false],
+        },
+        {
+          columns: [
+            {
+              stack: [
+                {
+                  margin: [0, 16, 0, 10],
+                  columns: [
+                    {
+                      text: ``,
+                      bold: true,
+                      //   width: "auto",
+                      decoration: "underline",
+                    },
+                    {
+                      margin: [-30, 0, 0, 0],
+                      text: ``,
+                      fontSize: "10",
+                      bold: true,
+                      width: "*",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 0, 0, 10],
+                  columns: [
+                    {
+                      margin: [-30, 0, 0, 0],
+                      text: `: Opaque liquid, No Sedimentation`,
+                      fontSize: "10",
+                      bold: true,
+                      width: "*",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 0, 0, 10],
+                  columns: [
+                    {
+                      margin: [-30, 0, 0, 0],
+                      text: `: Typical White with Yellow - Green`,
+                      fontSize: "10",
+                      bold: true,
+                      width: "*",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 3, 0, 10],
+                  columns: [
+                    {
+                      margin: [-30, 0, 0, 0],
+                      text: `: Typical of Lime Juice`,
+                      fontSize: "10",
+                      bold: true,
+                      width: "*",
+                    },
+                  ],
+                },
+                {
+                  margin: [0, 3, 0, 10],
+                  columns: [
+                    {
+                      margin: [-30, 0, 0, 0],
+                      text: `: Typical Acid Taste, Sour, No off Taste`,
+                      fontSize: "10",
+                      bold: true,
+                      width: "*",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          margin: [-80, 10, 0, 0],
+          border: [false, false, false, false],
+        },
+        {
+          text: ``,
+          fontSize: "10",
+          bold: false,
+          margin: [0, 10, 0, 0],
+          fontSize: "10",
+          border: [false, false, true, false],
+        },
+      ],
+      [
+        {
+          text: `Test Date: ${QuantityAndTestDate.TestDate}`,
+          fontSize: "10",
+          bold: false,
+          margin: [0, 10, 0, 0],
+          fontSize: "10",
+          border: [true, false, false, true],
+        },
+        {
+          text: ``,
+          fontSize: "10",
+          bold: false,
+          margin: [0, 10, 0, 0],
+          fontSize: "10",
+          border: [false, false, false, true],
+        },
+        {
+          text: `Completion Date ${QuantityAndTestDate.CompletionDate}`,
+          fontSize: "10",
+          bold: false,
+          margin: [0, 10, 0, 0],
+          fontSize: "10",
+          border: [false, false, true, true],
+        },
+      ]
+    )
   }
+
+  // {
+  //   text: `Test Date: ${QuantityAndTestDate.TestDate}`,
+  //   style: "RefBoxValue",
+  //   alignment: "left",
+  //   margin: [0, 0, 0, 0],
+  //   border: [false, false, true, true],
+  // },
 
   if (tankNo.Tank !== "" && DisTank == false) {
     tankNumber.push(
@@ -1261,7 +1005,7 @@ export const originalFormCOA = (
     }
     if (i == 0 && row2PDandDD[i].values !== "" && DisProductDate == false) {
       index = {
-        text: `Production date: ${row2PDandDD[i].values}`,
+        text: `Date of Report: ${row2PDandDD[i].values}`,
         style: "RefBoxValue",
         alignment: "left",
         border: [true, false, false, false],
@@ -1333,7 +1077,7 @@ export const originalFormCOA = (
       DetailOrderRow3.push(index)
     }
   }
-
+ 
   var docDefinition = {
     pageMargins: [35, 20, 15, 20],
     content: [
@@ -1397,6 +1141,7 @@ export const originalFormCOA = (
                     text: "CERTIFICATE OF ANALYSIS",
                     style: "invoiceTitle",
                     width: "*",
+                    margin: [0, 20, 0, 20],
                   },
                 ],
               },
@@ -1413,67 +1158,12 @@ export const originalFormCOA = (
       },
       {
         margin: [0, 5, 0, 0],
-        columns: [
-          {},
-          {},
-          {
-            style: "rightRef",
-            table: {
-              alignment: "left",
-              widths: ["auto", "*"],
-              body: [
-                [
-                  {
-                    text: `REF.NO `,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [true, true, false, true],
-                  },
-                  {
-                    text: `${ref.refNo}`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [false, true, true, true],
-                  },
-                ],
-                [
-                  {
-                    text: `DATE: `,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [true, false, false, true],
-                  },
-                  {
-                    text: `${ref.date}`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [false, false, true, true],
-                  },
-                ],
-                [
-                  {
-                    text: `PAGE NO.`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [true, false, false, false],
-                  },
-                  {
-                    text: `${ref.pageNo}`,
-                    style: "RefBoxValue",
-                    alignment: "left",
-                    border: [false, false, true, false],
-                  },
-                ],
-              ],
-            },
-          },
-        ],
+        columns: [{}, {}, {}],
       },
 
       {
         margin: [0, 0, 0, 0],
         table: {
-          // alignment: "left",
           widths: ["*", "*"],
           body: [
             [
@@ -1485,7 +1175,7 @@ export const originalFormCOA = (
                 border: [true, true, false, false],
               },
               {
-                text: `Date Code List: ${row1.DCL1}`,
+                text: `LOT: ${row1.DCL1}`,
                 style: "RefBoxValue",
                 alignment: "left",
                 border: [false, true, true, false],
@@ -1493,8 +1183,9 @@ export const originalFormCOA = (
             ],
             [
               {
-                text: ` `,
+                text: `${DetailOrderRow2[0].text}`,
                 style: "RefBoxValue",
+                margin: [0, 7, 0, 0],
                 alignment: "left",
                 border: [true, false, false, false],
               },
@@ -1502,7 +1193,7 @@ export const originalFormCOA = (
                 text: `${row1.DCL2}`,
                 style: "RefBoxValue",
                 alignment: "left",
-                margin: [85, 0, 0, 0],
+                margin: [22, 7, 0, 0],
                 border: [false, false, true, false],
               },
             ],
@@ -1514,15 +1205,14 @@ export const originalFormCOA = (
                 border: [true, false, false, false],
               },
               {
-                text: `${row1.DCL3}`,
+                text: ``,
                 style: "RefBoxValue",
                 alignment: "left",
                 margin: [85, 0, 0, 0],
                 border: [false, false, true, false],
               },
             ],
-            DetailOrderRow2,
-
+           
             DetailOrderRow3,
             [
               {
@@ -1549,12 +1239,19 @@ export const originalFormCOA = (
                 border: [true, false, false, true],
               },
               {
-                text: `Test Date: ${QuantityAndTestDate.TestDate}`,
+                text: `Shelf life: ${shelfLife.ShelfLife}`,
                 style: "RefBoxValue",
                 alignment: "left",
                 margin: [0, 0, 0, 0],
                 border: [false, false, true, true],
               },
+              // {
+              //   text: `Test Date: ${QuantityAndTestDate.TestDate}`,
+              //   style: "RefBoxValue",
+              //   alignment: "left",
+              //   margin: [0, 0, 0, 0],
+              //   border: [false, false, true, true],
+              // },
             ],
           ],
         },

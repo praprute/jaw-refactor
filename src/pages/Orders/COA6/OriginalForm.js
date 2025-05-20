@@ -40,7 +40,6 @@ export const originalFormCOA = (
   ApproveValue,
   ReportValue,
   salmon,
-  cholerae,
   DisProductDate,
   DisExpiration,
   DisTank
@@ -297,6 +296,34 @@ export const originalFormCOA = (
       },
       {
         text: `${valuesChem.TSS}`,
+        style: "RefBoxValue",
+        alignment: "left",
+        margin: [0, 0, 0, 5],
+        bold: true,
+        border: [false, false, true, false],
+      },
+    ])
+  }
+
+  if (AnalysisRender.DisGluten) {
+    dataAnaly.push([
+      {
+        text: `Gluten`,
+        style: "RefBoxValue",
+        alignment: "left",
+        margin: [0, 0, 0, 5],
+        border: [true, false, false, false],
+      },
+      {
+        text: `${spcChem.scpGluten}`,
+        style: "RefBoxValue",
+        alignment: "left",
+        margin: [0, 0, 0, 5],
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: `< ${valuesChem.Gluten}`,
         style: "RefBoxValue",
         alignment: "left",
         margin: [0, 0, 0, 5],
@@ -620,52 +647,13 @@ export const originalFormCOA = (
           {
             columns: [
               {
-                text: `${valuesMicro.Salmonella}`,
+                text: `NOT DETECTED`,
                 width: "auto",
                 alignment: "left",
                 style: "RefBoxValue",
               },
               {
                 text: `(Once a year)`,
-                width: "auto",
-                alignment: "right",
-                style: "RefBoxValue",
-                margin: [5, 0, 0, 0],
-              },
-            ],
-            margin: [0, 0, 0, 5],
-            bold: true,
-            // fontSize:"8",
-            border: [false, false, true, false],
-          },
-        ],
-        [
-          {
-            text: `${cholerae ? "V.cholerae" : ""}`,
-            style: "RefBoxValue",
-            alignment: "left",
-            italics: true,
-            margin: [0, 0, 0, 5],
-            border: [true, false, false, false],
-          },
-          {
-            text: `${cholerae ? "NOT DETECTED" : ""}`,
-            style: "RefBoxValue",
-            alignment: "left",
-            margin: [0, 0, 0, 5],
-            bold: true,
-            border: [false, false, false, false],
-          },
-          {
-            columns: [
-              {
-                text: `${cholerae ? valuesMicro.Cholerae : ""}`,
-                width: "auto",
-                alignment: "left",
-                style: "RefBoxValue",
-              },
-              {
-                text: `${cholerae ? "(Once a year)" : ""}`,
                 width: "auto",
                 alignment: "right",
                 style: "RefBoxValue",
@@ -985,7 +973,7 @@ export const originalFormCOA = (
         ],
         [
           {
-            text: `${cholerae ? "V.cholerae" : ""}`,
+            text: `Salmonella spp.`,
             style: "RefBoxValue",
             alignment: "left",
             italics: true,
@@ -993,7 +981,7 @@ export const originalFormCOA = (
             border: [true, false, false, false],
           },
           {
-            text: `${cholerae ? "NOT DETECTED" : ""}`,
+            text: `NOT DETECTED`,
             style: "RefBoxValue",
             alignment: "left",
             margin: [0, 0, 0, 5],
@@ -1003,13 +991,13 @@ export const originalFormCOA = (
           {
             columns: [
               {
-                text: `${cholerae ? valuesMicro.Cholerae : ""}`,
+                text: `NOT DETECTED`,
                 width: "auto",
                 alignment: "left",
                 style: "RefBoxValue",
               },
               {
-                text: `${cholerae ? "(Once a year)" : ""}`,
+                text: `(Once a year)`,
                 width: "auto",
                 alignment: "right",
                 style: "RefBoxValue",
