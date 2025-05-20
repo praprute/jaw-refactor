@@ -100,8 +100,8 @@
     "toastr": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts --max_old_space_size=4096 build",
+    "start": "PORT=5001 react-scripts start",
+    "build": "PORT=5001 react-scripts --max_old_space_size=4096 build",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{js,jsx,json,md,html,css,less,scss}\"",
     "test": "react-scripts test",
