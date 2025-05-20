@@ -37,14 +37,14 @@ export const originalFormCOA3 = (
         border: [true, true, true, true],
       },
       {
-        text: `Salt\n(g/l)`,
+        text: `%Salt\n(w/v)`,
         alignment: "center",
         fontSize: "8",
         margin: [0, 0, 0, 5],
         border: [true, true, true, true],
       },
       {
-        text: `Salt\nMeter`,
+        text: `%Salt\n(w/w)`,
         alignment: "center",
         fontSize: "8",
         margin: [0, 0, 0, 5],
@@ -539,7 +539,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `Total Nitrogen gm/liter, %\nSodium Chloride\nHistamine\n\npH\nWater Activity\nSpecific Gravity\nAPC\nYeast & Mold\nE.coli & Coliform\nS. aureus`,
+                text: `Total Nitrogen gm/liter, %\nSodium Chloride\n\nHistamine\npH\nWater Activity\nSpecific Gravity\nAPC\nYeast & Mold\nE.coli & Coliform\nS. aureus`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
@@ -556,7 +556,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN \u2265 20 gm/Liter minimum\n28.94 - 30.11%\n200ppm maximum\n\n5.2 - 5.4 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<10 cfu/g maximum\n<3.0 (None Detected)\n<3.0 (None Detected)`,
+                text: `TN \u2265 20 gm/Liter minimum\n28.94 - 30.11%(w/v)\n22.00-24.00%(w/w)\n200ppm maximum\n\n5.2 - 5.4 at 25 \u00B0C\n0.85 maximum\n1.20 g/mL minimum\n500 cfu/g maximum\n<10 cfu/g maximum\n<3.0 (None Detected)\n<3.0 (None Detected)`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
