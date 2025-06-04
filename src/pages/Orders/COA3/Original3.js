@@ -539,7 +539,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `Total Nitrogen gm/liter, %\nSodium Chloride\n\nHistamine\npH\nWater Activity\nSpecific Gravity\nAPC\nYeast & Mold\nE.coli & Coliform\nS. aureus`,
+                text: `Total Nitrogen gm/liter, %\nSodium Chloride\n\nHistamine\n\npH\nWater Activity\nSpecific Gravity\nAPC\nYeast & Mold\nE.coli & Coliform\nS. aureus`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
