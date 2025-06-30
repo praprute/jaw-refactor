@@ -573,7 +573,7 @@ export const originalFormCOA3 = (
                 margin: [0, 0, 0, 5],
               },
               {
-                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\npH meter\nUsing Water Activity analyzer\nHydrometer method\nPour Plate Technique\nPour Plate Technique\nMPN Method\nMPN Method`,
+                text: `TN Auto-analyzer\nVolumetric Method\nEnzymatic Biosensor\nMethod(AOAC 051604)\n\npH meter\nUsing Water Activity analyzer\nHydrometer method\nPour Plate Technique\nPour Plate Technique\nMPN Method\nMPN Method`,
                 fontSize: "10",
                 alignment: "left",
                 bold: false,
