@@ -33,6 +33,7 @@ import FormBeforeExport4 from "../COA4/FormBeforeExport"
 import FormBeforeExport5 from "../COA5/FormBeforeExport2"
 import FormBeforeExport6 from "../COA6/FormBeforeExport6"
 import FormBeforeExport7 from "../COA7/FormBeforeExport"
+import FormBeforeExport8 from "../COA8/FormBeforeExport"
 import HistoryDaily from "../Report/HistoryTest"
 import { Company } from "../../../configAPI"
 //SweetAlert
@@ -3049,6 +3050,18 @@ const FormBeforeExport = props => {
                             toggleTab("8")
                           }}
                         >
+                          COA FORM 8
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === "9",
+                          })}
+                          onClick={() => {
+                            toggleTab("9")
+                          }}
+                        >
                           Daily Report
                         </NavLink>
                       </NavItem>
@@ -3178,6 +3191,11 @@ const FormBeforeExport = props => {
                   </TabPane>
                   {/* FormBeforeExport5 */}
                   <TabPane tabId="8" id="CompleteCheck">
+                    <div>
+                      <FormBeforeExport8 />
+                    </div>
+                  </TabPane>
+                  <TabPane tabId="9" id="CompleteCheck">
                     <div>
                       <HistoryDaily />
                     </div>

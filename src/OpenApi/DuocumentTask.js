@@ -179,10 +179,47 @@ export const getAllHeaderCoa5Task = async token => {
         },
         body: JSON.stringify(payload),
       })
-  
+
       return response.json()
     } catch (err) {
       return console.log(err)
     }
   }
+
+export const getAllHeaderCoa8Task = async token => {
+  try {
+    const response = await fetch(`${API}/listHeaderCoa8`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    return response.json()
+  } catch (err) {
+    return console.log(err)
+  }
+}
+
+export const saveHeaderCoa8Task = async (token, payload) => {
+  try {
+    const response = await fetch(`${API}/saveHeaderCoa8`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    return response.json()
+  } catch (err) {
+    return console.log(err)
+  }
+}
   

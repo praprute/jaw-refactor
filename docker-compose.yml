@@ -1,0 +1,33 @@
+services:
+  # Dev server with hot reload: docker compose up web
+  web:
+    # node:12 is published for amd64 only, so on Apple Silicon this runs
+    # under emulation. Slow, but it matches the server exactly.
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      # Anonymous volume keeps the image's node_modules from being shadowed
+      # by the host bind mount (the host has none, and its binaries would be
+      # the wrong arch anyway).
+      - /app/node_modules
+    environment:
+      # Bind-mounted files don't emit inotify events on Docker Desktop for Mac,
+      # so the watcher has to poll.
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
+
+  # Production build served by server.js: docker compose --profile prod up prod
+  prod:
+    profiles: ["prod"]
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"

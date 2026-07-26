@@ -1,0 +1,14 @@
+node_modules
+build
+coverage
+.git
+.gitignore
+.eslintcache
+debug.log
+.qodo
+.DS_Store
+npm-debug.log*
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+.dockerignore

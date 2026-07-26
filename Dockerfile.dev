@@ -1,0 +1,22 @@
+# Dev image — matches the server's Node 12 runtime.
+# node-sass@4.14.1 has a prebuilt binary for linux-x64 / Node 12 (ABI 72),
+# so this installs without needing node-gyp to compile from source.
+FROM node:12.22.12-buster
+
+WORKDIR /app
+
+# Copy manifests first so `npm ci` is cached until deps actually change.
+# package-lock.json is lockfileVersion 1, which is what npm 6 (bundled with
+# Node 12) expects — the tree resolves identically to the server.
+COPY package.json package-lock.json ./
+
+# raphael (via @toast-ui/react-chart) pulls `eve` over git://, which GitHub
+# stopped serving in 2022. Rewrite the protocol so the install can resolve it.
+RUN git config --global url."https://github.com/".insteadOf "git://github.com/" \
+ && npm ci
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
